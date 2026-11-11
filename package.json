@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
+    "simulate": "bun scripts/simulate.ts",
     "test:watch": "vitest"
   },
   "overrides": {

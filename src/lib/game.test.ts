@@ -37,7 +37,7 @@ describe("visitor", () => {
   });
   it("score = rarity x affinity x freshness", () => {
     expect(scoreBird(getBird("robin")!, "mealworms", {})).toBe(30);
-    expect(scoreBird(getBird("hoopoe")!, "millet", { yesterday: "hoopoe" })).toBeCloseTo(1 * 0.2 * 0.2);
+    expect(scoreBird(getBird("hoopoe")!, "millet", { yesterday: "hoopoe" })).toBeCloseTo(0.5 * 0.2 * 0.2);
   });
   it("same day + same food gives the same bird", () => {
     for (const f of FOOD_IDS) expect(pickVisitor("2026-11-11", f).id).toBe(pickVisitor("2026-11-11", f).id);

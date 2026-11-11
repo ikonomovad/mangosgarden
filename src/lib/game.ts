@@ -14,7 +14,7 @@ export function getDailyOffer(dateKey: string, yesterdayOffer: FoodId[] = [], al
   return shuffle([...guaranteed, ...rest.slice(0, OFFER_SIZE - guaranteed.length)], rand);
 }
 
-export { freshness, pickVisitor, scoreBird, type RecentVisitors } from "./visitor";
+export { freshness, nextDaysSinceRare, pickVisitor, pityMultiplier, scoreBird, type RecentVisitors } from "./visitor";
 
 export function toDateKey(d: Date): string {
   const y = d.getFullYear();

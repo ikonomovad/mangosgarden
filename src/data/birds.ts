@@ -2,7 +2,7 @@
 import type { FoodId } from "./foods";
 
 export type Rarity = "common" | "uncommon" | "rare";
-export const RARITY_WEIGHT: Record<Rarity, number> = { common: 10, uncommon: 4, rare: 1 };
+export const RARITY_WEIGHT: Record<Rarity, number> = { common: 10, uncommon: 6, rare: 0.5 };
 
 // Affinity values: loves = 3, likes = 1, doesn't care = 0.2 (default for unlisted foods)
 export const LOVES = 3;

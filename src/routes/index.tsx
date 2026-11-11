@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
 import { GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
-import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextStreak, pickVisitor, toDateKey } from "@/lib/game";
+import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, toDateKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
-import { claimMilestones, loadCollection, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, resetDay, saveDay, saveSound, saveStreak } from "@/lib/storage";
+import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, resetDay, saveDay, saveSound, saveStreak } from "@/lib/storage";
 import { pendingMilestones, reactionFor } from "@/lib/personality";
 import { playArrival } from "@/lib/sounds";
 
@@ -112,10 +112,12 @@ function Index() {
     const history = loadHistory();
     if (history[today]?.visitor) return loadToday(); // once a day
     const collection = loadCollection();
+    const pityBefore = loadDaysSinceRare();
     const bird = pickVisitor(today, f, {
       yesterday: history[daysBefore(today, 1)]?.visitor,
       twoDaysAgo: history[daysBefore(today, 2)]?.visitor,
-    }, Object.keys(collection));
+    }, Object.keys(collection), pityBefore);
+    saveDaysSinceRare(nextDaysSinceRare(pityBefore, bird));
     const m = moodFor(bird, f);
     const before = loadStreak();
     const after = nextStreak(before, today);
@@ -124,7 +126,7 @@ function Index() {
     const reactionLine = nextReactionLine(reactionFor(bird, !collection[bird.id], history[daysBefore(today, 1)]?.visitor));
     const entry = recordVisit(bird.id, today, f);
     const justLearned = entry.visits === 3;
-    saveDay(today, { food: f, visitor: bird.id, streakBefore: before, collectionBefore: collection[bird.id] ?? null, reactionLine, learned: justLearned });
+    saveDay(today, { food: f, visitor: bird.id, streakBefore: before, pityBefore, collectionBefore: collection[bird.id] ?? null, reactionLine, learned: justLearned });
     setLearned(justLearned);
     setMilestones([]);
     setIsNew(entry.visits === 1);

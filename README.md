@@ -2,6 +2,13 @@
 
 A tiny daily bird-feeding game for phones. Once a day the player puts out one of four snacks. A wild bird visits, Mango the parrot reacts, and the bird goes into the **Bird book**. After that the garden is closed until local midnight. Come back every day to grow a streak and fill the book with all 12 birds.
 
+Rarity tuning (see `npm run simulate`):
+
+| Value | Default |
+|---|---|
+| Rarity weights | common 10, uncommon 6, rare 0.5 |
+| Pity boost | rare birds x(1 + 0.05 per day without a rare visit), capped at x3, reset on a rare visit |
+
 More detail: [docs/how-it-works.md](docs/how-it-works.md) · [docs/storage.md](docs/storage.md) · [docs/configuration.md](docs/configuration.md) · [docs/extending.md](docs/extending.md)
 
 ## Project structure

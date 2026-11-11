@@ -14,6 +14,8 @@ export interface DayRecord {
   streakBefore?: Streak;
   /** Exact book snapshot: reset must also undo foods learned today. */
   collectionBefore?: BookEntry | null;
+  /** days-since-rare before today's visit, so the testing reset can undo it */
+  pityBefore?: number;
   reactionLine?: string;
   learned?: boolean;
 }
@@ -50,6 +52,8 @@ export function resetDay(today: string) {
   } else if (visitor) unrecordVisit(visitor); // Older saves have no snapshot.
   const before = all[today]?.streakBefore;
   if (before) saveStreak(before);
+  const pity = all[today]?.pityBefore;
+  if (typeof pity === "number") saveDaysSinceRare(pity);
   delete all[today];
   localStorage.setItem(KEY, JSON.stringify(all));
 }
@@ -180,4 +184,14 @@ export function loadSound(): boolean {
 }
 export function saveSound(enabled: boolean) {
   localStorage.setItem(SOUND_KEY, enabled ? "on" : "off");
+}
+
+// Pity boost counter: days (visits) since the last rare bird.
+const PITY_KEY = "mangos-garden:pity";
+export function loadDaysSinceRare(): number {
+  const n = Number(localStorage.getItem(PITY_KEY));
+  return Number.isInteger(n) && n >= 0 ? n : 0;
+}
+export function saveDaysSinceRare(n: number) {
+  localStorage.setItem(PITY_KEY, String(n));
 }
