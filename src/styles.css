@@ -151,8 +151,26 @@
   --page-pad: 1rem;
   --gap: 1.5rem;
   --control-size: 44px;
+  --viewport-height: 100vh;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --page-top: calc(var(--page-pad) + var(--safe-top));
+  --page-bottom: calc(var(--page-pad) + var(--safe-bottom));
+  --page-left: calc(var(--page-pad) + var(--safe-left));
+  --page-right: calc(var(--page-pad) + var(--safe-right));
+}
+@supports (height: 100dvh) {
+  :root { --viewport-height: 100dvh; }
 }
 @media (min-width: 768px) { :root { --page-pad: 1.5rem; } }
+
+@utility viewport-height { height: var(--viewport-height); }
+@utility viewport-min-height { min-height: var(--viewport-height); }
+@utility viewport-dialog {
+  max-height: calc(var(--viewport-height) - var(--page-top) - var(--page-bottom));
+}
 
 @layer base {
   * {

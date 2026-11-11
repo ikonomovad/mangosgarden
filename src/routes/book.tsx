@@ -111,7 +111,7 @@ function Book() {
       </div>
       <Dialog open={!!open} onOpenChange={(v) => !v && setOpen(null)}>
         {open && openEntry && (
-          <DialogContent className="max-w-sm rounded-card border-0 bg-card text-card-foreground shadow-soft">
+          <DialogContent className="viewport-dialog max-w-sm overflow-y-auto rounded-card border-0 bg-card text-card-foreground shadow-soft">
             <DialogHeader className="items-center text-center">
               <div className="h-36 w-36 rounded-full bg-garden-soft p-4">
                 <BirdSvg look={open.look} className="h-full w-full" />

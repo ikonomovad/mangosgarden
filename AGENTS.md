@@ -39,4 +39,5 @@ use the editor.
 - Day records snapshot the previous collection entry so reset reverses food discoveries exactly; permanent milestone and reaction memory is never reset so celebrations do not repeat.
 - Optional Web Audio lives in `src/lib/sounds.ts` and is called only from a feeding tap when sound is enabled, keeping SSR safe and mobile playback user-initiated.
 - Every screen renders inside `src/components/layout/PageShell.tsx` (fixed streak pill + floating book/sound controls); theme tokens live only in `src/styles.css` — one place to retheme.
+- Shared viewport utilities use the dynamic-height token with a legacy fallback; PageShell owns content scrolling and safe-area offsets so browser toolbars cannot create document overflow.
 - Gameplay reads current time through getNow in game.ts; optional developer UI and setup actions stay in src/debug and reload after mutations so normal game loading remains authoritative.

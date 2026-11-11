@@ -168,7 +168,7 @@ function Index() {
       )}
 
       <Dialog open={pantryOpen && screen === "garden"} onOpenChange={setPantryOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-card border-0 bg-card sm:max-w-[var(--page-max)]">
+        <DialogContent className="viewport-dialog overflow-y-auto rounded-card border-0 bg-card sm:max-w-[var(--page-max)]">
           <DialogHeader>
             <DialogTitle className="text-center font-display text-3xl text-foreground">Today's pantry</DialogTitle>
             <DialogDescription className="text-center text-muted-foreground">Pick one to put on the feeder.</DialogDescription>
