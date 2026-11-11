@@ -1,10 +1,11 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { BirdSvg } from "@/components/garden/BirdSvg";
 import { BIRDS, LOVES, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
 import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
 import { liveStreak, todayKey } from "@/lib/game";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageShell } from "@/components/layout/PageShell";
 import { favoritesKnown } from "@/lib/personality";
 
@@ -35,6 +36,7 @@ let snapshot: Collection | null = null;
 function Book() {
   const [book, setBook] = useState<Collection>({});
   const [best, setBest] = useState(0);
+  const [open, setOpen] = useState<Bird | null>(null);
   const [streak, setStreak] = useState(0);
   const [sound, setSound] = useState(false);
   useEffect(() => {
@@ -52,6 +54,7 @@ function Book() {
     };
   }, []);
 
+  const openEntry = open ? book[open.id] : undefined;
   const collected = BIRDS.filter((b) => book[b.id]).length;
   const total = Object.values(book).reduce((a, e) => a + (e?.visits || 0), 0);
 
@@ -78,15 +81,23 @@ function Book() {
           const e = book[b.id];
           if (!e)
             return (
-              <div key={b.id} className="flex flex-col items-center rounded-card bg-muted p-3 text-center">
-                <div className="h-20 w-20 rounded-full bg-background/50 p-2">
-                  <BirdSvg look={b.look} className="h-full w-full opacity-70 brightness-0" />
+              <div key={b.id} role="img" aria-label="Undiscovered bird" className="relative flex flex-col items-center overflow-hidden rounded-card bg-card p-3 text-center shadow-soft">
+                <div aria-hidden className="flex flex-col items-center opacity-50 blur-[9px] saturate-50">
+                  <div className="h-20 w-20 rounded-full bg-garden-soft p-2">
+                    <BirdSvg look={b.look} className="h-full w-full" />
+                  </div>
+                  <p className="mt-2 font-display text-base leading-tight text-foreground">{b.name}</p>
                 </div>
-                <p className="mt-2 font-display text-lg text-muted-foreground">???</p>
+                <div aria-hidden className="absolute inset-0 bg-card/40 backdrop-blur-sm" />
               </div>
             );
           return (
-            <div key={b.id} className="card-pop relative flex flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft">
+            <button
+              key={b.id}
+              type="button"
+              onClick={() => setOpen(b)}
+              className="card-pop relative flex flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft transition-transform hover:-translate-y-1 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"
+            >
               {e.unseenInBook && (
                 <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 font-display text-[10px] text-primary-foreground">New!</span>
               )}
@@ -94,19 +105,42 @@ function Book() {
                 <BirdSvg look={b.look} title={b.name} className="h-full w-full" />
               </div>
               <p className="mt-2 font-display text-base leading-tight text-foreground">{b.name}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{b.fact}</p>
-              <p className="mt-2 text-xs text-foreground">
-                Seen eating: {(e.seenFoods ?? []).length ? e.seenFoods?.map((id) => { const f = getFood(id); return `${f.emoji} ${f.name}`; }).join(", ") : "?"}
-              </p>
-              <p className="mt-2 text-xs text-foreground">
-                Favorite foods: {favoritesKnown(e.visits) ? favorites(b).map((f) => `${f.emoji} ${f.name}`).join(", ") : "?"}
-              </p>
-              <p className="mt-1 text-[11px] text-muted-foreground">First seen {formatDate(e.firstSeen)}</p>
-              <p className="text-[11px] font-semibold text-secondary-foreground">Visited {e.visits} {e.visits === 1 ? "time" : "times"}</p>
-            </div>
+            </button>
           );
         })}
       </div>
+      <Dialog open={!!open} onOpenChange={(v) => !v && setOpen(null)}>
+        {open && openEntry && (
+          <DialogContent className="max-w-sm rounded-card border-0 bg-card text-card-foreground shadow-soft">
+            <DialogHeader className="items-center text-center">
+              <div className="h-36 w-36 rounded-full bg-garden-soft p-4">
+                <BirdSvg look={open.look} className="h-full w-full" />
+              </div>
+              <DialogTitle className="font-display text-2xl text-foreground">{open.name}</DialogTitle>
+              <DialogDescription className="text-muted-foreground">{open.fact}</DialogDescription>
+            </DialogHeader>
+            <dl className="space-y-2 text-sm">
+              <Row label="First seen">{formatDate(openEntry.firstSeen)}</Row>
+              <Row label="Visits">Visited {openEntry.visits} {openEntry.visits === 1 ? "time" : "times"}</Row>
+              {(openEntry.seenFoods ?? []).length > 0 && (
+                <Row label="Seen eating:">{openEntry.seenFoods?.map((id) => { const f = getFood(id); return `${f.emoji} ${f.name}`; }).join(", ")}</Row>
+              )}
+              {favoritesKnown(openEntry.visits) && (
+                <Row label="Favorite foods:">{favorites(open).map((f) => `${f.emoji} ${f.name}`).join(", ")}</Row>
+              )}
+            </dl>
+          </DialogContent>
+        )}
+      </Dialog>
     </PageShell>
+  );
+}
+
+function Row({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="rounded-xl bg-paper px-3 py-2">
+      <dt className="font-display text-xs text-secondary-foreground">{label}</dt>
+      <dd className="text-foreground">{children}</dd>
+    </div>
   );
 }
