@@ -49,6 +49,13 @@ npm test           # runs all unit tests once (Vitest)
 npm run test:watch # re-runs tests when files change
 ```
 
+## Dates and saved data
+
+- **Today:** every "today" (food seed, bird seed, daily lock, streak, countdown, freshness) comes from `todayKey()` in `src/lib/game.ts`: the device's local calendar date as `YYYY-MM-DD`, never UTC. Yesterday/two days ago use `daysBefore()`, which steps calendar days, so daylight-saving changes cannot break streaks or freshness. A last visit dated in the future (clock moved back) keeps the streak instead of resetting it.
+- **Saved-data version:** `mangos-garden:version` (currently `1`). `migrate()` in `src/lib/storage.ts` runs on load and upgrades old saves step by step (v0 → v1 turns any saved bird/food names into stable ids); it never wipes progress. When you change the saved shape, bump `STORAGE_VERSION` and add a step.
+- **Robustness:** all localStorage access is wrapped; blocked, full or corrupted storage falls back to safe defaults and unknown birds/foods are dropped.
+- **Tests:** run in the fixed time zone `Europe/Skopje` (set in `vitest.config.ts`); see `src/lib/dates.test.ts`.
+
 ## Testing date-based features by hand
 
 Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application → Local Storage:

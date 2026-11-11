@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
 import { GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
-import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, toDateKey } from "@/lib/game";
+import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, todayKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
 import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, resetDay, saveDay, saveSound, saveStreak } from "@/lib/storage";
 import { pendingMilestones, reactionFor } from "@/lib/personality";
@@ -54,7 +54,7 @@ function Index() {
   const [sound, setSound] = useState(false);
 
   const loadToday = () => {
-    const key = toDateKey(new Date());
+    const key = todayKey();
     const history = loadHistory();
     const todayOffer = history[key]?.offer ?? getDailyOffer(key, history[daysBefore(key, 1)]?.offer);
     saveDay(key, { offer: todayOffer });
@@ -100,7 +100,7 @@ function Index() {
   // Also refresh a garden/pantry left open across local midnight.
   useEffect(() => {
     const checkDay = () => {
-      if (today && toDateKey(new Date()) !== today) loadToday();
+      if (today && todayKey() !== today) loadToday();
     };
     const id = setInterval(checkDay, 1000);
     window.addEventListener("focus", checkDay);
@@ -108,7 +108,7 @@ function Index() {
   }, [today]);
 
   const choose = (f: FoodId) => {
-    if (!today || toDateKey(new Date()) !== today) return loadToday();
+    if (!today || todayKey() !== today) return loadToday();
     const history = loadHistory();
     if (history[today]?.visitor) return loadToday(); // once a day
     const collection = loadCollection();
