@@ -82,13 +82,13 @@ function Book() {
           if (!e)
             return (
               <div key={b.id} role="img" aria-label="Undiscovered bird" className="relative flex flex-col items-center overflow-hidden rounded-card bg-card p-3 text-center shadow-soft">
-                <div aria-hidden className="flex flex-col items-center opacity-50 blur-[9px] saturate-50">
-                  <div className="h-20 w-20 rounded-full bg-garden-soft p-2">
+                <div aria-hidden className="flex flex-col items-center opacity-60 saturate-50">
+                  <div className="h-20 w-20 rounded-full bg-garden-soft p-2 blur-[3px]">
                     <BirdSvg look={b.look} className="h-full w-full" />
                   </div>
-                  <p className="mt-2 font-display text-base leading-tight text-foreground">{b.name}</p>
+                  <p className="mt-2 font-display text-base leading-tight text-foreground blur-[6px]">{b.name}</p>
                 </div>
-                <div aria-hidden className="absolute inset-0 bg-card/40 backdrop-blur-sm" />
+                <div aria-hidden className="absolute inset-0 bg-card/20" />
               </div>
             );
           return (
