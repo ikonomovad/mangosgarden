@@ -16,8 +16,8 @@ export function getDailyOffer(dateKey: string, yesterdayOffer: FoodId[] = [], al
 }
 
 export interface RecentVisitors {
-  yesterday?: string;
-  twoDaysAgo?: string;
+  yesterday?: string | undefined;
+  twoDaysAgo?: string | undefined;
 }
 
 export function freshness(birdId: string, recent: RecentVisitors): number {
@@ -36,10 +36,10 @@ export function pickVisitor(dateKey: string, food: FoodId, recent: RecentVisitor
   const total = scores.reduce((a, b) => a + b, 0);
   let roll = seededRandom(`visit:${dateKey}:${food}`)() * total;
   for (let i = 0; i < birds.length; i++) {
-    roll -= scores[i];
-    if (roll < 0) return birds[i];
+    roll -= scores[i]!;
+    if (roll < 0) return birds[i]!;
   }
-  return birds[birds.length - 1];
+  return birds[birds.length - 1]!;
 }
 
 export function toDateKey(d: Date): string {
@@ -50,6 +50,6 @@ export function toDateKey(d: Date): string {
 }
 
 export function daysBefore(dateKey: string, n: number): string {
-  const [y, m, d] = dateKey.split("-").map(Number);
+  const [y = 0, m = 1, d = 1] = dateKey.split("-").map(Number);
   return toDateKey(new Date(y, m - 1, d - n));
 }
