@@ -21,21 +21,37 @@ export function Flower({ color, className }: { color: FlowerColor; className?: s
   );
 }
 
-export function GrapeVine({ className }: { className?: string }) {
-  const cluster = (x: number, y: number) =>
-    ([[0, 0], [8, 0], [16, 0], [4, 7], [12, 7], [8, 14]] as const).map(([dx, dy]) => (
-      <circle key={`${x}-${dx}-${dy}`} cx={x + dx} cy={y + dy} r="4.5" fill="var(--grape)" />
-    ));
-  const leaf = (x: number, y: number, r: number) => (
-    <path key={`${x}-${y}`} d="M0 0 C-12 -4 -14 -16 0 -22 C14 -16 12 -4 0 0Z" fill="var(--leaf)" transform={`translate(${x} ${y}) rotate(${r})`} />
+export function FigBranch({ className }: { className?: string }) {
+  const leaf = (x: number, y: number, r: number, k: number) => (
+    <path
+      key={k}
+      d="M0 0 C-4 -6 -16 -4 -18 -12 C-12 -14 -14 -24 -8 -28 C-4 -22 -2 -32 0 -36 C2 -32 4 -22 8 -28 C14 -24 12 -14 18 -12 C16 -4 4 -6 0 0Z"
+      fill="var(--leaf)"
+      transform={`translate(${x} ${y}) rotate(${r})`}
+    />
   );
   return (
-    <svg viewBox="0 0 200 140" className={className} aria-hidden>
-      <path d="M0 8 C40 14 70 30 100 34 C130 38 150 56 170 80" fill="none" stroke="var(--wood)" strokeWidth="5" strokeLinecap="round" />
-      <path d="M100 34 C96 50 104 60 98 70" fill="none" stroke="var(--wood)" strokeWidth="2" />
-      {[leaf(30, 14, 160), leaf(62, 26, 200), leaf(118, 40, 150), leaf(150, 58, 210), leaf(170, 82, 170)]}
-      {cluster(54, 34)}
-      {cluster(130, 62)}
+    <svg viewBox="0 0 200 130" className={className} aria-hidden>
+      <path d="M0 10 C50 18 90 30 130 52 C150 62 165 78 175 92" fill="none" stroke="var(--wood)" strokeWidth="6" strokeLinecap="round" />
+      {[leaf(40, 18, 200, 1), leaf(85, 32, 160, 2), leaf(130, 52, 210, 3), leaf(172, 92, 170, 4)]}
+      {([[64, 36], [148, 74]] as const).map(([x, y]) => (
+        <g key={x}>
+          <path d={`M${x} ${y} v6`} stroke="var(--wood)" strokeWidth="2" />
+          <path d={`M${x} ${y + 5} C${x - 9} ${y + 8} ${x - 8} ${y + 22} ${x} ${y + 22} C${x + 8} ${y + 22} ${x + 9} ${y + 8} ${x} ${y + 5}Z`} fill="var(--grape)" />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+export function AppleTree({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 80 100" className={className} aria-hidden>
+      <rect x="35" y="55" width="10" height="45" rx="3" fill="var(--wood)" />
+      <circle cx="40" cy="38" r="34" fill="var(--leaf)" />
+      {([[24, 26], [50, 18], [58, 42], [32, 50], [44, 34], [20, 44]] as const).map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r="4" fill="var(--poppy)" />
+      ))}
     </svg>
   );
 }
@@ -71,7 +87,8 @@ const FLOWERS: { color: FlowerColor; pos: string; size: string; mobile: boolean 
 export function GardenDecor() {
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden>
-      <GrapeVine className="absolute left-0 top-16 hidden w-40 sm:block md:w-56" />
+      <FigBranch className="absolute left-0 top-16 hidden w-40 sm:block md:w-56" />
+      <AppleTree className="absolute bottom-48 right-[10%] hidden h-24 w-20 md:block" />
       {FLOWERS.map((f, i) => (
         <Flower key={i} color={f.color} className={`absolute ${f.pos} ${f.size} ${f.mobile ? "" : "hidden sm:block"}`} />
       ))}
