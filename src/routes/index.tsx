@@ -7,6 +7,7 @@ import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
 import { Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageShell } from "@/components/layout/PageShell";
 import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
@@ -53,6 +54,7 @@ function Index() {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [learned, setLearned] = useState(false);
   const [sound, setSound] = useState(false);
+  const [pantryOpen, setPantryOpen] = useState(false);
 
   const loadToday = () => {
     const key = todayKey();
@@ -164,19 +166,21 @@ function Index() {
       {screen === "garden" && (
         <section className="relative z-10 flex flex-1 flex-col justify-end gap-[var(--gap)] pb-4">
           <GardenScene full line={greeting} />
-          <Button size="lg" className="relative z-10 rounded-full font-display text-lg shadow-soft" onClick={() => setScreen("choose")}>
+          <Button size="lg" className="relative z-10 rounded-full font-display text-lg shadow-soft" onClick={() => setPantryOpen(true)}>
             Put out a snack
           </Button>
         </section>
       )}
 
-      {screen === "choose" && (
-        <section className="card-pop flex flex-col gap-5">
-          <h2 className="text-center font-display text-3xl text-foreground">Today's pantry</h2>
-          <p className="-mt-3 text-center text-muted-foreground">Pick one to put on the feeder.</p>
-          <FoodPicker offer={offer} onPick={choose} />
-        </section>
-      )}
+      <Dialog open={pantryOpen && screen === "garden"} onOpenChange={setPantryOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto rounded-card border-0 bg-card sm:max-w-[var(--page-max)]">
+          <DialogHeader>
+            <DialogTitle className="text-center font-display text-3xl text-foreground">Today's pantry</DialogTitle>
+            <DialogDescription className="text-center text-muted-foreground">Pick one to put on the feeder.</DialogDescription>
+          </DialogHeader>
+          <FoodPicker offer={offer} onPick={(f) => { setPantryOpen(false); choose(f); }} />
+        </DialogContent>
+      </Dialog>
 
       {(screen === "landing" || screen === "card") && visitor && food && (
         <section className={screen === "card" ? "flex flex-col gap-4" : "relative z-10 flex flex-1 flex-col justify-end gap-[var(--gap)] pb-4"}>
