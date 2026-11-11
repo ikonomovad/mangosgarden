@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Mood } from "@/data/mango-lines";
 import { Mango } from "./Mango";
 import { SpeechBubble } from "./SpeechBubble";
+import { GardenDecor } from "./GardenDecor";
 
 interface GardenSceneProps {
   mood?: Mood | "neutral";
@@ -21,6 +22,7 @@ export function GardenScene({ mood = "neutral", line, feederFood, visitor, full 
       <div className="absolute right-4 top-10 h-8 w-24 rounded-full bg-cloud" />
       <div className={`absolute inset-x-0 bottom-0 rounded-t-[50%] bg-grass ${full ? "h-56" : "h-20"}`} />
       <div className={`absolute inset-x-0 bottom-0 bg-grass-deep ${full ? "h-44" : "h-10"}`} />
+      {full && <GardenDecor />}
 
       <div className={full ? "absolute bottom-36 left-1/2 h-80 w-full max-w-[var(--page-max)] -translate-x-1/2" : "absolute inset-0"}>
 
