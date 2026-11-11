@@ -40,7 +40,7 @@ describe("collection", () => {
   it("sets first-seen once and counts every visit", () => {
     recordVisit("robin", "2026-11-09");
     recordVisit("robin", "2026-11-12");
-    expect(loadCollection().robin).toMatchObject({ firstSeen: "2026-11-09", visits: 2 });
+    expect(loadCollection()["robin"]).toMatchObject({ firstSeen: "2026-11-09", visits: 2 });
   });
   it("daily history keeps only today and the two previous days", () => {
     for (const d of ["2026-11-08", "2026-11-09", "2026-11-10", "2026-11-11"]) saveDay(d, { offer: ["apple"] });

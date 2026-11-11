@@ -52,7 +52,7 @@ describe("reset today", () => {
     const streakBefore = loadStreak();
     const collectionBefore = loadCollection();
     feed("2026-11-11");
-    expect(loadCollection().robin?.visits).toBe(2);
+    expect(loadCollection()["robin"]?.visits).toBe(2);
     expect(loadStreak().current).toBe(2);
     resetDay("2026-11-11");
     expect(isLocked("2026-11-11")).toBe(false);
