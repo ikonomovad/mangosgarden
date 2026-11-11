@@ -48,7 +48,7 @@ export function BirdSvg({ look, mood = "neutral", className, title }: BirdSvgPro
       {mood === "happy" ? (
         <path d="M72 56 q4 -5 8 0" stroke={ink} strokeWidth="2.5" fill="none" strokeLinecap="round" />
       ) : (
-        <g>
+        <g className="bird-eye">
           <circle cx="76" cy="56" r={mood === "excited" ? 4.5 : 3.5} fill={ink} />
           <circle cx="77.5" cy="54.5" r="1.3" fill="#ffffff" />
         </g>

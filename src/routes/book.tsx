@@ -4,6 +4,7 @@ import { BirdSvg } from "@/components/garden/BirdSvg";
 import { BIRDS, LOVES, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
 import { loadCollection, loadStreak, markBookSeen, type Collection } from "@/lib/storage";
+import { favoritesKnown } from "@/lib/personality";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -88,7 +89,12 @@ function Book() {
               </div>
               <p className="mt-2 font-display text-base leading-tight text-foreground">{b.name}</p>
               <p className="mt-1 text-xs text-muted-foreground">{b.fact}</p>
-              <p className="mt-2 text-xs text-foreground">Loves: {favorites(b).map((f) => f.emoji).join(" ")}</p>
+              <p className="mt-2 text-xs text-foreground">
+                Seen eating: {(e.seenFoods ?? []).length ? e.seenFoods?.map((id) => { const f = getFood(id); return `${f.emoji} ${f.name}`; }).join(", ") : "?"}
+              </p>
+              <p className="mt-2 text-xs text-foreground">
+                Favorite foods: {favoritesKnown(e.visits) ? favorites(b).map((f) => `${f.emoji} ${f.name}`).join(", ") : "?"}
+              </p>
               <p className="mt-1 text-[11px] text-muted-foreground">First seen {formatDate(e.firstSeen)}</p>
               <p className="text-[11px] font-semibold text-secondary-foreground">Visited {e.visits} {e.visits === 1 ? "time" : "times"}</p>
             </div>

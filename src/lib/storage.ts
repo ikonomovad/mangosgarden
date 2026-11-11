@@ -1,6 +1,8 @@
 // localStorage: keeps only today + the previous two days.
-import type { FoodId } from "@/data/foods";
+import { FOOD_IDS, type FoodId } from "@/data/foods";
+import { MILESTONE_LINES, VISIT_LINES, type Milestone, type Reaction } from "@/data/mango-lines";
 import { daysBefore, type Streak } from "./game";
+import { selectReaction } from "./personality";
 
 const KEY = "mangos-garden:days";
 
@@ -10,12 +12,17 @@ export interface DayRecord {
   visitor?: string;
   /** streak before today's visit, so the testing reset can undo it */
   streakBefore?: Streak;
+  /** Exact book snapshot: reset must also undo foods learned today. */
+  collectionBefore?: BookEntry | null;
+  reactionLine?: string;
+  learned?: boolean;
 }
 export type History = Record<string, DayRecord>;
 
 export function loadHistory(): History {
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? "{}") as History;
+    const raw = JSON.parse(localStorage.getItem(KEY) ?? "{}");
+    return raw && typeof raw === "object" && !Array.isArray(raw) ? raw as History : {};
   } catch {
     return {};
   }
@@ -34,7 +41,13 @@ export function saveDay(today: string, record: DayRecord): History {
 export function resetDay(today: string) {
   const all = loadHistory();
   const visitor = all[today]?.visitor;
-  if (visitor) unrecordVisit(visitor);
+  const record = all[today];
+  if (visitor && record && "collectionBefore" in record) {
+    const collection = loadCollection();
+    if (record.collectionBefore) collection[visitor] = record.collectionBefore;
+    else delete collection[visitor];
+    saveCollection(collection);
+  } else if (visitor) unrecordVisit(visitor); // Older saves have no snapshot.
   const before = all[today]?.streakBefore;
   if (before) saveStreak(before);
   delete all[today];
@@ -49,13 +62,22 @@ export interface BookEntry {
   visits: number;
   /** true until the player has opened the bird book after discovering it */
   unseenInBook?: boolean;
+  seenFoods?: FoodId[];
 }
 export type Collection = Record<string, BookEntry>;
 
 export function loadCollection(): Collection {
   try {
     const raw = JSON.parse(localStorage.getItem(BOOK_KEY) ?? "{}");
-    return raw && typeof raw === "object" && !Array.isArray(raw) ? (raw as Collection) : {};
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+    const collection: Collection = {};
+    for (const [id, value] of Object.entries(raw)) {
+      if (!value || typeof value !== "object") continue;
+      const entry = value as BookEntry;
+      if (typeof entry.firstSeen !== "string" || !Number.isFinite(entry.visits) || entry.visits < 1) continue;
+      collection[id] = { ...entry, seenFoods: Array.isArray(entry.seenFoods) ? entry.seenFoods.filter((food) => FOOD_IDS.includes(food)) : [] };
+    }
+    return collection;
   } catch {
     return {};
   }
@@ -66,12 +88,13 @@ function saveCollection(c: Collection) {
 }
 
 /** Records a visit; returns the updated entry. */
-export function recordVisit(birdId: string, date: string): BookEntry {
+export function recordVisit(birdId: string, date: string, food?: FoodId): BookEntry {
   const c = loadCollection();
   const prev = c[birdId];
   const entry: BookEntry = prev
     ? { ...prev, visits: (prev.visits || 0) + 1 }
     : { firstSeen: date, visits: 1, unseenInBook: true };
+  entry.seenFoods = [...new Set([...(prev?.seenFoods ?? []), ...(food ? [food] : [])])];
   c[birdId] = entry;
   saveCollection(c);
   return entry;
@@ -89,7 +112,7 @@ export function unrecordVisit(birdId: string) {
 
 export function markBookSeen() {
   const c = loadCollection();
-  for (const id in c) if (c[id]) delete c[id]!.unseenInBook;
+  for (const entry of Object.values(c)) delete entry.unseenInBook;
   saveCollection(c);
 }
 
@@ -110,4 +133,51 @@ export function loadStreak(): Streak {
 
 export function saveStreak(s: Streak) {
   localStorage.setItem(STREAK_KEY, JSON.stringify(s));
+}
+
+// Permanent personality memory is independent of the three-day history and reset.
+const PERSONALITY_KEY = "mangos-garden:personality";
+interface PersonalityMemory {
+  shown: Milestone[];
+  previous: Partial<Record<Reaction, number>>;
+}
+
+export function loadPersonality(): PersonalityMemory {
+  try {
+    const raw = JSON.parse(localStorage.getItem(PERSONALITY_KEY) ?? "{}");
+    const shown = Array.isArray(raw?.shown) ? raw.shown.filter((id: unknown): id is Milestone => typeof id === "string" && id in MILESTONE_LINES) : [];
+    const previous: PersonalityMemory["previous"] = {};
+    for (const group of Object.keys(VISIT_LINES) as Reaction[]) {
+      const value = raw?.previous?.[group];
+      if (Number.isInteger(value) && value >= 0 && value < VISIT_LINES[group].length) previous[group] = value;
+    }
+    return { shown, previous };
+  } catch {
+    return { shown: [], previous: {} };
+  }
+}
+
+export function nextReactionLine(group: Reaction): string {
+  const memory = loadPersonality();
+  const index = selectReaction(group, memory.previous[group]);
+  memory.previous[group] = index;
+  localStorage.setItem(PERSONALITY_KEY, JSON.stringify(memory));
+  return VISIT_LINES[group][index] ?? VISIT_LINES[group][0] ?? "";
+}
+
+/** Claim only lines actually being displayed; reopens and testing resets never repeat them. */
+export function claimMilestones(ids: Milestone[]): Milestone[] {
+  const memory = loadPersonality();
+  const fresh = ids.filter((id) => !memory.shown.includes(id));
+  memory.shown = [...new Set([...memory.shown, ...fresh])];
+  localStorage.setItem(PERSONALITY_KEY, JSON.stringify(memory));
+  return fresh;
+}
+
+const SOUND_KEY = "mangos-garden:sound";
+export function loadSound(): boolean {
+  return localStorage.getItem(SOUND_KEY) === "on";
+}
+export function saveSound(enabled: boolean) {
+  localStorage.setItem(SOUND_KEY, enabled ? "on" : "off");
 }

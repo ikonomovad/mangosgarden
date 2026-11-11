@@ -170,6 +170,15 @@
   100% { transform: translateY(0); }
 }
 @keyframes idle-bob { 50% { transform: translateY(-4px); } }
+@keyframes idle-blink {
+  0%, 91%, 95%, 100% { transform: scaleY(1); }
+  93% { transform: scaleY(0.08); }
+}
+.mango-idle .bird-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: idle-blink 6.5s ease-in-out infinite;
+}
 @keyframes react-hop { 30% { transform: translateY(-12px) rotate(-6deg); } 60% { transform: translateY(0) rotate(4deg); } }
 @keyframes pop-in { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes twinkle { 0%, 100% { transform: scale(0.4); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } }

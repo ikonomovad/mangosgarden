@@ -1,9 +1,10 @@
 import type { Bird } from "@/data/birds";
 import { BirdSvg } from "./BirdSvg";
+import { LEARNED_LINE } from "@/data/mango-lines";
 
 const RARITY_LABEL = { common: "Common", uncommon: "Uncommon", rare: "Rare ✨" };
 
-export function BirdCard({ bird, isNew = false, visits }: { bird: Bird; isNew?: boolean; visits?: number }) {
+export function BirdCard({ bird, isNew = false, visits, learned = false }: { bird: Bird; isNew?: boolean; visits?: number; learned?: boolean }) {
   const rare = bird.rarity === "rare";
   return (
     <div className="card-pop relative w-full overflow-hidden rounded-3xl border-4 border-card bg-paper p-6 text-center shadow-soft">
@@ -21,6 +22,7 @@ export function BirdCard({ bird, isNew = false, visits }: { bird: Bird; isNew?: 
       </div>
       <h2 className="font-display text-3xl text-foreground">{bird.name}</h2>
       <p className="mt-3 font-body text-base text-muted-foreground">{bird.fact}</p>
+      {learned && <p role="status" className="mt-3 font-display text-sm text-secondary-foreground">{LEARNED_LINE}</p>}
     </div>
   );
 }

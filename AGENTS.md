@@ -35,3 +35,6 @@ use the editor.
 - Saved data is browser-only localStorage via `src/lib/storage.ts`: daily history trimmed to today + 2 previous days; the bird book collection is a separate key kept forever — no backend by design.
 - Visitor scoring lives in pure `src/lib/visitor.ts` (re-exported from game.ts) so the algorithm can be tuned alone.
 - Streak and countdown math are pure functions in `src/lib/game.ts`; each day record stores the streak before that visit so the testing reset can undo it exactly.
+- Reaction precedence, non-repeating variants, milestone eligibility, and food-hint thresholds are pure rules in `src/lib/personality.ts`; all Mango wording stays in the existing data file for easy tuning.
+- Day records snapshot the previous collection entry so reset reverses food discoveries exactly; permanent milestone and reaction memory is never reset so celebrations do not repeat.
+- Optional Web Audio lives in `src/lib/sounds.ts` and is called only from a feeding tap when sound is enabled, keeping SSR safe and mobile playback user-initiated.
