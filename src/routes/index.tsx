@@ -6,12 +6,12 @@ import { FoodPicker } from "@/components/garden/FoodPicker";
 import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
 import { Button } from "@/components/ui/button";
-import { LOVES, getAffinity, type Bird } from "@/data/birds";
+import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
 import { GREETINGS, MANGO_LINES, type Mood } from "@/data/mango-lines";
-import { daysBefore, getDailyOffer, pickVisitor, toDateKey } from "@/lib/game";
+import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextStreak, pickVisitor, toDateKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
-import { loadCollection, loadHistory, recordVisit, resetDay, saveDay } from "@/lib/storage";
+import { loadCollection, loadHistory, loadStreak, recordVisit, resetDay, saveDay, saveStreak } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -45,6 +45,7 @@ function Index() {
   const [line, setLine] = useState("");
   const [isNew, setIsNew] = useState(false);
   const [visits, setVisits] = useState(0);
+  const [streak, setStreak] = useState(0);
 
   const loadToday = () => {
     const key = toDateKey(new Date());
@@ -54,18 +55,42 @@ function Index() {
     setToday(key);
     setOffer(todayOffer);
     setGreeting(pickRandom(GREETINGS, Math.random));
+    setStreak(liveStreak(loadStreak(), key));
+    // Already fed today? Show today's card, locked.
+    const rec = history[key];
+    const bird = rec?.visitor ? getBird(rec.visitor) : undefined;
+    if (rec?.food && bird) {
+      const entry = loadCollection()[bird.id];
+      const m = moodFor(bird, rec.food);
+      setFood(rec.food);
+      setVisitor(bird);
+      setMood(m);
+      setLine(pickRandom(MANGO_LINES[m], Math.random));
+      setVisits(entry?.visits ?? 1);
+      setIsNew(entry?.firstSeen === key && entry.visits === 1);
+      setScreen("card");
+    } else {
+      setFood(null);
+      setVisitor(null);
+      setScreen("welcome");
+    }
   };
 
   useEffect(loadToday, []);
 
   const choose = (f: FoodId) => {
     const history = loadHistory();
+    if (history[today]?.visitor) return loadToday(); // once a day
     const bird = pickVisitor(today, f, {
       yesterday: history[daysBefore(today, 1)]?.visitor,
       twoDaysAgo: history[daysBefore(today, 2)]?.visitor,
     }, Object.keys(loadCollection()));
     const m = moodFor(bird, f);
-    saveDay(today, { food: f, visitor: bird.id });
+    const before = loadStreak();
+    const after = nextStreak(before, today);
+    saveStreak(after);
+    setStreak(after.current);
+    saveDay(today, { food: f, visitor: bird.id, streakBefore: before });
     const entry = recordVisit(bird.id, today);
     setIsNew(entry.visits === 1);
     setVisits(entry.visits);
@@ -78,10 +103,7 @@ function Index() {
 
   const reset = () => {
     resetDay(today);
-    setFood(null);
-    setVisitor(null);
     loadToday();
-    setScreen("welcome");
   };
 
   return (
@@ -106,6 +128,7 @@ function Index() {
       {screen === "garden" && (
         <section className="card-pop flex flex-col gap-6">
           <GardenScene line={greeting} />
+          <StreakBadge streak={streak} />
           <Button size="lg" className="rounded-full font-display text-lg shadow-soft" onClick={() => setScreen("choose")}>
             Put out a snack
           </Button>
@@ -147,6 +170,8 @@ function Index() {
                 <p className="text-sm text-card-foreground">{line}</p>
               </div>
               <p className="text-center font-display text-lg text-secondary-foreground">Come back tomorrow for a new visitor 🌱</p>
+              <StreakBadge streak={streak} />
+              <Countdown onMidnight={loadToday} />
               <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
                 📖 Bird book
               </Link>
@@ -160,5 +185,35 @@ function Index() {
         reset today
       </button>
     </main>
+  );
+}
+
+function StreakBadge({ streak }: { streak: number }) {
+  return (
+    <p className="self-center rounded-full bg-card px-4 py-1.5 font-display text-card-foreground shadow-soft">
+      🔥 {streak} day{streak === 1 ? "" : "s"} streak
+    </p>
+  );
+}
+
+function Countdown({ onMidnight }: { onMidnight: () => void }) {
+  const [ms, setMs] = useState<number | null>(null);
+  useEffect(() => {
+    const tick = () => {
+      const left = msUntilMidnight(new Date());
+      setMs(left);
+      if (left <= 1000) setTimeout(onMidnight, left + 50);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [onMidnight]);
+  if (ms === null) return null;
+  const t = Math.ceil(ms / 1000);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    <p className="text-center text-sm text-muted-foreground">
+      Next visitor in {pad(Math.floor(t / 3600))}:{pad(Math.floor((t % 3600) / 60))}:{pad(t % 60)}
+    </p>
   );
 }

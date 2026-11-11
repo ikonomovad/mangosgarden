@@ -1,6 +1,6 @@
 // localStorage: keeps only today + the previous two days.
 import type { FoodId } from "@/data/foods";
-import { daysBefore } from "./game";
+import { daysBefore, type Streak } from "./game";
 
 const KEY = "mangos-garden:days";
 
@@ -8,6 +8,8 @@ export interface DayRecord {
   offer?: FoodId[];
   food?: FoodId;
   visitor?: string;
+  /** streak before today's visit, so the testing reset can undo it */
+  streakBefore?: Streak;
 }
 export type History = Record<string, DayRecord>;
 
@@ -33,6 +35,8 @@ export function resetDay(today: string) {
   const all = loadHistory();
   const visitor = all[today]?.visitor;
   if (visitor) unrecordVisit(visitor);
+  const before = all[today]?.streakBefore;
+  if (before) saveStreak(before);
   delete all[today];
   localStorage.setItem(KEY, JSON.stringify(all));
 }
@@ -87,4 +91,23 @@ export function markBookSeen() {
   const c = loadCollection();
   for (const id in c) if (c[id]) delete c[id]!.unseenInBook;
   saveCollection(c);
+}
+
+const STREAK_KEY = "mangos-garden:streak";
+
+export function loadStreak(): Streak {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STREAK_KEY) ?? "{}") ?? {};
+    return {
+      current: Number(raw.current) || 0,
+      best: Number(raw.best) || 0,
+      lastVisit: typeof raw.lastVisit === "string" ? raw.lastVisit : undefined,
+    };
+  } catch {
+    return { current: 0, best: 0 };
+  }
+}
+
+export function saveStreak(s: Streak) {
+  localStorage.setItem(STREAK_KEY, JSON.stringify(s));
 }

@@ -34,3 +34,4 @@ use the editor.
 - All birds (including Mango) render through one `BirdSvg` component driven by data look fields — no per-species images.
 - Saved data is browser-only localStorage via `src/lib/storage.ts`: daily history trimmed to today + 2 previous days; the bird book collection is a separate key kept forever — no backend by design.
 - Visitor scoring lives in pure `src/lib/visitor.ts` (re-exported from game.ts) so the algorithm can be tuned alone.
+- Streak and countdown math are pure functions in `src/lib/game.ts`; each day record stores the streak before that visit so the testing reset can undo it exactly.

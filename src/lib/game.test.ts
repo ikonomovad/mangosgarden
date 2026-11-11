@@ -50,3 +50,25 @@ describe("new bird bonus", () => {
     expect(scoreBird(getBird("robin")!, "mealworms", {}, ["robin"])).toBe(30);
   });
 });
+
+import { liveStreak, msUntilMidnight, nextStreak } from "./game";
+describe("streak", () => {
+  it("first visit starts at 1", () => {
+    expect(nextStreak({ current: 0, best: 0 }, "2026-11-11")).toEqual({ current: 1, best: 1, lastVisit: "2026-11-11" });
+  });
+  it("visiting the day after adds 1", () => {
+    expect(nextStreak({ current: 4, best: 4, lastVisit: "2026-11-10" }, "2026-11-11").current).toBe(5);
+  });
+  it("a missed day restarts at 1 and keeps best", () => {
+    expect(nextStreak({ current: 4, best: 6, lastVisit: "2026-11-09" }, "2026-11-11")).toEqual({ current: 1, best: 6, lastVisit: "2026-11-11" });
+  });
+  it("works across month boundaries", () => {
+    expect(nextStreak({ current: 2, best: 2, lastVisit: "2026-10-31" }, "2026-11-01").current).toBe(3);
+  });
+  it("shows 0 once a day was missed", () => {
+    expect(liveStreak({ current: 4, best: 4, lastVisit: "2026-11-09" }, "2026-11-11")).toBe(0);
+  });
+  it("countdown reaches next local midnight", () => {
+    expect(msUntilMidnight(new Date(2026, 10, 11, 23, 0, 0))).toBe(3600000);
+  });
+});

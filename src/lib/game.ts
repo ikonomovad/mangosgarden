@@ -27,3 +27,26 @@ export function daysBefore(dateKey: string, n: number): string {
   const [y = 0, m = 1, d = 1] = dateKey.split("-").map(Number);
   return toDateKey(new Date(y, m - 1, d - n));
 }
+
+export interface Streak {
+  current: number;
+  best: number;
+  lastVisit?: string | undefined;
+}
+
+/** Streak after visiting on `today`: +1 if last visit was yesterday, same if already today, else 1. */
+export function nextStreak(s: Streak, today: string): Streak {
+  if (s.lastVisit === today) return s;
+  const current = s.lastVisit === daysBefore(today, 1) ? s.current + 1 : 1;
+  return { current, best: Math.max(s.best, current), lastVisit: today };
+}
+
+/** Streak to display: 0 once a day has been missed. */
+export function liveStreak(s: Streak, today: string): number {
+  return s.lastVisit === today || s.lastVisit === daysBefore(today, 1) ? s.current : 0;
+}
+
+export function msUntilMidnight(now: Date): number {
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  return next.getTime() - now.getTime();
+}
