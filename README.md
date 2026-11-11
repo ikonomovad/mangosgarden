@@ -60,7 +60,7 @@ npm run test:watch # re-runs tests when files change
 
 Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application → Local Storage:
 
-- **Pretend today never happened:** use the hidden "reset today" link at the bottom of the game screen.
+- **Pretend today never happened:** open `/?debug=1`, scroll below the game, expand **Developer test panel**, and press **Reset today**.
 - **Simulate "yesterday's visit":** in `mangos-garden:days`, rename today's key (for example `2026-11-11`) to yesterday's date, then reload. Food choice unlocks and the yesterday rules apply (fresh foods, freshness penalty, "yesterday" reaction).
 - **Test streaks:** edit `mangos-garden:streak`, for example `{"current":2,"best":2,"lastVisit":"<yesterday>"}`, then feed today to reach the 3-day milestone.
 - **Test food hints:** set a bird's `visits` to `2` in `mangos-garden:collection`; the next visit reveals its favorite foods.
@@ -72,3 +72,28 @@ Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application 
 - Everything is saved in this browser only: no accounts, no cross-device sync. Clearing site data erases progress.
 - The daily offer and visitor are seeded by date, so two players picking the same food on the same day (with the same history) get the same bird.
 - Sounds need a tap first (browser rule) and are silent on devices without Web Audio.
+
+## Hidden developer test panel
+
+Open `/?debug=1` (or `/book?debug=1`). This enables the collapsible drawer below the game for this browser tab's session, including navigation and reloads. Normal visits do not show it. The drawer is in page flow, not over the scene: scroll down to use it.
+
+- **Clock:** +1 day, +2 days, -1 day step local calendar days (including daylight-saving changes). **Jump to 23:59** sets the shifted day's local time to 23:59:00; let the countdown run to midnight. **Back to real time** removes the offset. A banner in the drawer identifies the fake time while shifted.
+- **Readout:** clock, today's actual offer, yesterday's saved offer, streak/best, pity counter, chosen bird/food, and daily lock. Missing previous offers are shown as unrecorded, not invented.
+- **Setup:** set streak (anchored to yesterday unless already fed today), pity, or a chosen bird's visit count. Zero visits removes that bird. Existing food discoveries and first-seen dates remain when changing a collected bird's count. **Clear all game data** asks for confirmation, then clears progress, milestones and sound; unrelated browser data and the debug clock/session are kept.
+- **Reset today:** calls the existing `resetDay` in `src/lib/storage.ts` unchanged, restoring the collection snapshot, streak/best, previous history and pity. Milestone/reaction memory still does not reset.
+- Actions reload the current screen to use the normal saved-data loading path. Setup tools intentionally edit this browser's real game progress; use a separate browser profile for disposable tests.
+
+The shared `getNow()` clock in `src/lib/game.ts` returns real time plus the separately stored `mangos-garden-debug:clock-offset` millisecond offset. `todayKey()` and the default `msUntilMidnight()` use it; calendar constructors for formatting saved dates and day arithmetic are not reads of the real clock. `mangos-garden-debug:enabled` is sessionStorage only. All debug storage access tolerates blocked or invalid storage. With no offset, gameplay is unchanged.
+
+### Disable or completely remove
+
+Set **`ENABLE_DEBUG_PANEL = false`** in `src/lib/game.ts` to disable the drawer, ignore `?debug=1`, and ignore any saved offset. No game progress is deleted.
+
+To remove completely, delete exactly:
+
+1. `src/debug/actions.ts`, `src/debug/DeveloperPanel.tsx`, `src/debug/DeveloperPanel.test.tsx`, and `src/debug/disabled.test.tsx` (the whole `src/debug/` directory).
+2. In `src/routes/__root.tsx`, the import line ending `// Removable debug import` and the mount line containing `{/* Removable debug mount */}`.
+3. In `src/lib/game.ts`, the block from `// BEGIN removable developer clock` through `// END removable developer clock`; replace it with `export function getNow(): Date { return new Date(); }`. Keep `todayKey(now = getNow())` and `msUntilMidnight(now = getNow())` so all gameplay still shares one clock.
+4. In `AGENTS.md`, the rule beginning `Gameplay reads current time` and this README's **Hidden developer test panel** section; replace the reset-testing bullet above with your preferred testing procedure.
+
+No changes to storage or game algorithms need undoing. The old normal-screen reset link was removed as requested; the reset operation remains in `src/lib/storage.ts`.

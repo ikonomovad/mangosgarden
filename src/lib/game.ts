@@ -16,8 +16,25 @@ export function getDailyOffer(dateKey: string, yesterdayOffer: FoodId[] = [], al
 
 export { freshness, nextDaysSinceRare, pickVisitor, pityMultiplier, scoreBird, type RecentVisitors } from "./visitor";
 
+// BEGIN removable developer clock
+export const ENABLE_DEBUG_PANEL = true;
+export const DEBUG_CLOCK_KEY = "mangos-garden-debug:clock-offset";
+
+/** The shared clock. Browser-only offset storage is separate from game saves. */
+export function getNow(realNow: Date = new Date(), enabled = ENABLE_DEBUG_PANEL): Date {
+  if (!enabled) return realNow;
+  try {
+    const offset = Number(localStorage.getItem(DEBUG_CLOCK_KEY));
+    const shifted = new Date(realNow.getTime() + offset);
+    return Number.isFinite(offset) && Number.isFinite(shifted.getTime()) ? shifted : realNow;
+  } catch {
+    return realNow;
+  }
+}
+// END removable developer clock
+
 /** The ONE way to get "today": the device's LOCAL calendar date as YYYY-MM-DD (never UTC). */
-export function todayKey(now: Date = new Date()): string {
+export function todayKey(now: Date = getNow()): string {
   return toDateKey(now);
 }
 
@@ -58,7 +75,7 @@ export function liveStreak(s: Streak, today: string): number {
 }
 
 /** Real time left until the next local midnight (23 h or 25 h on DST days is correct). */
-export function msUntilMidnight(now: Date): number {
+export function msUntilMidnight(now: Date = getNow()): number {
   const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
   return next.getTime() - now.getTime();
 }

@@ -14,7 +14,7 @@ import { getFood, type FoodId } from "@/data/foods";
 import { GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
 import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, todayKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
-import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, resetDay, saveDay, saveSound, saveStreak } from "@/lib/storage";
+import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, saveDay, saveSound, saveStreak } from "@/lib/storage";
 import { pendingMilestones, reactionFor } from "@/lib/personality";
 import { playArrival } from "@/lib/sounds";
 
@@ -142,11 +142,6 @@ function Index() {
     setScreen("landing");
   };
 
-  const reset = () => {
-    resetDay(today);
-    loadToday();
-  };
-
   return (
     <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
       {screen === "welcome" && (
@@ -229,10 +224,6 @@ function Index() {
         </section>
       )}
 
-      {/* Testing only — remove later */}
-      <Button variant="ghost" size="sm" onClick={reset} className="relative z-10 mt-auto self-center text-xs text-muted-foreground opacity-30 hover:opacity-100">
-        reset today
-      </Button>
     </PageShell>
   );
 }
@@ -241,7 +232,7 @@ function Countdown({ onMidnight }: { onMidnight: () => void }) {
   const [ms, setMs] = useState<number | null>(null);
   useEffect(() => {
     const tick = () => {
-      const left = msUntilMidnight(new Date());
+      const left = msUntilMidnight();
       setMs(left);
       if (left <= 1000) setTimeout(onMidnight, left + 50);
     };

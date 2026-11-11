@@ -1,5 +1,4 @@
-# Mango personality
-- [x] Add contextual reactions and one-time milestones.
-- [x] Track foods and reveal favorites after three visits; preserve reset.
-- [x] Add gentle blinking and optional synthesized sounds.
-- [x] Verify daily flow, saved data, reset, and mobile layout.
+# Hidden developer test panel
+- [x] Add the shared offset-aware clock and isolated debug drawer.
+- [x] Add setup tools, move reset, and document removal.
+- [x] Run clock/reset tests and verify normal and debug flows on desktop/mobile.
