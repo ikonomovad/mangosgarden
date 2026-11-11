@@ -93,7 +93,7 @@ export const BIRDS: Bird[] = [
   {
     id: "hoopoe", name: "Hoopoe", rarity: "rare",
     fact: "Hoopoes fan their crown like a punk mohawk when they get excited.",
-    affinity: { mealworms: LOVES, water: LIKES },
+    affinity: { mealworms: LOVES, fatball: LOVES, peanuts: LIKES },
     look: { body: "#e3a46a", belly: "#f2cfa6", wing: "#3a3330", beak: "#3a3330", marking: "crest-tipped", markingColor: "#e3a46a" },
   },
   {

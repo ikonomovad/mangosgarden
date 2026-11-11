@@ -7,7 +7,7 @@ Rarity tuning (see `npm run simulate`):
 | Value | Default |
 |---|---|
 | Rarity weights | common 10, uncommon 6, rare 0.5 |
-| Pity boost | rare birds x(1 + 0.05 per day without a rare visit), capped at x3, reset on a rare visit |
+| Pity boost | uncollected rare birds only: x(1 + 0.05 per day since the last new rare bird), capped at x3, reset only when a new rare bird is discovered; off once both rares are collected |
 
 More detail: [docs/how-it-works.md](docs/how-it-works.md) · [docs/storage.md](docs/storage.md) · [docs/configuration.md](docs/configuration.md) · [docs/extending.md](docs/extending.md)
 

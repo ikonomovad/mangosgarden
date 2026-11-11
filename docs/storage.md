@@ -52,4 +52,4 @@ The string `"on"` or `"off"`. Anything else counts as off.
 
 ## `mangos-garden:pity`
 
-A plain number: visits since the last rare bird (drives the pity boost). Missing or invalid means 0. Each day record stores `pityBefore` so "reset today" can restore it.
+A plain number: visits since the last newly discovered rare bird (drives the pity boost). Missing or invalid means 0. Each day record stores `pityBefore` so "reset today" can restore it.

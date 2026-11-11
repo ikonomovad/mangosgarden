@@ -26,9 +26,9 @@ for (let p = 0; p < PLAYERS; p++) {
     const food = offer[Math.floor(rand() * offer.length)]!;
     const bird = pickVisitor(date, food, { yesterday: visitors[d - 1], twoDaysAgo: visitors[d - 2] }, [...collected], pityOn ? daysSinceRare : 0);
     visitors.push(bird.id);
+    daysSinceRare = nextDaysSinceRare(daysSinceRare, bird, [...collected]);
     collected.add(bird.id);
     share[bird.rarity]++;
-    daysSinceRare = nextDaysSinceRare(daysSinceRare, bird);
     if (bird.rarity === "rare" && !rare) rare = d + 1;
     if (!done && collected.size === BIRDS.length) done = d + 1;
   }

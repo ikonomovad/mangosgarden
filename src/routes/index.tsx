@@ -117,7 +117,7 @@ function Index() {
       yesterday: history[daysBefore(today, 1)]?.visitor,
       twoDaysAgo: history[daysBefore(today, 2)]?.visitor,
     }, Object.keys(collection), pityBefore);
-    saveDaysSinceRare(nextDaysSinceRare(pityBefore, bird));
+    saveDaysSinceRare(nextDaysSinceRare(pityBefore, bird, Object.keys(collection)));
     const m = moodFor(bird, f);
     const before = loadStreak();
     const after = nextStreak(before, today);

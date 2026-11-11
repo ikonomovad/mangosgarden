@@ -8,7 +8,7 @@
 | Affinity: doesn't care | 0.2 | `MEH`, `src/data/birds.ts` | Chance a bird comes for a food it doesn't list |
 | Freshness: came yesterday | 0.2 | `freshness`, `src/lib/visitor.ts` | Lower = fewer back-to-back repeats |
 | Freshness: came 2 days ago | 0.6 | `freshness`, `src/lib/visitor.ts` | Same, one day further back |
-| Pity boost step | +0.05 per day | `PITY_STEP`, `src/lib/visitor.ts` | How fast rare birds get likelier each day without a rare visit (resets on a rare visit) |
+| Pity boost step | +0.05 per day | `PITY_STEP`, `src/lib/visitor.ts` | How fast rare birds get likelier each day since the last new rare discovery; applies only to uncollected rares and resets only on a new rare bird |
 | Pity boost cap | x3 | `PITY_CAP`, `src/lib/visitor.ts` | Highest the rare-bird boost can go |
 | New-bird boost | 2 | `NEW_BIRD_BONUS`, `src/lib/visitor.ts` | Higher = the book fills faster |
 | Foods offered per day | 4 | `OFFER_SIZE`, `src/lib/game.ts` | Number of food buttons |

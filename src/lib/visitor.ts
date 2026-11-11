@@ -13,9 +13,10 @@ export function pityMultiplier(daysSinceRare: number): number {
   return Math.min(PITY_CAP, 1 + PITY_STEP * Math.max(0, daysSinceRare));
 }
 
-/** Days-since-rare after today's visit: back to 0 on a rare visit, else +1. */
-export function nextDaysSinceRare(daysSinceRare: number, bird: Bird): number {
-  return bird.rarity === "rare" ? 0 : daysSinceRare + 1;
+/** Days-since-rare after today's visit: back to 0 only when a NEW rare bird is discovered, else +1.
+ *  `collected` = ids collected before today's visit. */
+export function nextDaysSinceRare(daysSinceRare: number, bird: Bird, collected: readonly string[] = []): number {
+  return bird.rarity === "rare" && !collected.includes(bird.id) ? 0 : daysSinceRare + 1;
 }
 
 export interface RecentVisitors {
@@ -31,7 +32,8 @@ export function freshness(birdId: string, recent: RecentVisitors): number {
 
 /** `collected` = ids the player has already seen; when omitted no bonus applies. */
 export function scoreBird(bird: Bird, food: FoodId, recent: RecentVisitors, collected?: readonly string[], daysSinceRare = 0): number {
-  const pity = bird.rarity === "rare" ? pityMultiplier(daysSinceRare) : 1;
+  // Pity only helps rare birds not collected yet; once every rare is collected it no longer applies.
+  const pity = bird.rarity === "rare" && !collected?.includes(bird.id) ? pityMultiplier(daysSinceRare) : 1;
   const bonus = collected && !collected.includes(bird.id) ? NEW_BIRD_BONUS : 1;
   return RARITY_WEIGHT[bird.rarity] * getAffinity(bird, food) * freshness(bird.id, recent) * bonus * pity;
 }

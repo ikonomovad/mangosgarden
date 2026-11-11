@@ -20,9 +20,21 @@ describe("pity boost", () => {
   it("only boosts rare birds", () => {
     expect(scoreBird(robin, "mealworms", {}, undefined, 30)).toBe(scoreBird(robin, "mealworms", {}));
   });
-  it("counts up on other visits and resets on a rare visit", () => {
-    expect(nextDaysSinceRare(5, robin)).toBe(6);
-    expect(nextDaysSinceRare(5, hoopoe)).toBe(0);
+  it("counts up on other visits and resets only on a NEW rare bird", () => {
+    expect(nextDaysSinceRare(5, robin, [])).toBe(6);
+    expect(nextDaysSinceRare(5, hoopoe, [])).toBe(0);
+    expect(nextDaysSinceRare(5, hoopoe, ["hoopoe"])).toBe(6);
+  });
+  it("does not boost rare birds already collected", () => {
+    expect(scoreBird(hoopoe, "mealworms", {}, ["hoopoe"], 30)).toBe(scoreBird(hoopoe, "mealworms", {}, ["hoopoe"], 0));
+    expect(scoreBird(hoopoe, "mealworms", {}, [], 20)).toBeCloseTo(scoreBird(hoopoe, "mealworms", {}, [], 0) * 2);
+  });
+  it("stops applying once both rare birds are collected", () => {
+    const all = ["hoopoe", "waxwing"];
+    expect(scoreBird(getBird("waxwing")!, "berries", {}, all, 40)).toBe(scoreBird(getBird("waxwing")!, "berries", {}, all, 0));
+  });
+  it("Hoopoe loves mealworms and fat ball, likes peanuts", () => {
+    expect(hoopoe.affinity).toEqual({ mealworms: 3, fatball: 3, peanuts: 1 });
   });
   it("is undone by reset today", () => {
     saveDaysSinceRare(7);
