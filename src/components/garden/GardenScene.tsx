@@ -8,17 +8,21 @@ interface GardenSceneProps {
   line?: string;
   feederFood?: string;
   visitor?: ReactNode;
+  /** Fill the whole screen behind the page content. */
+  full?: boolean;
 }
 
 /** Garden backdrop with a feeder, a branch, and Mango on his perch. */
-export function GardenScene({ mood = "neutral", line, feederFood, visitor }: GardenSceneProps) {
+export function GardenScene({ mood = "neutral", line, feederFood, visitor, full = false }: GardenSceneProps) {
   return (
-    <div className="garden-sky relative h-80 w-full overflow-hidden rounded-card shadow-soft">
-      <div className="absolute left-6 top-6 h-12 w-12 rounded-full bg-sun" />
+    <div className={full ? "garden-sky fixed inset-0 z-0 overflow-hidden" : "garden-sky relative h-80 w-full overflow-hidden rounded-card shadow-soft"}>
+      <div className={`absolute h-12 w-12 rounded-full bg-sun ${full ? "left-1/4 top-28" : "left-6 top-6"}`} />
       <div className="absolute -left-10 top-14 h-10 w-32 rounded-full bg-cloud" />
       <div className="absolute right-4 top-10 h-8 w-24 rounded-full bg-cloud" />
-      <div className="absolute inset-x-0 bottom-0 h-20 rounded-t-[50%] bg-grass" />
-      <div className="absolute inset-x-0 bottom-0 h-10 bg-grass-deep" />
+      <div className={`absolute inset-x-0 bottom-0 rounded-t-[50%] bg-grass ${full ? "h-56" : "h-20"}`} />
+      <div className={`absolute inset-x-0 bottom-0 bg-grass-deep ${full ? "h-44" : "h-10"}`} />
+
+      <div className={full ? "absolute bottom-36 left-1/2 h-80 w-full max-w-[var(--page-max)] -translate-x-1/2" : "absolute inset-0"}>
 
       {/* feeder */}
       <div className="absolute bottom-10 left-8 flex flex-col items-center">
@@ -42,6 +46,7 @@ export function GardenScene({ mood = "neutral", line, feederFood, visitor }: Gar
           <SpeechBubble>{line}</SpeechBubble>
         </div>
       )}
+      </div>
     </div>
   );
 }

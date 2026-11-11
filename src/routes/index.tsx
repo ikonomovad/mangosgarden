@@ -162,9 +162,9 @@ function Index() {
       )}
 
       {screen === "garden" && (
-        <section className="card-pop flex flex-col gap-[var(--gap)]">
-          <GardenScene line={greeting} />
-          <Button size="lg" className="rounded-full font-display text-lg shadow-soft" onClick={() => setScreen("choose")}>
+        <section className="relative z-10 flex flex-1 flex-col justify-end gap-[var(--gap)] pb-4">
+          <GardenScene full line={greeting} />
+          <Button size="lg" className="relative z-10 rounded-full font-display text-lg shadow-soft" onClick={() => setScreen("choose")}>
             Put out a snack
           </Button>
         </section>
@@ -179,10 +179,11 @@ function Index() {
       )}
 
       {(screen === "landing" || screen === "card") && visitor && food && (
-        <section className={screen === "card" ? "flex flex-col gap-4" : "flex flex-col gap-[var(--gap)]"}>
+        <section className={screen === "card" ? "flex flex-col gap-4" : "relative z-10 flex flex-1 flex-col justify-end gap-[var(--gap)] pb-4"}>
           {screen === "landing" ? (
             <>
               <GardenScene
+                full
                 mood={mood}
                 line={line}
                 feederFood={getFood(food).emoji}
@@ -192,7 +193,7 @@ function Index() {
                   </div>
                 }
               />
-              <p className="text-center font-display text-xl text-foreground">Someone's here…</p>
+              <p className="relative z-10 self-center rounded-full bg-card px-5 py-2 text-center font-display text-xl text-foreground shadow-soft">Someone's here…</p>
             </>
           ) : (
             <>
@@ -225,7 +226,7 @@ function Index() {
       )}
 
       {/* Testing only — remove later */}
-      <Button variant="ghost" size="sm" onClick={reset} className="mt-auto self-center text-xs text-muted-foreground opacity-30 hover:opacity-100">
+      <Button variant="ghost" size="sm" onClick={reset} className="relative z-10 mt-auto self-center text-xs text-muted-foreground opacity-30 hover:opacity-100">
         reset today
       </Button>
     </PageShell>
