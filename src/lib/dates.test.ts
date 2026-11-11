@@ -110,7 +110,7 @@ describe("saved data", () => {
     localStorage.setItem("mangos-garden:days", JSON.stringify({ "2026-11-10": { food: "Peanuts", visitor: "Blue Tit" } }));
     migrate();
     expect(localStorage.getItem(VERSION_KEY)).toBe(String(STORAGE_VERSION));
-    expect(loadCollection().bluetit).toMatchObject({ firstSeen: "2026-11-01", visits: 4, seenFoods: ["peanuts", "millet"] });
+    expect(loadCollection()["bluetit"]).toMatchObject({ firstSeen: "2026-11-01", visits: 4, seenFoods: ["peanuts", "millet"] });
     expect(loadHistory()["2026-11-10"]).toMatchObject({ food: "peanuts", visitor: "bluetit" });
   });
 });
@@ -129,7 +129,7 @@ describe("reset today restores everything", () => {
     saveDaysSinceRare(0);
 
     resetDay("2026-11-11");
-    expect(loadCollection().hoopoe).toBeUndefined();
+    expect(loadCollection()["hoopoe"]).toBeUndefined();
     expect(loadStreak()).toEqual(streakBefore);
     expect(loadDaysSinceRare()).toBe(12);
     const h = loadHistory();

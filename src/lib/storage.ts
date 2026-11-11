@@ -53,9 +53,9 @@ export function migrate() {
     if (isObject(days)) {
       for (const rec of Object.values(days)) {
         if (!isObject(rec)) continue;
-        if (Array.isArray(rec.offer)) rec.offer = rec.offer.map(foodIdFrom).filter(Boolean);
-        if (rec.food !== undefined) rec.food = foodIdFrom(rec.food);
-        if (rec.visitor !== undefined) rec.visitor = birdIdFrom(rec.visitor);
+        if (Array.isArray(rec["offer"])) rec["offer"] = rec["offer"].map(foodIdFrom).filter(Boolean);
+        if (rec["food"] !== undefined) rec["food"] = foodIdFrom(rec["food"]);
+        if (rec["visitor"] !== undefined) rec["visitor"] = birdIdFrom(rec["visitor"]);
       }
       write(KEY, JSON.stringify(days));
     }
@@ -64,7 +64,7 @@ export function migrate() {
       const next: Record<string, unknown> = {};
       for (const [k, v] of Object.entries(book)) {
         const id = birdIdFrom(k);
-        if (id && isObject(v)) next[id] = { ...v, seenFoods: Array.isArray(v.seenFoods) ? v.seenFoods.map(foodIdFrom).filter(Boolean) : [] };
+        if (id && isObject(v)) next[id] = { ...v, seenFoods: Array.isArray(v["seenFoods"]) ? v["seenFoods"].map(foodIdFrom).filter(Boolean) : [] };
       }
       write(BOOK_KEY, JSON.stringify(next));
     }
@@ -99,9 +99,9 @@ export function loadHistory(): History {
     if (!isDateKey(date) || !isObject(value)) continue;
     const rec = { ...value } as DayRecord;
     // An offer must be exactly 4 known, distinct foods; otherwise it is regenerated.
-    if (!Array.isArray(rec.offer) || rec.offer.length !== 4 || !rec.offer.every(isFoodId) || new Set(rec.offer).size !== 4) delete rec.offer;
-    if (!isFoodId(rec.food)) delete rec.food;
-    if (!isBirdId(rec.visitor)) delete rec.visitor;
+    if (!Array.isArray(rec["offer"]) || rec["offer"].length !== 4 || !rec["offer"].every(isFoodId) || new Set(rec["offer"]).size !== 4) delete rec["offer"];
+    if (!isFoodId(rec["food"])) delete rec["food"];
+    if (!isBirdId(rec["visitor"])) delete rec["visitor"];
     out[date] = rec;
   }
   return out;
@@ -198,11 +198,11 @@ const STREAK_KEY = "mangos-garden:streak";
 export function loadStreak(): Streak {
   const raw = readJSON(STREAK_KEY);
   if (!isObject(raw)) return { current: 0, best: 0 };
-  const current = Math.max(0, Math.floor(Number(raw.current)) || 0);
+  const current = Math.max(0, Math.floor(Number(raw["current"])) || 0);
   return {
     current,
-    best: Math.max(current, Math.floor(Number(raw.best)) || 0),
-    lastVisit: isDateKey(raw.lastVisit) ? raw.lastVisit : undefined,
+    best: Math.max(current, Math.floor(Number(raw["best"])) || 0),
+    lastVisit: isDateKey(raw["lastVisit"]) ? raw["lastVisit"] : undefined,
   };
 }
 
@@ -220,8 +220,8 @@ interface PersonalityMemory {
 export function loadPersonality(): PersonalityMemory {
   const raw = readJSON(PERSONALITY_KEY);
   const obj = isObject(raw) ? raw : {};
-  const shown = Array.isArray(obj.shown) ? obj.shown.filter((id: unknown): id is Milestone => typeof id === "string" && id in MILESTONE_LINES) : [];
-  const prev = isObject(obj.previous) ? obj.previous : {};
+  const shown = Array.isArray(obj["shown"]) ? obj["shown"].filter((id: unknown): id is Milestone => typeof id === "string" && id in MILESTONE_LINES) : [];
+  const prev = isObject(obj["previous"]) ? obj["previous"] : {};
   const previous: PersonalityMemory["previous"] = {};
   for (const group of Object.keys(VISIT_LINES) as Reaction[]) {
     const value = prev[group];

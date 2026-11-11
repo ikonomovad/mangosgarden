@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "node:path";
 
 // Fixed time zone so date tests are the same on every machine (DST on 2027-03-28).
-process.env.TZ = "Europe/Skopje";
+process.env["TZ"] = "Europe/Skopje";
 
 export default defineConfig({
   plugins: [react()],
