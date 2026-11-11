@@ -8,16 +8,22 @@ export const MIN_NEW_FOODS = 2;
 /** 4 foods for the day, seeded by date; at least 2 were not offered yesterday. */
 export function getDailyOffer(dateKey: string, yesterdayOffer: FoodId[] = [], allFoods: FoodId[] = FOOD_IDS): FoodId[] {
   const rand = seededRandom(`offer:${dateKey}`);
-  const fresh = shuffle(allFoods.filter((f) => !yesterdayOffer.includes(f)), rand);
+  const fresh = shuffle(
+    allFoods.filter((f) => !yesterdayOffer.includes(f)),
+    rand,
+  );
   const guaranteed = fresh.slice(0, MIN_NEW_FOODS);
-  const rest = shuffle(allFoods.filter((f) => !guaranteed.includes(f)), rand);
+  const rest = shuffle(
+    allFoods.filter((f) => !guaranteed.includes(f)),
+    rand,
+  );
   return shuffle([...guaranteed, ...rest.slice(0, OFFER_SIZE - guaranteed.length)], rand);
 }
 
 export { freshness, nextDaysSinceRare, pickVisitor, pityMultiplier, scoreBird, type RecentVisitors } from "./visitor";
 
 // BEGIN removable developer clock
-export const ENABLE_DEBUG_PANEL = true;
+export const ENABLE_DEBUG_PANEL = false;
 export const DEBUG_CLOCK_KEY = "mangos-garden-debug:clock-offset";
 
 /** The shared clock. Browser-only offset storage is separate from game saves. */
@@ -64,7 +70,8 @@ export interface Streak {
  *  A last visit in the future (clock moved back) keeps the streak as is and re-anchors to today. */
 export function nextStreak(s: Streak, today: string): Streak {
   if (s.lastVisit === today) return s;
-  if (s.lastVisit && s.lastVisit > today) return { current: s.current, best: Math.max(s.best, s.current), lastVisit: today };
+  if (s.lastVisit && s.lastVisit > today)
+    return { current: s.current, best: Math.max(s.best, s.current), lastVisit: today };
   const current = s.lastVisit === daysBefore(today, 1) ? s.current + 1 : 1;
   return { current, best: Math.max(s.best, current), lastVisit: today };
 }
