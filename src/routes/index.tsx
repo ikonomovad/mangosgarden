@@ -5,6 +5,7 @@ import { BirdSvg } from "@/components/garden/BirdSvg";
 import { FoodPicker } from "@/components/garden/FoodPicker";
 import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
+import { SpeechBubble } from "@/components/garden/SpeechBubble";
 import { Button } from "@/components/ui/button";
 import { PageShell } from "@/components/layout/PageShell";
 import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
@@ -195,18 +196,22 @@ function Index() {
             </>
           ) : (
             <>
-              <BirdCard bird={visitor} isNew={isNew} visits={visits} learned={learned} />
-              <div className="flex items-center gap-3 rounded-card bg-card p-4 shadow-soft">
-                <Mango mood={mood} className="h-14 w-14 shrink-0" />
-                <p className="text-sm text-card-foreground">{line}</p>
+              <div className="flex flex-col">
+                <BirdCard bird={visitor} isNew={isNew} visits={visits} learned={learned} />
+                <div className="relative z-10 -mt-8 flex items-end gap-2 px-3">
+                  <Mango mood={mood} className="h-16 w-16 shrink-0" />
+                  <div className="mb-2"><SpeechBubble>{line}</SpeechBubble></div>
+                </div>
               </div>
               {milestones.length > 0 && (
-                <div role="status" className="space-y-2 text-center text-sm text-secondary-foreground">
-                  {milestones.map((id) => <p key={id}>{MILESTONE_LINES[id]}</p>)}
+                <div role="status" className="card-pop space-y-1 rounded-card bg-rare px-4 py-3 text-center font-display text-sm text-rare-foreground shadow-soft">
+                  {milestones.map((id) => <p key={id}>🎉 {MILESTONE_LINES[id]}</p>)}
                 </div>
               )}
-              <p className="text-center font-display text-lg text-secondary-foreground">Come back tomorrow for a new visitor 🌱</p>
-              <Countdown onMidnight={loadToday} />
+              <div className="self-center rounded-full bg-card px-5 py-2.5 text-center shadow-soft">
+                <p className="font-display text-sm text-secondary-foreground">Come back tomorrow for a new visitor 🌱</p>
+                <Countdown onMidnight={loadToday} />
+              </div>
             </>
           )}
         </section>
@@ -236,7 +241,7 @@ function Countdown({ onMidnight }: { onMidnight: () => void }) {
   const t = Math.ceil(ms / 1000);
   const pad = (n: number) => String(n).padStart(2, "0");
   return (
-    <p className="text-center text-sm text-muted-foreground">
+    <p className="text-center font-display text-base tabular-nums text-primary">
       Next visitor in {pad(Math.floor(t / 3600))}:{pad(Math.floor((t % 3600) / 60))}:{pad(t % 60)}
     </p>
   );
