@@ -32,4 +32,5 @@ use the editor.
 ## Project rules
 - Game content (birds, foods, Mango lines) lives in `src/data/*`; game rules are pure functions in `src/lib/game.ts` with tests in `src/lib/game.test.ts` — keeps tuning separate from UI.
 - All birds (including Mango) render through one `BirdSvg` component driven by data look fields — no per-species images.
-- Saved data is browser-only localStorage via `src/lib/storage.ts`, trimmed to today + 2 previous days — no backend by design.
+- Saved data is browser-only localStorage via `src/lib/storage.ts`: daily history trimmed to today + 2 previous days; the bird book collection is a separate key kept forever — no backend by design.
+- Visitor scoring lives in pure `src/lib/visitor.ts` (re-exported from game.ts) so the algorithm can be tuned alone.

@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { BirdSvg } from "@/components/garden/BirdSvg";
 import { BIRDS, LOVES, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
@@ -27,13 +27,20 @@ function formatDate(key: string) {
   return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 }
 
+let snapshot: Collection | null = null;
+
 function Book() {
   const [book, setBook] = useState<Collection>({});
-  const first = useRef<Collection | null>(null);
   useEffect(() => {
-    first.current ??= loadCollection();
-    setBook(first.current);
-    markBookSeen();
+    // Snapshot before clearing "New!" flags; survives dev double-mounting.
+    if (!snapshot) {
+      snapshot = loadCollection();
+      markBookSeen();
+    }
+    setBook(snapshot);
+    return () => {
+      setTimeout(() => (snapshot = null), 0);
+    };
   }, []);
 
   const collected = BIRDS.filter((b) => book[b.id]).length;
