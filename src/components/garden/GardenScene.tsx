@@ -13,7 +13,7 @@ interface GardenSceneProps {
 /** Garden backdrop with a feeder, a branch, and Mango on his perch. */
 export function GardenScene({ mood = "neutral", line, feederFood, visitor }: GardenSceneProps) {
   return (
-    <div className="garden-sky relative h-80 w-full overflow-hidden rounded-3xl shadow-soft">
+    <div className="garden-sky relative h-80 w-full overflow-hidden rounded-card shadow-soft">
       <div className="absolute left-6 top-6 h-12 w-12 rounded-full bg-sun" />
       <div className="absolute -left-10 top-14 h-10 w-32 rounded-full bg-cloud" />
       <div className="absolute right-4 top-10 h-8 w-24 rounded-full bg-cloud" />

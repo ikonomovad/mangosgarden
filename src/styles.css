@@ -83,22 +83,25 @@
   --font-display: "Fredoka", ui-rounded, sans-serif;
   --font-body: "Nunito", ui-rounded, sans-serif;
   --shadow-soft: var(--shadow-soft);
+  --radius-card: var(--radius-card);
 }
 
 :root {
   --radius: 1rem;
-  --background: oklch(0.96 0.03 120);
+  --background: oklch(0.74 0.06 135); /* sage ~#9CB38F */
+  --background-glow: oklch(0.82 0.055 130);
+  --background-edge: oklch(0.66 0.06 140);
   --foreground: oklch(0.32 0.05 60);
-  --card: oklch(0.99 0.015 90);
+  --card: oklch(0.975 0.025 80); /* cream ~#FFF6E6 */
   --card-foreground: oklch(0.32 0.05 60);
   --popover: oklch(0.99 0.015 90);
   --popover-foreground: oklch(0.32 0.05 60);
   --primary: oklch(0.72 0.15 55);
   --primary-foreground: oklch(0.99 0.01 90);
   --secondary: oklch(0.9 0.06 140);
-  --secondary-foreground: oklch(0.35 0.07 145);
+  --secondary-foreground: oklch(0.32 0.07 145);
   --muted: oklch(0.93 0.03 100);
-  --muted-foreground: oklch(0.48 0.04 70);
+  --muted-foreground: oklch(0.44 0.045 65);
   --accent: oklch(0.88 0.08 20);
   --accent-foreground: oklch(0.35 0.06 30);
   --destructive: oklch(0.6 0.2 27);
@@ -128,12 +131,18 @@
   --grass-deep: oklch(0.7 0.12 140);
   --wood: oklch(0.55 0.07 55);
   --wood-light: oklch(0.7 0.08 65);
-  --paper: oklch(0.98 0.025 85);
+  --paper: var(--card);
   --garden-soft: oklch(0.92 0.06 135);
   --rare: oklch(0.78 0.15 80);
   --rare-foreground: oklch(0.35 0.07 60);
-  --shadow-soft: 0 10px 24px -12px oklch(0.4 0.06 80 / 0.35);
+  --shadow-soft: 0 10px 24px -12px oklch(0.3 0.06 80 / 0.4);
+  --radius-card: 20px;
+  --page-max: 480px;
+  --page-pad: 1rem;
+  --gap: 1.5rem;
+  --control-size: 44px;
 }
+@media (min-width: 768px) { :root { --page-pad: 1.5rem; } }
 
 @layer base {
   * {
@@ -191,4 +200,41 @@
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+@utility app-backdrop {
+  background: radial-gradient(ellipse at 50% 20%, var(--background-glow), var(--background) 55%, var(--background-edge));
+  background-attachment: fixed;
+}
+@utility float-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--control-size);
+  height: var(--control-size);
+  border-radius: 9999px;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease;
+  &:hover { transform: translateY(-2px); }
+  &:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+}
+@utility float-tip {
+  display: none;
+  @media (hover: hover) and (min-width: 768px) {
+    display: block;
+    position: absolute;
+    right: calc(100% + 0.5rem);
+    white-space: nowrap;
+    border-radius: 9999px;
+    background: var(--card);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    box-shadow: var(--shadow-soft);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    .group:hover &, .group:focus-visible & { opacity: 1; }
+  }
 }

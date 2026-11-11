@@ -7,7 +7,7 @@ const RARITY_LABEL = { common: "Common", uncommon: "Uncommon", rare: "Rare ✨" 
 export function BirdCard({ bird, isNew = false, visits, learned = false }: { bird: Bird; isNew?: boolean; visits?: number; learned?: boolean }) {
   const rare = bird.rarity === "rare";
   return (
-    <div className="card-pop relative w-full overflow-hidden rounded-3xl border-4 border-card bg-paper p-6 text-center shadow-soft">
+    <div className="card-pop relative w-full overflow-hidden rounded-card border-4 border-card bg-paper p-6 text-center shadow-soft">
       {(rare || isNew) && <Sparkles />}
       <span className={`inline-block rounded-full px-3 py-1 font-display text-xs ${rare ? "bg-rare text-rare-foreground" : "bg-secondary text-secondary-foreground"}`}>
         {RARITY_LABEL[bird.rarity]}

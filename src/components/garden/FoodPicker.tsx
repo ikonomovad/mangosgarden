@@ -9,7 +9,7 @@ export function FoodPicker({ offer, onPick }: { offer: FoodId[]; onPick: (f: Foo
           <button
             key={id}
             onClick={() => onPick(id)}
-            className="flex flex-col items-center gap-2 rounded-2xl border-2 border-border bg-card p-4 font-display text-card-foreground shadow-soft transition-transform hover:-translate-y-1 active:scale-95"
+            className="flex flex-col items-center gap-2 rounded-card border-2 border-border bg-card p-4 font-display text-card-foreground shadow-soft transition-transform hover:-translate-y-1 active:scale-95"
           >
             <span className="text-4xl">{food.emoji}</span>
             <span className="text-sm">{food.name}</span>

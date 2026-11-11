@@ -1,12 +1,12 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
 import { BirdCard } from "@/components/garden/BirdCard";
 import { BirdSvg } from "@/components/garden/BirdSvg";
 import { FoodPicker } from "@/components/garden/FoodPicker";
 import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
 import { Button } from "@/components/ui/button";
+import { PageShell } from "@/components/layout/PageShell";
 import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
 import { GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
@@ -145,9 +145,9 @@ function Index() {
   };
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col gap-6 px-5 py-8">
+    <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
       {screen === "welcome" && (
-        <section className="card-pop flex flex-1 flex-col items-center justify-center gap-6 text-center">
+        <section className="card-pop flex flex-1 flex-col items-center justify-center gap-[var(--gap)] text-center">
           <Mango className="mango-idle h-40 w-40" />
           <div>
             <p className="font-display text-sm uppercase tracking-widest text-secondary-foreground">Mango's Garden</p>
@@ -157,30 +157,15 @@ function Index() {
           <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>
             Start
           </Button>
-          <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
-            📖 Bird book
-          </Link>
         </section>
       )}
 
       {screen === "garden" && (
-        <section className="card-pop flex flex-col gap-6">
-          <Button
-            variant="ghost" size="icon" className="self-end text-secondary-foreground"
-            aria-label={sound ? "Mute sounds" : "Enable sounds"}
-            aria-pressed={sound} title={sound ? "Mute sounds" : "Enable sounds"}
-            onClick={() => { saveSound(!sound); setSound(!sound); }}
-          >
-            {sound ? <Volume2 /> : <VolumeX />}
-          </Button>
+        <section className="card-pop flex flex-col gap-[var(--gap)]">
           <GardenScene line={greeting} />
-          <StreakBadge streak={streak} />
           <Button size="lg" className="rounded-full font-display text-lg shadow-soft" onClick={() => setScreen("choose")}>
             Put out a snack
           </Button>
-          <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
-            📖 Bird book
-          </Link>
         </section>
       )}
 
@@ -193,7 +178,7 @@ function Index() {
       )}
 
       {(screen === "landing" || screen === "card") && visitor && food && (
-        <section className="flex flex-col gap-6">
+        <section className="flex flex-col gap-[var(--gap)]">
           {screen === "landing" ? (
             <>
               <GardenScene
@@ -211,7 +196,7 @@ function Index() {
           ) : (
             <>
               <BirdCard bird={visitor} isNew={isNew} visits={visits} learned={learned} />
-              <div className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-soft">
+              <div className="flex items-center gap-3 rounded-card bg-card p-4 shadow-soft">
                 <Mango mood={mood} className="h-14 w-14 shrink-0" />
                 <p className="text-sm text-card-foreground">{line}</p>
               </div>
@@ -221,11 +206,7 @@ function Index() {
                 </div>
               )}
               <p className="text-center font-display text-lg text-secondary-foreground">Come back tomorrow for a new visitor 🌱</p>
-              <StreakBadge streak={streak} />
               <Countdown onMidnight={loadToday} />
-              <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
-                📖 Bird book
-              </Link>
             </>
           )}
         </section>
@@ -235,15 +216,7 @@ function Index() {
       <Button variant="ghost" size="sm" onClick={reset} className="mt-auto self-center text-xs text-muted-foreground opacity-30 hover:opacity-100">
         reset today
       </Button>
-    </main>
-  );
-}
-
-function StreakBadge({ streak }: { streak: number }) {
-  return (
-    <p className="self-center rounded-full bg-card px-4 py-1.5 font-display text-card-foreground shadow-soft">
-      🔥 {streak} day{streak === 1 ? "" : "s"} streak
-    </p>
+    </PageShell>
   );
 }
 

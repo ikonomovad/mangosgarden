@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { BirdSvg } from "@/components/garden/BirdSvg";
 import { BIRDS, LOVES, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
-import { loadCollection, loadStreak, markBookSeen, type Collection } from "@/lib/storage";
+import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
+import { liveStreak, todayKey } from "@/lib/game";
+import { PageShell } from "@/components/layout/PageShell";
 import { favoritesKnown } from "@/lib/personality";
 
 export const Route = createFileRoute("/book")({
@@ -33,6 +35,8 @@ let snapshot: Collection | null = null;
 function Book() {
   const [book, setBook] = useState<Collection>({});
   const [best, setBest] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [sound, setSound] = useState(false);
   useEffect(() => {
     // Snapshot before clearing "New!" flags; survives dev double-mounting.
     if (!snapshot) {
@@ -41,6 +45,8 @@ function Book() {
     }
     setBook(snapshot);
     setBest(loadStreak().best);
+    setStreak(liveStreak(loadStreak(), todayKey()));
+    setSound(loadSound());
     return () => {
       setTimeout(() => (snapshot = null), 0);
     };
@@ -50,29 +56,29 @@ function Book() {
   const total = Object.values(book).reduce((a, e) => a + (e?.visits || 0), 0);
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-5 px-4 py-6">
+    <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
       <Link to="/" className="self-start font-display text-secondary-foreground">← Back to the garden</Link>
       <h1 className="text-center font-display text-4xl text-foreground">Bird book</h1>
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-2xl bg-card p-3 text-center shadow-soft">
+        <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{collected} of {BIRDS.length}</p>
           <p className="text-xs text-muted-foreground">collected</p>
         </div>
-        <div className="rounded-2xl bg-card p-3 text-center shadow-soft">
+        <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{total}</p>
           <p className="text-xs text-muted-foreground">total visits</p>
         </div>
-        <div className="rounded-2xl bg-card p-3 text-center shadow-soft">
+        <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">🔥 {best}</p>
           <p className="text-xs text-muted-foreground">best streak</p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3">
         {BIRDS.map((b) => {
           const e = book[b.id];
           if (!e)
             return (
-              <div key={b.id} className="flex flex-col items-center rounded-2xl bg-muted p-3 text-center">
+              <div key={b.id} className="flex flex-col items-center rounded-card bg-muted p-3 text-center">
                 <div className="h-20 w-20 rounded-full bg-background/50 p-2">
                   <BirdSvg look={b.look} className="h-full w-full opacity-70 brightness-0" />
                 </div>
@@ -80,7 +86,7 @@ function Book() {
               </div>
             );
           return (
-            <div key={b.id} className="card-pop relative flex flex-col items-center rounded-2xl bg-paper p-3 text-center shadow-soft">
+            <div key={b.id} className="card-pop relative flex flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft">
               {e.unseenInBook && (
                 <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 font-display text-[10px] text-primary-foreground">New!</span>
               )}
@@ -101,6 +107,6 @@ function Book() {
           );
         })}
       </div>
-    </main>
+    </PageShell>
   );
 }
