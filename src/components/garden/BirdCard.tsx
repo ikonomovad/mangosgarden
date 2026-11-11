@@ -1,0 +1,40 @@
+import type { Bird } from "@/data/birds";
+import { BirdSvg } from "./BirdSvg";
+
+const RARITY_LABEL = { common: "Common", uncommon: "Uncommon", rare: "Rare ✨" };
+
+export function BirdCard({ bird }: { bird: Bird }) {
+  const rare = bird.rarity === "rare";
+  return (
+    <div className="card-pop relative w-full overflow-hidden rounded-3xl border-4 border-card bg-paper p-6 text-center shadow-soft">
+      {rare && <Sparkles />}
+      <span className={`inline-block rounded-full px-3 py-1 font-display text-xs ${rare ? "bg-rare text-rare-foreground" : "bg-secondary text-secondary-foreground"}`}>
+        {RARITY_LABEL[bird.rarity]}
+      </span>
+      <div className="mx-auto my-4 h-40 w-40 rounded-full bg-garden-soft p-4">
+        <BirdSvg look={bird.look} title={bird.name} className="h-full w-full" />
+      </div>
+      <h2 className="font-display text-3xl text-foreground">{bird.name}</h2>
+      <p className="mt-3 font-body text-base text-muted-foreground">{bird.fact}</p>
+    </div>
+  );
+}
+
+function Sparkles() {
+  const spots = [
+    { left: "12%", top: "14%", delay: "0s" },
+    { left: "82%", top: "10%", delay: ".3s" },
+    { left: "20%", top: "56%", delay: ".6s" },
+    { left: "78%", top: "48%", delay: ".15s" },
+    { left: "50%", top: "6%", delay: ".45s" },
+  ];
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      {spots.map((s, i) => (
+        <span key={i} className="sparkle absolute text-xl text-rare" style={{ left: s.left, top: s.top, animationDelay: s.delay }}>
+          ✦
+        </span>
+      ))}
+    </div>
+  );
+}

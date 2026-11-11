@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Game content (birds, foods, Mango lines) lives in `src/data/*`; game rules are pure functions in `src/lib/game.ts` with tests in `src/lib/game.test.ts` — keeps tuning separate from UI.
+- All birds (including Mango) render through one `BirdSvg` component driven by data look fields — no per-species images.
+- Saved data is browser-only localStorage via `src/lib/storage.ts`, trimmed to today + 2 previous days — no backend by design.
