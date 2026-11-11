@@ -5,7 +5,7 @@ import { BirdSvg } from "@/components/garden/BirdSvg";
 import { FoodPicker } from "@/components/garden/FoodPicker";
 import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
-import { SpeechBubble } from "@/components/garden/SpeechBubble";
+import { Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageShell } from "@/components/layout/PageShell";
 import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
@@ -179,7 +179,7 @@ function Index() {
       )}
 
       {(screen === "landing" || screen === "card") && visitor && food && (
-        <section className="flex flex-col gap-[var(--gap)]">
+        <section className={screen === "card" ? "flex flex-col gap-4" : "flex flex-col gap-[var(--gap)]"}>
           {screen === "landing" ? (
             <>
               <GardenScene
@@ -196,20 +196,27 @@ function Index() {
             </>
           ) : (
             <>
-              <div className="flex flex-col">
-                <BirdCard bird={visitor} isNew={isNew} visits={visits} learned={learned} />
-                <div className="relative z-10 -mt-8 flex items-end gap-2 px-3">
-                  <Mango mood={mood} className="h-16 w-16 shrink-0" />
-                  <div className="mb-2"><SpeechBubble>{line}</SpeechBubble></div>
-                </div>
-              </div>
+              <BirdCard
+                bird={visitor}
+                isNew={isNew}
+                visits={visits}
+                learned={learned}
+                footer={
+                  <div className="flex items-center gap-3">
+                    <Mango mood={mood} className="h-14 w-14 shrink-0" />
+                    <p className="bubble-left relative flex-1 rounded-card bg-muted px-3 py-2.5 text-sm leading-snug text-foreground">{line}</p>
+                  </div>
+                }
+              />
               {milestones.length > 0 && (
                 <div role="status" className="card-pop space-y-1 rounded-card bg-rare px-4 py-3 text-center font-display text-sm text-rare-foreground shadow-soft">
                   {milestones.map((id) => <p key={id}>🎉 {MILESTONE_LINES[id]}</p>)}
                 </div>
               )}
-              <div className="self-center rounded-full bg-card px-5 py-2.5 text-center shadow-soft">
-                <p className="font-display text-sm text-secondary-foreground">Come back tomorrow for a new visitor 🌱</p>
+              <div className="flex flex-col items-center gap-3 rounded-card bg-card p-4 text-center shadow-soft">
+                <p className="flex items-center gap-2 font-display text-base text-secondary-foreground">
+                  <Sprout className="h-5 w-5" aria-hidden /> The feeder is resting until tomorrow
+                </p>
                 <Countdown onMidnight={loadToday} />
               </div>
             </>
@@ -241,8 +248,8 @@ function Countdown({ onMidnight }: { onMidnight: () => void }) {
   const t = Math.ceil(ms / 1000);
   const pad = (n: number) => String(n).padStart(2, "0");
   return (
-    <p className="text-center font-display text-base tabular-nums text-primary">
-      Next visitor in {pad(Math.floor(t / 3600))}:{pad(Math.floor((t % 3600) / 60))}:{pad(t % 60)}
+    <p aria-label="Time until next visitor" className="rounded-full bg-primary px-5 py-2 font-display text-2xl tabular-nums text-primary-foreground">
+      {pad(Math.floor(t / 3600))}h {pad(Math.floor((t % 3600) / 60))}m {pad(t % 60)}s
     </p>
   );
 }

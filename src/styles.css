@@ -238,3 +238,16 @@
     .group:hover &, .group:focus-visible & { opacity: 1; }
   }
 }
+
+@utility bubble-left {
+  &::before {
+    content: "";
+    position: absolute;
+    left: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0.5rem solid transparent;
+    border-left: 0;
+    border-right-color: var(--muted);
+  }
+}
