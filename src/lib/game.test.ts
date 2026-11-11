@@ -43,3 +43,10 @@ describe("visitor", () => {
     for (const f of FOOD_IDS) expect(pickVisitor("2026-11-11", f).id).toBe(pickVisitor("2026-11-11", f).id);
   });
 });
+
+describe("new bird bonus", () => {
+  it("doubles the score of uncollected birds", () => {
+    expect(scoreBird(getBird("robin")!, "mealworms", {}, [])).toBe(60);
+    expect(scoreBird(getBird("robin")!, "mealworms", {}, ["robin"])).toBe(30);
+  });
+});

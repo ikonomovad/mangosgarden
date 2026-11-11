@@ -1,5 +1,4 @@
 // Pure game rules: daily food offer + visitor algorithm. No UI, no storage.
-import { BIRDS, RARITY_WEIGHT, getAffinity, type Bird } from "@/data/birds";
 import { FOOD_IDS, type FoodId } from "@/data/foods";
 import { seededRandom, shuffle } from "./random";
 
@@ -15,32 +14,7 @@ export function getDailyOffer(dateKey: string, yesterdayOffer: FoodId[] = [], al
   return shuffle([...guaranteed, ...rest.slice(0, OFFER_SIZE - guaranteed.length)], rand);
 }
 
-export interface RecentVisitors {
-  yesterday?: string | undefined;
-  twoDaysAgo?: string | undefined;
-}
-
-export function freshness(birdId: string, recent: RecentVisitors): number {
-  if (recent.yesterday === birdId) return 0.2;
-  if (recent.twoDaysAgo === birdId) return 0.6;
-  return 1;
-}
-
-export function scoreBird(bird: Bird, food: FoodId, recent: RecentVisitors): number {
-  return RARITY_WEIGHT[bird.rarity] * getAffinity(bird, food) * freshness(bird.id, recent);
-}
-
-/** Weighted random pick, seeded by date + food so it's stable all day. */
-export function pickVisitor(dateKey: string, food: FoodId, recent: RecentVisitors = {}, birds: Bird[] = BIRDS): Bird {
-  const scores = birds.map((b) => scoreBird(b, food, recent));
-  const total = scores.reduce((a, b) => a + b, 0);
-  let roll = seededRandom(`visit:${dateKey}:${food}`)() * total;
-  for (let i = 0; i < birds.length; i++) {
-    roll -= scores[i]!;
-    if (roll < 0) return birds[i]!;
-  }
-  return birds[birds.length - 1]!;
-}
+export { freshness, pickVisitor, scoreBird, type RecentVisitors } from "./visitor";
 
 export function toDateKey(d: Date): string {
   const y = d.getFullYear();

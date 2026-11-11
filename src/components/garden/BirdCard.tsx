@@ -3,14 +3,19 @@ import { BirdSvg } from "./BirdSvg";
 
 const RARITY_LABEL = { common: "Common", uncommon: "Uncommon", rare: "Rare ✨" };
 
-export function BirdCard({ bird }: { bird: Bird }) {
+export function BirdCard({ bird, isNew = false, visits }: { bird: Bird; isNew?: boolean; visits?: number }) {
   const rare = bird.rarity === "rare";
   return (
     <div className="card-pop relative w-full overflow-hidden rounded-3xl border-4 border-card bg-paper p-6 text-center shadow-soft">
-      {rare && <Sparkles />}
+      {(rare || isNew) && <Sparkles />}
       <span className={`inline-block rounded-full px-3 py-1 font-display text-xs ${rare ? "bg-rare text-rare-foreground" : "bg-secondary text-secondary-foreground"}`}>
         {RARITY_LABEL[bird.rarity]}
       </span>
+      {isNew ? (
+        <span className="ml-2 inline-block rounded-full bg-primary px-3 py-1 font-display text-xs text-primary-foreground">New bird!</span>
+      ) : visits ? (
+        <span className="ml-2 inline-block rounded-full bg-muted px-3 py-1 font-display text-xs text-muted-foreground">Visited {visits} times</span>
+      ) : null}
       <div className="mx-auto my-4 h-40 w-40 rounded-full bg-garden-soft p-4">
         <BirdSvg look={bird.look} title={bird.name} className="h-full w-full" />
       </div>

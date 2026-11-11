@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BirdCard } from "@/components/garden/BirdCard";
 import { BirdSvg } from "@/components/garden/BirdSvg";
@@ -11,7 +11,7 @@ import { getFood, type FoodId } from "@/data/foods";
 import { GREETINGS, MANGO_LINES, type Mood } from "@/data/mango-lines";
 import { daysBefore, getDailyOffer, pickVisitor, toDateKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
-import { loadHistory, resetDay, saveDay } from "@/lib/storage";
+import { loadCollection, loadHistory, recordVisit, resetDay, saveDay } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,6 +43,8 @@ function Index() {
   const [visitor, setVisitor] = useState<Bird | null>(null);
   const [mood, setMood] = useState<Mood>("happy");
   const [line, setLine] = useState("");
+  const [isNew, setIsNew] = useState(false);
+  const [visits, setVisits] = useState(0);
 
   const loadToday = () => {
     const key = toDateKey(new Date());
@@ -61,9 +63,12 @@ function Index() {
     const bird = pickVisitor(today, f, {
       yesterday: history[daysBefore(today, 1)]?.visitor,
       twoDaysAgo: history[daysBefore(today, 2)]?.visitor,
-    });
+    }, Object.keys(loadCollection()));
     const m = moodFor(bird, f);
     saveDay(today, { food: f, visitor: bird.id });
+    const entry = recordVisit(bird.id, today);
+    setIsNew(entry.visits === 1);
+    setVisits(entry.visits);
     setFood(f);
     setVisitor(bird);
     setMood(m);
@@ -92,6 +97,9 @@ function Index() {
           <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>
             Start
           </Button>
+          <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
+            📖 Bird book
+          </Link>
         </section>
       )}
 
@@ -101,6 +109,9 @@ function Index() {
           <Button size="lg" className="rounded-full font-display text-lg shadow-soft" onClick={() => setScreen("choose")}>
             Put out a snack
           </Button>
+          <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
+            📖 Bird book
+          </Link>
         </section>
       )}
 
@@ -130,12 +141,15 @@ function Index() {
             </>
           ) : (
             <>
-              <BirdCard bird={visitor} />
+              <BirdCard bird={visitor} isNew={isNew} visits={visits} />
               <div className="flex items-center gap-3 rounded-2xl bg-card p-4 shadow-soft">
                 <Mango mood={mood} className="h-14 w-14 shrink-0" />
                 <p className="text-sm text-card-foreground">{line}</p>
               </div>
               <p className="text-center font-display text-lg text-secondary-foreground">Come back tomorrow for a new visitor 🌱</p>
+              <Link to="/book" className="self-center font-display text-secondary-foreground underline underline-offset-4">
+                📖 Bird book
+              </Link>
             </>
           )}
         </section>
