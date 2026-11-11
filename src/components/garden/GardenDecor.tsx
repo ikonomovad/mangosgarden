@@ -23,7 +23,7 @@ export function Flower({ color, className }: { color: FlowerColor; className?: s
 
 export function GrapeVine({ className }: { className?: string }) {
   const cluster = (x: number, y: number) =>
-    [[0, 0], [8, 0], [16, 0], [4, 7], [12, 7], [8, 14]].map(([dx, dy]) => (
+    ([[0, 0], [8, 0], [16, 0], [4, 7], [12, 7], [8, 14]] as const).map(([dx, dy]) => (
       <circle key={`${x}-${dx}-${dy}`} cx={x + dx} cy={y + dy} r="4.5" fill="var(--grape)" />
     ));
   const leaf = (x: number, y: number, r: number) => (
