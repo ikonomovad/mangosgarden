@@ -8,6 +8,7 @@ import { FoodIcon } from "@/components/FoodIcon";
 import { FoodPicker } from "@/components/garden/FoodPicker";
 import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
+import { MeetMango } from "@/components/garden/MeetMango";
 import { Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -158,9 +159,12 @@ function Index() {
             <h1 className="mt-2 font-display text-4xl leading-tight text-foreground">{t("welcomeTitle")}</h1>
             <p className="mt-3 text-muted-foreground">{t("welcomeText")}</p>
           </div>
-          <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>
-            {t("start")}
-          </Button>
+          <div className="flex flex-col items-center">
+            <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>
+              {t("start")}
+            </Button>
+            <MeetMango />
+          </div>
         </section>
       )}
 

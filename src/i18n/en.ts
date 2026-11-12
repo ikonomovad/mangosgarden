@@ -1,4 +1,11 @@
 export const en = {
+  meetMango: "Meet Mango",
+  mangoPhotoAlt: "Mango, a yellow lovebird with a red face",
+  mangoStory: "This is Mango, my parrot and the inspiration for this game. Every day, Mango and I feed the little feathered friends who visit our backyard. It has become our favorite daily ritual. :) Now you can join us virtually and feed one bird a day.",
+  howToPlay: "How to play",
+  mangoStepOne: "Each day, choose one of four foods to put out.",
+  mangoStepTwo: "A bird visits, and Mango reacts.",
+  mangoStepThree: "Fill your bird book and keep your streak going.",
   rarityCommon: "Common", rarityUncommon: "Uncommon", rarityRare: "Rare",
   findOutMore: "Find out more", askChatGPT: "Ask ChatGPT",
   birdSearchQuery: "{name} bird",

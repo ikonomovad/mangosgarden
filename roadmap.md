@@ -28,3 +28,7 @@
 # Bird detail learning links
 - [x] Add translated rarity pills, link labels/templates, and tested URL helpers.
 - [x] Verify collected dialogs and locked cards in English/Macedonian on desktop/mobile.
+
+# Meet Mango introduction
+- [x] Add the welcome-only link, uploaded photo, and bilingual scrollable dialog.
+- [x] Add the requested opening test and verify dismissal and mobile layout in both languages.
