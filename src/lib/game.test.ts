@@ -30,9 +30,9 @@ describe("visitor", () => {
     expect(BIRDS.filter((b) => b.rarity === "rare")).toHaveLength(2);
   });
   it("freshness is 0.2 yesterday, 0.6 two days ago, else 1", () => {
-    const r = { yesterday: "robin", twoDaysAgo: "jay" };
+    const r = { yesterday: "robin", twoDaysAgo: "woodpecker" };
     expect(freshness("robin", r)).toBe(0.2);
-    expect(freshness("jay", r)).toBe(0.6);
+    expect(freshness("woodpecker", r)).toBe(0.6);
     expect(freshness("hoopoe", r)).toBe(1);
   });
   it("score = rarity x affinity x freshness", () => {

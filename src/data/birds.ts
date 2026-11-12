@@ -9,7 +9,7 @@ export const LOVES = 3;
 export const LIKES = 1;
 export const MEH = 0.2;
 
-export type Marking = "red-breast" | "crest" | "cap" | "mask" | "wingbar" | "spots" | "crest-tipped" | "face";
+export type Marking = "red-breast" | "crest" | "cap" | "mask" | "wingbar" | "spots" | "crest-tipped" | "face" | "collar";
 
 export interface BirdLook {
   body: string;
@@ -33,19 +33,19 @@ export const BIRDS: Bird[] = [
   {
     id: "robin", name: "European Robin", rarity: "common",
     fact: "Robins sing at night near streetlights, convinced it's still daytime.",
-    affinity: { mealworms: LOVES, fatball: LIKES, berries: LIKES, water: LIKES },
+    affinity: { mealworms: LOVES, berries: LIKES, water: LIKES, apple: LIKES },
     look: { body: "#8a6a4a", belly: "#f3e6d4", wing: "#6f5338", beak: "#3a2a1e", marking: "red-breast", markingColor: "#e8743b" },
   },
   {
     id: "bluetit", name: "Blue Tit", rarity: "common",
     fact: "A blue tit can visit over 1,000 trees a day hunting tiny caterpillars.",
-    affinity: { peanuts: LOVES, sunflower: LOVES, fatball: LIKES },
+    affinity: { peanuts: LOVES, sunflower: LOVES, mealworms: LIKES },
     look: { body: "#7fa36a", belly: "#f4d75a", wing: "#5b8fcf", beak: "#2f2f2f", marking: "cap", markingColor: "#4a86d1" },
   },
   {
     id: "greattit", name: "Great Tit", rarity: "common",
     fact: "Great tits have been seen cracking open bees' nests... politely, of course.",
-    affinity: { sunflower: LOVES, peanuts: LIKES, fatball: LOVES },
+    affinity: { sunflower: LOVES, peanuts: LIKES, walnut: LIKES },
     look: { body: "#8aa86a", belly: "#f2d24e", wing: "#6c8aa0", beak: "#222222", marking: "cap", markingColor: "#232323" },
   },
   {
@@ -57,43 +57,43 @@ export const BIRDS: Bird[] = [
   {
     id: "goldfinch", name: "Goldfinch", rarity: "common",
     fact: "A group of goldfinches is called a 'charm'. Fitting, really.",
-    affinity: { nyjer: LOVES, sunflower: LIKES },
+    affinity: { sunflower: LOVES, millet: LIKES },
     look: { body: "#c9a57a", belly: "#f6ece0", wing: "#f3cf3a", beak: "#e9d8c4", marking: "face", markingColor: "#d8362e" },
   },
   {
     id: "sparrow", name: "House Sparrow", rarity: "common",
     fact: "Sparrows take dust baths to keep their feathers tidy. Spa day!",
-    affinity: { millet: LOVES, sunflower: LIKES, water: LOVES },
+    affinity: { millet: LOVES, water: LOVES, wheat: LIKES, sunflower: LIKES },
     look: { body: "#a07a52", belly: "#d9cdbb", wing: "#7d5a3a", beak: "#4a3b2e", marking: "wingbar", markingColor: "#f4efe6" },
   },
   {
-    id: "chaffinch", name: "Chaffinch", rarity: "common",
-    fact: "Chaffinches in different valleys sing with different regional accents.",
-    affinity: { millet: LIKES, sunflower: LOVES, nyjer: LIKES },
-    look: { body: "#d78a72", belly: "#eeb6a0", wing: "#6b6b55", beak: "#9aa3ad", marking: "cap", markingColor: "#7a95ad" },
+    id: "dove", name: "Collared Dove", rarity: "common",
+    fact: "Doves drink by sucking water up like a straw instead of tipping their heads back.",
+    affinity: { wheat: LOVES, millet: LOVES, sunflower: LIKES, water: LIKES },
+    look: { body: "#c9b79c", belly: "#e6dccb", wing: "#a69882", beak: "#3a3a3a", marking: "collar", markingColor: "#2b2b2b" },
   },
   {
-    id: "starling", name: "Starling", rarity: "common",
-    fact: "Starlings can imitate car alarms, phones, and even other birds.",
-    affinity: { mealworms: LOVES, fatball: LOVES, apple: LIKES, water: LIKES },
-    look: { body: "#2e3a3a", belly: "#3a4747", wing: "#26605a", beak: "#e9c645", marking: "spots", markingColor: "#f1ead2" },
+    id: "magpie", name: "Magpie", rarity: "common",
+    fact: "Magpies can recognize themselves in a mirror, which very few animals can do.",
+    affinity: { walnut: LOVES, peanuts: LIKES, mealworms: LIKES },
+    look: { body: "#2a2a2e", belly: "#f4f1ea", wing: "#2f7f86", beak: "#1f1f1f", marking: "wingbar", markingColor: "#f4f1ea" },
   },
   {
-    id: "greenfinch", name: "Greenfinch", rarity: "common",
-    fact: "Greenfinches crunch sunflower seeds with a beak like tiny nutcrackers.",
-    affinity: { sunflower: LOVES, peanuts: LIKES, millet: LIKES },
-    look: { body: "#8fae4c", belly: "#c6d870", wing: "#6c8a3a", beak: "#e7c9b0", marking: "wingbar", markingColor: "#f2d33b" },
+    id: "jackdaw", name: "Jackdaw", rarity: "common",
+    fact: "Jackdaws often pair up for life and love to nest in chimneys and old walls.",
+    affinity: { wheat: LOVES, walnut: LIKES, apple: LIKES },
+    look: { body: "#3a3d42", belly: "#4a4d52", wing: "#2b2d31", beak: "#232323", marking: "cap", markingColor: "#9aa0a8" },
   },
   {
-    id: "jay", name: "Eurasian Jay", rarity: "uncommon",
-    fact: "One jay can bury 5,000 acorns in autumn — and accidentally plant forests.",
-    affinity: { peanuts: LOVES, apple: LIKES, orange: LIKES },
-    look: { body: "#d1a99a", belly: "#ecd4c8", wing: "#3d7fd1", beak: "#2b2b2b", marking: "mask", markingColor: "#222222" },
+    id: "woodpecker", name: "Great Spotted Woodpecker", rarity: "uncommon",
+    fact: "Woodpeckers drum on hollow branches to announce their territory.",
+    affinity: { walnut: LOVES, peanuts: LOVES, sunflower: LIKES, mealworms: LIKES },
+    look: { body: "#2b2b2b", belly: "#efe7da", wing: "#1f1f1f", beak: "#3a3a3a", marking: "cap", markingColor: "#d8362e" },
   },
   {
     id: "hoopoe", name: "Hoopoe", rarity: "rare",
     fact: "Hoopoes fan their crown like a punk mohawk when they get excited.",
-    affinity: { mealworms: LOVES, fatball: LOVES, peanuts: LIKES },
+    affinity: { mealworms: LOVES, water: LOVES, apple: LIKES },
     look: { body: "#e3a46a", belly: "#f2cfa6", wing: "#3a3330", beak: "#3a3330", marking: "crest-tipped", markingColor: "#e3a46a" },
   },
   {
@@ -133,21 +133,21 @@ const BIRDS_MK = {
     "name": "Домашно врапче",
     "fact": "Врапчињата се капат во прашина за да си ги исчистат пердувите. Ден за разгалување!"
   },
-  "chaffinch": {
-    "name": "Зеба",
-    "fact": "Зебите од различни долини пеат со различни локални акценти."
+  "dove": {
+    "name": "Гугутка",
+    "fact": "Гугутките пијат вода како со сламка, без да ја накривуваат главата назад."
   },
-  "starling": {
-    "name": "Скворец",
-    "fact": "Скворците можат да имитираат автомобилски аларми, телефони, па дури и други птици."
+  "magpie": {
+    "name": "Страчка",
+    "fact": "Страчките можат да се препознаат себеси во огледало, што го можат многу малку животни."
   },
-  "greenfinch": {
-    "name": "Зеленушка",
-    "fact": "Зеленушките крцкаат сончогледови семки со клун како мала кршачка за ореви."
+  "jackdaw": {
+    "name": "Чавка",
+    "fact": "Чавките честопати остануваат во пар цел живот и сакаат да гнездат во оџаци и стари ѕидови."
   },
-  "jay": {
-    "name": "Сојка",
-    "fact": "Една сојка може да закопа 5.000 желади наесен — и случајно да засади шума."
+  "woodpecker": {
+    "name": "Голем клукајдрвец",
+    "fact": "Клукајдрвците чукаат по шупливи гранки за да ја објават својата територија."
   },
   "hoopoe": {
     "name": "Пупунец",

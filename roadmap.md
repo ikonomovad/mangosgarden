@@ -15,3 +15,8 @@
 - [x] Add language dictionaries/provider, localized game content, and floating language control.
 - [x] Translate screens and shared labels; support Cyrillic and locale formatting.
 - [x] Document extension steps, run coverage tests, and verify feeding/reload/book on mobile.
+
+# Bird and food content swap
+- [x] Replace the requested foods and birds, translations, affinities, and collar marking.
+- [x] Verify retired IDs are ignored safely, update content tests and README tables.
+- [x] Run tests and the 5,000-player simulation; verify feeding and book on mobile.

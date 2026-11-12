@@ -33,8 +33,8 @@ describe("pity boost", () => {
     const all = ["hoopoe", "waxwing"];
     expect(scoreBird(getBird("waxwing")!, "berries", {}, all, 40)).toBe(scoreBird(getBird("waxwing")!, "berries", {}, all, 0));
   });
-  it("Hoopoe loves mealworms and fat ball, likes peanuts", () => {
-    expect(hoopoe.affinity).toEqual({ mealworms: 3, fatball: 3, peanuts: 1 });
+  it("Hoopoe loves mealworms and water, likes apple", () => {
+    expect(hoopoe.affinity).toEqual({ mealworms: 3, water: 3, apple: 1 });
   });
   it("is undone by reset today", () => {
     saveDaysSinceRare(7);

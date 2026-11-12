@@ -100,7 +100,11 @@ export function loadHistory(): History {
     const rec = { ...value } as DayRecord;
     // An offer must be exactly 4 known, distinct foods; otherwise it is regenerated.
     if (!Array.isArray(rec["offer"]) || rec["offer"].length !== 4 || !rec["offer"].every(isFoodId) || new Set(rec["offer"]).size !== 4) delete rec["offer"];
-    if (!isFoodId(rec["food"])) delete rec["food"];
+    if (!isFoodId(rec["food"])) {
+      // A retired food cannot render a visit card; discard its matching lock too.
+      if (value["food"] !== undefined) delete rec["visitor"];
+      delete rec["food"];
+    }
     if (!isBirdId(rec["visitor"])) delete rec["visitor"];
     out[date] = rec;
   }

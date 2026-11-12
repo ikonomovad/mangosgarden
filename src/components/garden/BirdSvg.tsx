@@ -36,6 +36,7 @@ export function BirdSvg({ look, mood = "neutral", className, title }: BirdSvgPro
       {marking === "red-breast" && <ellipse cx="74" cy="72" rx="16" ry="14" fill={markingColor} />}
       {marking === "face" && <circle cx="76" cy="58" r="13" fill={markingColor} />}
       {marking === "cap" && <path d="M38 50 Q60 22 86 46 Q62 40 38 50 Z" fill={markingColor} />}
+      {marking === "collar" && <path d="M39 54 Q57 70 86 58" stroke={markingColor} strokeWidth="2" fill="none" strokeLinecap="round" />}
       {marking === "spots" &&
         [[50, 56], [62, 50], [58, 74], [46, 70], [70, 86], [54, 88]].map(([x, y]) => (
           <circle key={`${x}-${y}`} cx={x} cy={y} r="2.2" fill={markingColor} />

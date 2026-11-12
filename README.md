@@ -40,6 +40,54 @@ src/
     __root.tsx          Page shell and metadata
 ```
 
+## Birds and foods
+
+The book contains **12 birds: 9 common, 1 uncommon, 2 rare**. Unlisted food affinities remain **0.2**; loved foods score **3** and liked foods **1**.
+
+| Bird ID | English / Macedonian | Rarity | Loves | Likes |
+|---|---|---|---|---|
+| robin | European Robin / Црвеногушка | common | mealworms | berries, water, apple |
+| bluetit | Blue Tit / Сина сипка | common | peanuts, sunflower | mealworms |
+| greattit | Great Tit / Голема сипка | common | sunflower | peanuts, walnut |
+| blackbird | Blackbird / Кос | common | apple, mealworms | berries, water |
+| goldfinch | Goldfinch / Штиглец | common | sunflower | millet |
+| sparrow | House Sparrow / Домашно врапче | common | millet, water | wheat, sunflower |
+| dove | Collared Dove / Гугутка | common | wheat, millet | sunflower, water |
+| magpie | Magpie / Страчка | common | walnut | peanuts, mealworms |
+| jackdaw | Jackdaw / Чавка | common | wheat | walnut, apple |
+| woodpecker | Great Spotted Woodpecker / Голем клукајдрвец | uncommon | walnut, peanuts | sunflower, mealworms |
+| hoopoe | Hoopoe / Пупунец | rare | mealworms, water | apple |
+| waxwing | Waxwing / Свилокрилка | rare | berries, apple, orange | — |
+
+| Food ID | English | Macedonian | Emoji |
+|---|---|---|---|
+| sunflower | Sunflower seeds | Сончогледови семки | 🌻 |
+| millet | Millet | Просо | 🟡 |
+| peanuts | Peanuts | Кикирики | 🥜 |
+| wheat | Wheat | Пченица | 🌾 |
+| apple | Apple slices | Парчиња јаболко | 🍎 |
+| berries | Mixed berries | Мешани бобинки | 🫐 |
+| orange | Orange half | Половина портокал | 🍊 |
+| mealworms | Mealworms | Брашнени црви | 🐛 |
+| walnut | Walnuts | Ореви | 🌰 |
+| water | Fresh water bath | Капење во свежа вода | 💧 |
+
+Retained birds and foods keep their IDs. Retired bird IDs are ignored in the book and totals; retired foods are dropped from recorded discoveries and invalid daily offers are regenerated. A saved visit with a retired food is discarded from daily history so it cannot leave an invisible feeding lock. Other saved progress, weights, and pity rules remain unchanged.
+
+### Simulation with this content
+
+`npm run simulate` runs 5,000 seeded players for 365 days, choosing randomly among each day's four foods with the unchanged weights and pity rule.
+
+| Metric | Result |
+|---|---|
+| Median days to complete the book | 45 |
+| 90th-percentile days to complete | 91 |
+| Median days to first rare bird | 16 |
+| Common / uncommon / rare visit share | 90.0% / 7.4% / 2.7% |
+| Players unfinished after a year | 0 of 5,000 |
+
+Visit percentages are rounded independently.
+
 ## Languages
 
 English (`en`) and Macedonian (`mk`) are available from the round EN/МК control. The separate `mangos-garden:language` preference defaults to the device language when supported, otherwise English. It never changes game saves, stable bird/food IDs, scoring, or stored reaction strings. Existing English reactions are translated at display time, including after reload. Missing data translations fall back to English. Dates and numbers use the selected locale; Nunito supplies Cyrillic glyphs where Fredoka has none. Language detection happens after hydration, so server-rendered metadata starts in English and updates with the selected language in the browser.

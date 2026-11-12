@@ -47,3 +47,35 @@ describe("collection", () => {
     expect(Object.keys(loadHistory()).sort()).toEqual(["2026-11-09", "2026-11-10", "2026-11-11"]);
   });
 });
+
+describe("retired content IDs", () => {
+  beforeEach(() => localStorage.setItem("mangos-garden:version", "1"));
+  it("ignores removed birds and foods while preserving valid discoveries and counts", () => {
+    const entry = { firstSeen: "2026-11-01", visits: 3, seenFoods: ["apple", "nyjer", "fatball", "water"] };
+    localStorage.setItem("mangos-garden:collection", JSON.stringify({
+      robin: entry, chaffinch: entry, starling: entry, greenfinch: entry, jay: entry,
+    }));
+    expect(loadCollection()).toEqual({ robin: { ...entry, seenFoods: ["apple", "water"] } });
+    expect(Object.keys(loadCollection())).toHaveLength(1);
+  });
+  it("drops retired daily visitors and invalid offers", () => {
+    localStorage.setItem("mangos-garden:days", JSON.stringify({
+      "2026-11-11": { visitor: "jay", food: "apple", offer: ["nyjer", "apple", "millet", "water"] },
+    }));
+    expect(loadHistory()["2026-11-11"]).toEqual({ food: "apple" });
+  });
+  it("a retained bird fed a removed food cannot leave an invisible daily lock", () => {
+    localStorage.setItem("mangos-garden:days", JSON.stringify({
+      "2026-11-11": { visitor: "hoopoe", food: "fatball" },
+    }));
+    expect(loadHistory()["2026-11-11"]?.food).toBeUndefined();
+    expect(loadHistory()["2026-11-11"]?.visitor).toBeUndefined();
+  });
+  it("reset restores valid discoveries while ignoring retired foods in snapshots", () => {
+    const previous = { firstSeen: "2026-11-01", visits: 2, seenFoods: ["nyjer", "apple", "fatball"] };
+    recordVisit("robin", "2026-11-11", "water");
+    saveDay("2026-11-11", { visitor: "robin", food: "water", collectionBefore: previous as unknown as import("./storage").BookEntry });
+    resetDay("2026-11-11");
+    expect(loadCollection()["robin"]).toEqual({ ...previous, seenFoods: ["apple"] });
+  });
+});

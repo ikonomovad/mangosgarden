@@ -13,14 +13,14 @@ describe("scoreBird", () => {
     expect(scoreBird(robin, "mealworms", { twoDaysAgo: "robin" }, [])).toBeCloseTo(expected);
   });
   it("uses the 'doesn't care' affinity for foods a bird doesn't list", () => {
-    expect(scoreBird(robin, "nyjer", {})).toBeCloseTo(RARITY_WEIGHT.common * MEH);
+    expect(scoreBird(robin, "wheat", {})).toBeCloseTo(RARITY_WEIGHT.common * MEH);
   });
   it("gives a bird that came yesterday a lower score than before", () => {
     expect(scoreBird(robin, "mealworms", { yesterday: "robin" })).toBeLessThan(scoreBird(robin, "mealworms", {}));
     expect(freshness("robin", { yesterday: "robin" })).toBe(0.2);
   });
   it("boosts only birds that are not collected yet", () => {
-    expect(scoreBird(robin, "mealworms", {}, ["jay"])).toBe(scoreBird(robin, "mealworms", {}, ["robin"]) * NEW_BIRD_BONUS);
+    expect(scoreBird(robin, "mealworms", {}, ["woodpecker"])).toBe(scoreBird(robin, "mealworms", {}, ["robin"]) * NEW_BIRD_BONUS);
   });
 });
 
