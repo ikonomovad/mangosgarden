@@ -291,3 +291,18 @@
     border-right-color: var(--muted);
   }
 }
+
+/* Rarity badge: light streak sweeps the gem once; rare repeats every 4s. */
+@keyframes gem-sweep { 0% { transform: translateX(0) rotate(25deg); } 100% { transform: translateX(52px) rotate(25deg); } }
+@keyframes gem-sweep-repeat { 0% { transform: translateX(0) rotate(25deg); } 22.5%, 100% { transform: translateX(52px) rotate(25deg); } }
+@keyframes gem-twinkle { 0%, 100% { opacity: 0.35; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } }
+.rarity-gem { filter: drop-shadow(0 2px 2px oklch(0.3 0.06 80 / 0.3)); }
+.gem-streak { transform-box: view-box; transform-origin: 18px 18px; transform: translateX(0) rotate(25deg); animation: gem-sweep 0.9s ease-in-out 0.2s both; }
+.gem-streak-repeat { animation: gem-sweep 0.9s ease-in-out 0.2s both, gem-sweep-repeat 4s ease-in-out 4.2s infinite; }
+.rarity-delayed .gem-streak { animation-delay: 1.1s; }
+.rarity-delayed .gem-streak-repeat { animation-delay: 1.1s, 5.1s; }
+.gem-sparkle { animation: gem-twinkle 2.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .gem-streak, .gem-streak-repeat, .gem-sparkle { animation: none !important; }
+  .gem-streak { opacity: 0; }
+}

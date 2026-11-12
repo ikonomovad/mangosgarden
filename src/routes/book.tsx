@@ -9,6 +9,7 @@ import { FOOD_TEXT, getFood, type FoodId } from "@/data/foods";
 import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
 import { liveStreak, todayKey } from "@/lib/game";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { RarityBadge } from "@/components/garden/RarityBadge";
 import { PageShell } from "@/components/layout/PageShell";
 import { favoritesKnown } from "@/lib/personality";
 import { Button } from "@/components/ui/button";
@@ -123,9 +124,7 @@ function Book() {
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 <DialogTitle className="font-display text-2xl text-foreground">{birdText(open).name}</DialogTitle>
-                <span className={`rounded-full px-3 py-1 font-display text-xs text-rarity-foreground ${open.rarity === "rare" ? "bg-rare" : open.rarity === "uncommon" ? "bg-rarity-uncommon" : "bg-rarity-common"}`}>
-                  {t(open.rarity === "rare" ? "rarityRare" : open.rarity === "uncommon" ? "rarityUncommon" : "rarityCommon")}
-                </span>
+                <RarityBadge rarity={open.rarity} />
               </div>
               <DialogDescription className="text-muted-foreground">{birdText(open).fact}</DialogDescription>
             </DialogHeader>

@@ -2,6 +2,7 @@ import { useLanguage } from "@/i18n/LanguageProvider";
 import type { ReactNode } from "react";
 import { BIRD_TEXT, type Bird } from "@/data/birds";
 import { BirdSvg } from "./BirdSvg";
+import { RarityBadge } from "./RarityBadge";
 import { LEARNED_LINE, MANGO_TEXT } from "@/data/mango-lines";
 
 
@@ -13,18 +14,18 @@ export function BirdCard({ bird, isNew = false, visits, learned = false, footer 
   return (
     <div className="card-pop relative w-full overflow-hidden rounded-card border-4 border-card bg-paper p-6 text-center shadow-soft">
       {(rare || isNew) && <Sparkles />}
-      <span className={`inline-block rounded-full px-3 py-1 font-display text-xs ${rare ? "bg-rare text-rare-foreground" : "bg-secondary text-secondary-foreground"}`}>
-        {t(bird.rarity)}
-      </span>
       {isNew ? (
-        <span className="ml-2 inline-block rounded-full bg-primary px-3 py-1 font-display text-xs text-primary-foreground">{t("newBird")}</span>
+        <span className="inline-block rounded-full bg-primary px-3 py-1 font-display text-xs text-primary-foreground">{t("newBird")}</span>
       ) : visits ? (
-        <span className="ml-2 inline-block rounded-full bg-muted px-3 py-1 font-display text-xs text-muted-foreground">{t(visits === 1 ? "visitedOne" : "visited", { count: visits })}</span>
+        <span className="inline-block rounded-full bg-muted px-3 py-1 font-display text-xs text-muted-foreground">{t(visits === 1 ? "visitedOne" : "visited", { count: visits })}</span>
       ) : null}
       <div className="mx-auto my-4 h-40 w-40 rounded-full bg-garden-soft p-4">
         <BirdSvg look={bird.look} title={content.name} className="h-full w-full" />
       </div>
-      <h2 className="font-display text-3xl text-foreground">{content.name}</h2>
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <h2 className="font-display text-3xl text-foreground">{content.name}</h2>
+        <RarityBadge rarity={bird.rarity} delayed />
+      </div>
       <p className="mt-3 font-body text-base text-muted-foreground">{content.fact}</p>
       {learned && <p role="status" className="mt-3 font-display text-sm text-secondary-foreground">{text(MANGO_TEXT[LEARNED_LINE] ?? { en: LEARNED_LINE })}</p>}
       {footer && <div className="mt-5 border-t-2 border-dashed border-border pt-4 text-left">{footer}</div>}
