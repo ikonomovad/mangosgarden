@@ -24,7 +24,7 @@ export function BirdCard({ bird, isNew = false, visits, learned = false, footer 
         <BirdSvg look={bird.look} title={content.name} className="h-full w-full" />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-        <h2 className="font-display text-3xl text-foreground">{content.name}</h2>
+        <h1 className="font-display text-3xl text-foreground">{content.name}</h1>
         <RarityBadge rarity={bird.rarity} delayed />
       </div>
       <p className="mt-3 font-body text-base text-muted-foreground">{content.fact}</p>

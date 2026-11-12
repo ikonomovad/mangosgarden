@@ -181,6 +181,7 @@ function Index() {
 
       {screen === "garden" && (
         <section className="relative z-10 flex flex-1 flex-col justify-end gap-[var(--gap)] pb-4">
+          <h1 className="sr-only">{t("appName")}</h1>
           <GardenScene
             full
             line={patted ? t("patLine") : mangoLine(greeting)}
@@ -221,7 +222,7 @@ function Index() {
                   </div>
                 }
               />
-              <p className="relative z-10 self-center rounded-full bg-card px-5 py-2 text-center font-display text-xl text-foreground shadow-soft">{t("arrival")}</p>
+              <h1 className="relative z-10 self-center rounded-full bg-card px-5 py-2 text-center font-display text-xl font-normal text-foreground shadow-soft">{t("arrival")}</h1>
             </>
           ) : (
             <>
