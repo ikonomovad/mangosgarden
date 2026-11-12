@@ -21,7 +21,7 @@ export const mk: Record<keyof typeof en, string> = {
   totalVisits: "вкупно посети",
   bestStreak: "најдолга низа",
   new: "Ново!",
-  newBird: "Ново птиче!",
+  newBird: "Нова птица!",
   undiscovered: "Неоткриена птица",
   firstSeen: "Прва посета",
   visits: "Посети",
