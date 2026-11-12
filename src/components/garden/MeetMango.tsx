@@ -1,4 +1,5 @@
 import mangoPhoto from "@/assets/mango-photo.jpg.asset.json";
+import lovableLogo from "@/assets/lovable-logomark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useLanguage } from "@/i18n/LanguageProvider";
@@ -44,7 +45,11 @@ export function MeetMango() {
         </section>
         <p className="text-center text-[11px] leading-relaxed text-muted-foreground">{t("mangoPrivacy")}</p>
         <p className="flex flex-wrap items-center justify-center gap-x-1 text-center text-xs text-foreground">
-          <span>{t("madeByDaniela")} ·</span>
+          <span className="inline-flex items-center gap-1">
+            {t("madeWith")}
+            <img src={lovableLogo.url} alt="Lovable" width={18} height={18} className="h-[18px] w-[18px] object-contain" />
+            {t("byDaniela")} ·
+          </span>
           <Button asChild variant="link" className="min-h-11 whitespace-normal px-1 py-2 text-xs text-foreground underline underline-offset-4">
             <a href="https://www.linkedin.com/in/ikonomovad/" target="_blank" rel="noopener noreferrer">
               {t("connectLinkedIn")}
