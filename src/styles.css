@@ -322,3 +322,19 @@
   .gem-streak, .gem-streak-repeat, .gem-sparkle { animation: none !important; }
   .gem-streak { opacity: 0; }
 }
+
+/* Pat Mango */
+@keyframes mango-pat { 0% { transform: scale(1); } 25% { transform: scale(1.15, 0.85); } 50% { transform: translateY(-10px) scale(0.95, 1.08); } 75% { transform: translateY(0) scale(1.04, 0.96); } 100% { transform: none; } }
+@keyframes mango-tilt { 0%, 100% { transform: none; } 40% { transform: rotate(-8deg); } 70% { transform: rotate(4deg); } }
+@keyframes pat-heart { 0% { opacity: 0; transform: translate(0, 0) scale(0.6); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--drift, 0), -70px) scale(1); } }
+@keyframes pat-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+.mango-pat { animation: mango-pat 0.6s ease-out; transform-origin: bottom center; }
+.mango-tilt { animation: mango-tilt 0.5s ease-in-out; transform-origin: bottom center; }
+.pat-heart { opacity: 0; animation: pat-heart 1.2s ease-out both; }
+.pat-pulse { animation: pat-pulse 2.2s ease-in-out infinite; }
+@keyframes pat-fade { 0% { opacity: 0; } 30%, 60% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .mango-pat, .mango-tilt, .pat-pulse { animation: none; }
+  .pat-heart { animation: pat-fade 1.2s ease-out both; }
+  .pat-heart-extra { display: none; }
+}

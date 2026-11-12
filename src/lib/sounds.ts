@@ -36,3 +36,16 @@ function tone(audio: AudioContext, start: number, from: number, to: number, dura
   oscillator.stop(start + duration + 0.02);
   oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
 }
+/** Soft cute chirp for patting Mango; plays immediately. */
+export function playPat() {
+  try {
+    if (!window.AudioContext) return;
+    context ??= new window.AudioContext();
+    const audio = context;
+    void audio.resume().then(() => {
+      const s = audio.currentTime + 0.02;
+      tone(audio, s, 2200, 3000, 0.08, 0.02, "sine");
+      tone(audio, s + 0.1, 2600, 3400, 0.09, 0.018, "sine");
+    }).catch(() => {});
+  } catch { /* optional */ }
+}

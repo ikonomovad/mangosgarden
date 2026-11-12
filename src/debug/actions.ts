@@ -1,9 +1,10 @@
 import { BIRDS } from "@/data/birds";
 import { DEBUG_CLOCK_KEY, ENABLE_DEBUG_PANEL, daysBefore, getDailyOffer, getNow, todayKey } from "@/lib/game";
+import { clearPat } from "@/lib/pat";
 import { loadCollection, loadDaysSinceRare, loadHistory, loadStreak, resetDay, saveDaysSinceRare, saveStreak } from "@/lib/storage";
 
 export const DEBUG_SESSION_KEY = "mangos-garden-debug:enabled";
-const GAME_KEYS = ["days", "collection", "streak", "pity", "personality", "sound", "version"];
+const GAME_KEYS = ["days", "collection", "streak", "pity", "personality", "sound", "version", "pat"];
 
 export function debugEnabled() {
   if (!ENABLE_DEBUG_PANEL) return false;
@@ -43,7 +44,7 @@ export function readDebugState() {
   };
 }
 
-export function resetToday() { resetDay(todayKey()); }
+export function resetToday() { resetDay(todayKey()); clearPat(todayKey()); }
 
 export function setDebugStreak(count: number) {
   if (!Number.isSafeInteger(count) || count < 0) return false;
