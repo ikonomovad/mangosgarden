@@ -111,7 +111,7 @@ export const MANGO_TEXT: Record<string, import("@/i18n/languages").Localized<str
   },
   "Back already? I missed you for a whole nap!": {
     en: "Back already? I missed you for a whole nap!",
-    mk: "Веќе се врати? Ми недостигаше цела една дремка!",
+    mk: "Веќе се врати? Цела дремка те чекав!",
   },
   "Our very first friend! This twig is officially a garden.": {
     en: "Our very first friend! This twig is officially a garden.",
