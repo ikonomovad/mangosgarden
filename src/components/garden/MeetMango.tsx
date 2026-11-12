@@ -48,11 +48,11 @@ export function MeetMango() {
           <span className="inline-flex items-center gap-1">
             {t("madeWith")}
             <img src={lovableLogo.url} alt="Lovable" width={18} height={18} className="h-[18px] w-[18px] object-contain" />
-            {t("byDaniela")} ·
+            {t("madeBy")}
           </span>
           <Button asChild variant="link" className="min-h-11 whitespace-normal px-1 py-2 text-xs text-foreground underline underline-offset-4">
             <a href="https://www.linkedin.com/in/ikonomovad/" target="_blank" rel="noopener noreferrer">
-              {t("connectLinkedIn")}
+              {t("creatorName")}
             </a>
           </Button>
         </p>
