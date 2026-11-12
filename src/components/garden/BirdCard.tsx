@@ -3,12 +3,13 @@ import type { ReactNode } from "react";
 import { BIRD_TEXT, type Bird } from "@/data/birds";
 import { BirdSvg } from "./BirdSvg";
 import { RarityBadge } from "./RarityBadge";
+import { birdChatUrl, birdSearchUrl } from "@/lib/bird-links";
 import { LEARNED_LINE, MANGO_TEXT } from "@/data/mango-lines";
 
 
 
 export function BirdCard({ bird, isNew = false, visits, learned = false, footer }: { bird: Bird; isNew?: boolean; visits?: number; learned?: boolean; footer?: ReactNode }) {
-  const { t, text } = useLanguage();
+  const { t, text, language } = useLanguage();
   const content = text(BIRD_TEXT[bird.id] ?? { en: bird });
   const rare = bird.rarity === "rare";
   return (
@@ -27,6 +28,10 @@ export function BirdCard({ bird, isNew = false, visits, learned = false, footer 
         <RarityBadge rarity={bird.rarity} delayed />
       </div>
       <p className="mt-3 font-body text-base text-muted-foreground">{content.fact}</p>
+      <div className="mt-1 flex flex-wrap justify-center gap-x-4 text-sm">
+        <a className="inline-flex min-h-11 items-center text-secondary-foreground underline underline-offset-4" href={birdSearchUrl(content.name, language)} target="_blank" rel="noopener noreferrer">{t("findOutMore")}</a>
+        <a className="inline-flex min-h-11 items-center text-secondary-foreground underline underline-offset-4" href={birdChatUrl(content.name, language)} target="_blank" rel="noopener noreferrer">{t("askChatGPT")}</a>
+      </div>
       {learned && <p role="status" className="mt-3 font-display text-sm text-secondary-foreground">{text(MANGO_TEXT[LEARNED_LINE] ?? { en: LEARNED_LINE })}</p>}
       {footer && <div className="mt-5 border-t-2 border-dashed border-border pt-4 text-left">{footer}</div>}
     </div>
