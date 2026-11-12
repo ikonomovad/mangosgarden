@@ -1,8 +1,10 @@
+import { t as translate } from "@/i18n/languages";
+import { useLanguage, usePageMetadata } from "@/i18n/LanguageProvider";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { BirdSvg } from "@/components/garden/BirdSvg";
-import { BIRDS, LOVES, type Bird } from "@/data/birds";
-import { getFood, type FoodId } from "@/data/foods";
+import { BIRD_TEXT, BIRDS, LOVES, type Bird } from "@/data/birds";
+import { FOOD_TEXT, getFood, type FoodId } from "@/data/foods";
 import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
 import { liveStreak, todayKey } from "@/lib/game";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -12,10 +14,10 @@ import { favoritesKnown } from "@/lib/personality";
 export const Route = createFileRoute("/book")({
   head: () => ({
     meta: [
-      { title: "Bird book — Mango's Garden" },
-      { name: "description", content: "Every wild bird that has visited Mango's garden, with facts and visit counts." },
-      { property: "og:title", content: "Mango's Bird Book" },
-      { property: "og:description", content: "Collect all 12 garden birds in Mango's Garden." },
+      { title: translate("bookTitle") },
+      { name: "description", content: translate("bookDescription") },
+      { property: "og:title", content: translate("bookOgTitle") },
+      { property: "og:description", content: translate("bookOgDescription") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -26,14 +28,13 @@ export const Route = createFileRoute("/book")({
 const favorites = (b: Bird) =>
   (Object.entries(b.affinity) as [FoodId, number][]).filter(([, v]) => v >= LOVES).map(([f]) => getFood(f));
 
-function formatDate(key: string) {
-  const [y = 0, m = 1, d = 1] = key.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
-}
 
 let snapshot: Collection | null = null;
 
 function Book() {
+  usePageMetadata("book");
+  const { t, text, number, date } = useLanguage();
+  const birdText = (bird: Bird) => text(BIRD_TEXT[bird.id] ?? { en: bird });
   const [book, setBook] = useState<Collection>({});
   const [best, setBest] = useState(0);
   const [open, setOpen] = useState<Bird | null>(null);
@@ -60,20 +61,20 @@ function Book() {
 
   return (
     <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
-      <Link to="/" className="self-start font-display text-secondary-foreground">← Back to the garden</Link>
-      <h1 className="text-center font-display text-4xl text-foreground">Bird book</h1>
+      <Link to="/" className="self-start font-display text-secondary-foreground">{t("back")}</Link>
+      <h1 className="text-center font-display text-4xl text-foreground">{t("book")}</h1>
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
-          <p className="font-display text-2xl text-card-foreground">{collected} of {BIRDS.length}</p>
-          <p className="text-xs text-muted-foreground">collected</p>
+          <p className="font-display text-2xl text-card-foreground">{t("of", { count: collected, total: BIRDS.length })}</p>
+          <p className="text-xs text-muted-foreground">{t("collected")}</p>
         </div>
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
-          <p className="font-display text-2xl text-card-foreground">{total}</p>
-          <p className="text-xs text-muted-foreground">total visits</p>
+          <p className="font-display text-2xl text-card-foreground">{number(total)}</p>
+          <p className="text-xs text-muted-foreground">{t("totalVisits")}</p>
         </div>
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
-          <p className="font-display text-2xl text-card-foreground">🔥 {best}</p>
-          <p className="text-xs text-muted-foreground">best streak</p>
+          <p className="font-display text-2xl text-card-foreground">🔥 {number(best)}</p>
+          <p className="text-xs text-muted-foreground">{t("bestStreak")}</p>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
@@ -81,12 +82,12 @@ function Book() {
           const e = book[b.id];
           if (!e)
             return (
-              <div key={b.id} role="img" aria-label="Undiscovered bird" className="relative flex flex-col items-center overflow-hidden rounded-card bg-card p-3 text-center shadow-soft">
+              <div key={b.id} role="img" aria-label={t("undiscovered")} className="relative flex flex-col items-center overflow-hidden rounded-card bg-card p-3 text-center shadow-soft">
                 <div aria-hidden className="flex flex-col items-center opacity-60 saturate-50">
                   <div className="h-20 w-20 rounded-full bg-garden-soft p-2 blur-[3px]">
                     <BirdSvg look={b.look} className="h-full w-full" />
                   </div>
-                  <p className="mt-2 font-display text-base leading-tight text-foreground blur-[6px]">{b.name}</p>
+                  <p className="mt-2 font-display text-base leading-tight text-foreground blur-[6px]">{birdText(b).name}</p>
                 </div>
                 <div aria-hidden className="absolute inset-0 bg-card/20" />
               </div>
@@ -99,12 +100,12 @@ function Book() {
               className="card-pop relative flex flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft transition-transform hover:-translate-y-1 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"
             >
               {e.unseenInBook && (
-                <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 font-display text-[10px] text-primary-foreground">New!</span>
+                <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 font-display text-[10px] text-primary-foreground">{t("new")}</span>
               )}
               <div className="h-20 w-20 rounded-full bg-garden-soft p-2">
-                <BirdSvg look={b.look} title={b.name} className="h-full w-full" />
+                <BirdSvg look={b.look} title={birdText(b).name} className="h-full w-full" />
               </div>
-              <p className="mt-2 font-display text-base leading-tight text-foreground">{b.name}</p>
+              <p className="mt-2 font-display text-base leading-tight text-foreground">{birdText(b).name}</p>
             </button>
           );
         })}
@@ -116,17 +117,17 @@ function Book() {
               <div className="h-36 w-36 rounded-full bg-garden-soft p-4">
                 <BirdSvg look={open.look} className="h-full w-full" />
               </div>
-              <DialogTitle className="font-display text-2xl text-foreground">{open.name}</DialogTitle>
-              <DialogDescription className="text-muted-foreground">{open.fact}</DialogDescription>
+              <DialogTitle className="font-display text-2xl text-foreground">{birdText(open).name}</DialogTitle>
+              <DialogDescription className="text-muted-foreground">{birdText(open).fact}</DialogDescription>
             </DialogHeader>
             <dl className="space-y-2 text-sm">
-              <Row label="First seen">{formatDate(openEntry.firstSeen)}</Row>
-              <Row label="Visits">Visited {openEntry.visits} {openEntry.visits === 1 ? "time" : "times"}</Row>
+              <Row label={t("firstSeen")}>{date(openEntry.firstSeen)}</Row>
+              <Row label={t("visits")}>{t(openEntry.visits === 1 ? "visitedOne" : "visited", { count: openEntry.visits })}</Row>
               {(openEntry.seenFoods ?? []).length > 0 && (
-                <Row label="Seen eating:">{openEntry.seenFoods?.map((id) => { const f = getFood(id); return `${f.emoji} ${f.name}`; }).join(", ")}</Row>
+                <Row label={t("seenEating")}>{openEntry.seenFoods?.map((id) => { const f = getFood(id); return `${f.emoji} ${text(FOOD_TEXT[f.id])}`; }).join(", ")}</Row>
               )}
               {favoritesKnown(openEntry.visits) && (
-                <Row label="Favorite foods:">{favorites(open).map((f) => `${f.emoji} ${f.name}`).join(", ")}</Row>
+                <Row label={t("favorites")}>{favorites(open).map((f) => `${f.emoji} ${text(FOOD_TEXT[f.id])}`).join(", ")}</Row>
               )}
             </dl>
           </DialogContent>

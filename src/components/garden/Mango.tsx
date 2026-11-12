@@ -1,3 +1,4 @@
+import { useLanguage } from "@/i18n/LanguageProvider";
 import type { Mood } from "@/data/mango-lines";
 import { BirdSvg } from "./BirdSvg";
 
@@ -12,9 +13,10 @@ const MANGO_LOOK = {
 };
 
 export function Mango({ mood = "neutral", className }: { mood?: Mood | "neutral"; className?: string }) {
+  const { t } = useLanguage();
   return (
     <div className={className}>
-      <BirdSvg look={MANGO_LOOK} mood={mood} title="Mango the lovebird" className="h-full w-full" />
+      <BirdSvg look={MANGO_LOOK} mood={mood} title={t("mango")} className="h-full w-full" />
     </div>
   );
 }

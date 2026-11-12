@@ -1,3 +1,5 @@
+import { t as translate } from "@/i18n/languages";
+import { useLanguage, usePageMetadata } from "@/i18n/LanguageProvider";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BirdCard } from "@/components/garden/BirdCard";
@@ -9,9 +11,9 @@ import { Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageShell } from "@/components/layout/PageShell";
-import { LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
+import { BIRD_TEXT, LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
 import { getFood, type FoodId } from "@/data/foods";
-import { GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
+import { MANGO_TEXT, GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
 import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, todayKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
 import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, saveDay, saveSound, saveStreak } from "@/lib/storage";
@@ -21,10 +23,10 @@ import { playArrival } from "@/lib/sounds";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mango's Garden — a cozy daily bird game" },
-      { name: "description", content: "Put out a snack, see which wild bird visits, and let Mango the lovebird react." },
-      { property: "og:title", content: "Mango's Garden" },
-      { property: "og:description", content: "A calm one-minute daily bird game hosted by Mango the lovebird." },
+      { title: translate("indexTitle") },
+      { name: "description", content: translate("indexDescription") },
+      { property: "og:title", content: translate("appName") },
+      { property: "og:description", content: translate("indexOgDescription") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -40,6 +42,9 @@ function moodFor(bird: Bird, food: FoodId): Mood {
 }
 
 function Index() {
+  usePageMetadata("index");
+  const { t, text } = useLanguage();
+  const mangoLine = (value: string) => text(MANGO_TEXT[value] ?? { en: value });
   const [screen, setScreen] = useState<Screen>("welcome");
   const [today, setToday] = useState("");
   const [offer, setOffer] = useState<FoodId[]>([]);
@@ -148,21 +153,21 @@ function Index() {
         <section className="card-pop flex flex-1 flex-col items-center justify-center gap-[var(--gap)] text-center">
           <Mango className="mango-idle h-40 w-40" />
           <div>
-            <p className="font-display text-sm uppercase tracking-widest text-secondary-foreground">Mango's Garden</p>
-            <h1 className="mt-2 font-display text-4xl leading-tight text-foreground">Who's coming for breakfast?</h1>
-            <p className="mt-3 text-muted-foreground">Put out one snack a day and see which wild bird drops by.</p>
+            <p className="font-display text-sm uppercase tracking-widest text-secondary-foreground">{t("appName")}</p>
+            <h1 className="mt-2 font-display text-4xl leading-tight text-foreground">{t("welcomeTitle")}</h1>
+            <p className="mt-3 text-muted-foreground">{t("welcomeText")}</p>
           </div>
           <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>
-            Start
+            {t("start")}
           </Button>
         </section>
       )}
 
       {screen === "garden" && (
         <section className="relative z-10 flex flex-1 flex-col justify-end gap-[var(--gap)] pb-4">
-          <GardenScene full line={greeting} />
+          <GardenScene full line={mangoLine(greeting)} />
           <Button size="lg" className="relative z-10 rounded-full font-display text-lg shadow-soft" onClick={() => setPantryOpen(true)}>
-            Put out a snack
+            {t("snack")}
           </Button>
         </section>
       )}
@@ -170,8 +175,8 @@ function Index() {
       <Dialog open={pantryOpen && screen === "garden"} onOpenChange={setPantryOpen}>
         <DialogContent className="viewport-dialog overflow-y-auto rounded-card border-0 bg-card sm:max-w-[var(--page-max)]">
           <DialogHeader>
-            <DialogTitle className="text-center font-display text-3xl text-foreground">Today's pantry</DialogTitle>
-            <DialogDescription className="text-center text-muted-foreground">Pick one to put on the feeder.</DialogDescription>
+            <DialogTitle className="text-center font-display text-3xl text-foreground">{t("pantry")}</DialogTitle>
+            <DialogDescription className="text-center text-muted-foreground">{t("pantryText")}</DialogDescription>
           </DialogHeader>
           <FoodPicker offer={offer} onPick={(f) => { setPantryOpen(false); choose(f); }} />
         </DialogContent>
@@ -184,15 +189,15 @@ function Index() {
               <GardenScene
                 full
                 mood={mood}
-                line={line}
+                line={mangoLine(line)}
                 feederFood={getFood(food).emoji}
                 visitor={
                   <div className="bird-drop" onAnimationEnd={() => setTimeout(() => setScreen("card"), 1400)}>
-                    <BirdSvg look={visitor.look} title={visitor.name} className="h-24 w-24" />
+                    <BirdSvg look={visitor.look} title={text(BIRD_TEXT[visitor.id] ?? { en: visitor }).name} className="h-24 w-24" />
                   </div>
                 }
               />
-              <p className="relative z-10 self-center rounded-full bg-card px-5 py-2 text-center font-display text-xl text-foreground shadow-soft">Someone's here…</p>
+              <p className="relative z-10 self-center rounded-full bg-card px-5 py-2 text-center font-display text-xl text-foreground shadow-soft">{t("arrival")}</p>
             </>
           ) : (
             <>
@@ -204,18 +209,18 @@ function Index() {
                 footer={
                   <div className="flex items-center gap-3">
                     <Mango mood={mood} className="h-14 w-14 shrink-0" />
-                    <p className="bubble-left relative flex-1 rounded-card bg-muted px-3 py-2.5 text-sm leading-snug text-foreground">{line}</p>
+                    <p className="bubble-left relative flex-1 rounded-card bg-muted px-3 py-2.5 text-sm leading-snug text-foreground">{mangoLine(line)}</p>
                   </div>
                 }
               />
               {milestones.length > 0 && (
                 <div role="status" className="card-pop space-y-1 rounded-card bg-rare px-4 py-3 text-center font-display text-sm text-rare-foreground shadow-soft">
-                  {milestones.map((id) => <p key={id}>🎉 {MILESTONE_LINES[id]}</p>)}
+                  {milestones.map((id) => <p key={id}>🎉 {mangoLine(MILESTONE_LINES[id])}</p>)}
                 </div>
               )}
               <div className="flex flex-col items-center gap-3 rounded-card bg-card p-4 text-center shadow-soft">
                 <p className="flex items-center gap-2 font-display text-base text-secondary-foreground">
-                  <Sprout className="h-5 w-5" aria-hidden /> The feeder is resting until tomorrow
+                  <Sprout className="h-5 w-5" aria-hidden /> {t("resting")}
                 </p>
                 <Countdown onMidnight={loadToday} />
               </div>
@@ -229,6 +234,7 @@ function Index() {
 }
 
 function Countdown({ onMidnight }: { onMidnight: () => void }) {
+  const { t: translate, number } = useLanguage();
   const [ms, setMs] = useState<number | null>(null);
   useEffect(() => {
     const tick = () => {
@@ -242,10 +248,10 @@ function Countdown({ onMidnight }: { onMidnight: () => void }) {
   }, [onMidnight]);
   if (ms === null) return null;
   const t = Math.ceil(ms / 1000);
-  const pad = (n: number) => String(n).padStart(2, "0");
+  const pad = (n: number) => number(n, { minimumIntegerDigits: 2, useGrouping: false });
   return (
-    <p aria-label="Time until next visitor" className="rounded-full bg-primary px-5 py-2 font-display text-2xl tabular-nums text-primary-foreground">
-      {pad(Math.floor(t / 3600))}h {pad(Math.floor((t % 3600) / 60))}m {pad(t % 60)}s
+    <p aria-label={translate("countdown")} className="rounded-full bg-primary px-5 py-2 font-display text-2xl tabular-nums text-primary-foreground">
+      {pad(Math.floor(t / 3600))}{translate("hours")} {pad(Math.floor((t % 3600) / 60))}{translate("minutes")} {pad(t % 60)}{translate("seconds")}
     </p>
   );
 }

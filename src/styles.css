@@ -85,7 +85,7 @@
   --color-grape: var(--grape);
   --color-leaf: var(--leaf);
   --color-rare-foreground: var(--rare-foreground);
-  --font-display: "Fredoka", ui-rounded, sans-serif;
+  --font-display: "Fredoka", "Nunito", ui-rounded, sans-serif;
   --font-body: "Nunito", ui-rounded, sans-serif;
   --shadow-soft: var(--shadow-soft);
   --radius-card: var(--radius-card);

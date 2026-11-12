@@ -40,6 +40,16 @@ src/
     __root.tsx          Page shell and metadata
 ```
 
+## Languages
+
+English (`en`) and Macedonian (`mk`) are available from the round EN/МК control. The separate `mangos-garden:language` preference defaults to the device language when supported, otherwise English. It never changes game saves, stable bird/food IDs, scoring, or stored reaction strings. Existing English reactions are translated at display time, including after reload. Missing data translations fall back to English. Dates and numbers use the selected locale; Nunito supplies Cyrillic glyphs where Fredoka has none. Language detection happens after hydration, so server-rendered metadata starts in English and updates with the selected language in the browser.
+
+To add another language:
+1. Create `src/i18n/<code>.ts` with the same keys as `en.ts` (use `Record<keyof typeof en, string>`).
+2. Import it and add one entry (id, label, locale, messages) to `languages` in `src/i18n/languages.ts`. The control cycles through this list automatically.
+3. Add that language to every `BIRD_TEXT`, `FOOD_TEXT`, and `MANGO_TEXT` entry in the existing data files. Keep English text and IDs unchanged.
+4. Run `npm test`; the translation coverage tests use the registry to check every language. Check long text at 360px.
+
 ## Run it
 
 ```sh

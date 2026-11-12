@@ -10,3 +10,8 @@
 # Mango app icons
 - [x] Add matching SVG favicon, full-bleed PNG icons, and home-screen manifest; preserve the original favicon under a new name.
 - [x] Verify icon artwork and head links without changing gameplay or tests.
+
+# English and Macedonian
+- [x] Add language dictionaries/provider, localized game content, and floating language control.
+- [x] Translate screens and shared labels; support Cyrillic and locale formatting.
+- [x] Document extension steps, run coverage tests, and verify feeding/reload/book on mobile.

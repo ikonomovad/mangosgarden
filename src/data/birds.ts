@@ -106,3 +106,56 @@ export const BIRDS: Bird[] = [
 
 export const getAffinity = (bird: Bird, food: FoodId) => bird.affinity[food] ?? MEH;
 export const getBird = (id: string) => BIRDS.find((b) => b.id === id);
+
+// Localized presentation only; ids, affinities and English fields remain stable.
+const BIRDS_MK = {
+  "robin": {
+    "name": "Црвеногушка",
+    "fact": "Црвеногушките пеат ноќе покрај уличните светилки, убедени дека сè уште е ден."
+  },
+  "bluetit": {
+    "name": "Сина сипка",
+    "fact": "Сината сипка може да посети над 1.000 дрвја дневно во потрага по ситни гасеници."
+  },
+  "greattit": {
+    "name": "Голема сипка",
+    "fact": "Големите сипки знаат да отворат пчелни гнезда... учтиво, се разбира."
+  },
+  "blackbird": {
+    "name": "Кос",
+    "fact": "Косовите ја накривуваат главата за да ги слушнат црвите под земјата."
+  },
+  "goldfinch": {
+    "name": "Штиглец",
+    "fact": "Јато штиглеци на англиски се вика „шарм“. Сосема заслужено!"
+  },
+  "sparrow": {
+    "name": "Домашно врапче",
+    "fact": "Врапчињата се капат во прашина за да си ги исчистат пердувите. Ден за разгалување!"
+  },
+  "chaffinch": {
+    "name": "Зеба",
+    "fact": "Зебите од различни долини пеат со различни локални акценти."
+  },
+  "starling": {
+    "name": "Скворец",
+    "fact": "Скворците можат да имитираат автомобилски аларми, телефони, па дури и други птици."
+  },
+  "greenfinch": {
+    "name": "Зеленушка",
+    "fact": "Зеленушките крцкаат сончогледови семки со клун како мала кршачка за ореви."
+  },
+  "jay": {
+    "name": "Сојка",
+    "fact": "Една сојка може да закопа 5.000 желади наесен — и случајно да засади шума."
+  },
+  "hoopoe": {
+    "name": "Пупунец",
+    "fact": "Кога ќе се возбудат, пупунците ја шират својата круна како панкерска фризура."
+  },
+  "waxwing": {
+    "name": "Свилокрилка",
+    "fact": "Свилокрилките понекогаш се поднапиваат од ферментирани бобинки. Вистински рокенрол!"
+  }
+};
+export const BIRD_TEXT: Record<string, import("@/i18n/languages").Localized<{ name: string; fact: string }>> = Object.fromEntries(BIRDS.map((bird) => [bird.id, { en: { name: bird.name, fact: bird.fact }, mk: BIRDS_MK[bird.id as keyof typeof BIRDS_MK] }]));

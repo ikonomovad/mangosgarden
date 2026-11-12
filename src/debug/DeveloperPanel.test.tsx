@@ -5,6 +5,12 @@ import { loadCollection, loadDaysSinceRare, loadHistory, loadStreak, recordVisit
 import { changeClock, clearGameData, debugEnabled, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
 import { DeveloperPanel } from "./DeveloperPanel";
 
+// Exercise the optional tools even when the app's production flag is disabled.
+vi.mock("@/lib/game", async (original) => {
+  const game = await original<typeof import("@/lib/game")>();
+  return { ...game, ENABLE_DEBUG_PANEL: true, getNow: (realNow = new Date(), enabled = true) => game.getNow(realNow, enabled), todayKey: () => game.toDateKey(game.getNow(new Date(), true)), msUntilMidnight: () => game.msUntilMidnight(game.getNow(new Date(), true)) };
+});
+
 beforeEach(() => {
   localStorage.clear(); sessionStorage.clear();
   window.history.replaceState({}, "", "/");

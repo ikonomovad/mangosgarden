@@ -24,3 +24,17 @@ export const FOODS: Food[] = [
 
 export const FOOD_IDS: FoodId[] = FOODS.map((f) => f.id);
 export const getFood = (id: FoodId) => FOODS.find((f) => f.id === id)!;
+
+const FOODS_MK = {
+  "sunflower": "Сончогледови семки",
+  "millet": "Просо",
+  "peanuts": "Кикирики",
+  "nyjer": "Семки од нигер",
+  "apple": "Парчиња јаболко",
+  "berries": "Мешани бобинки",
+  "orange": "Половина портокал",
+  "mealworms": "Брашнени црви",
+  "fatball": "Масна топка",
+  "water": "Капење во свежа вода"
+};
+export const FOOD_TEXT: Record<FoodId, import("@/i18n/languages").Localized<string>> = Object.fromEntries(FOODS.map((food) => [food.id, { en: food.name, mk: FOODS_MK[food.id] }])) as Record<FoodId, import("@/i18n/languages").Localized<string>>;

@@ -42,3 +42,4 @@ use the editor.
 - Shared viewport utilities use the dynamic-height token with a legacy fallback; PageShell owns content scrolling and safe-area offsets so browser toolbars cannot create document overflow.
 - Gameplay reads current time through getNow in game.ts; optional developer UI and setup actions stay in src/debug and reload after mutations so normal game loading remains authoritative.
 - Home-screen support is manifest-only, with head links in the root route and static icons derived from the existing Mango SVG; no service worker or offline caching is introduced.
+- Localization is presentation-only: language dictionaries and registry live in src/i18n, data translations stay beside existing English content, and saved reaction strings/IDs remain unchanged; the provider owns the separate language preference and locale formatting.
