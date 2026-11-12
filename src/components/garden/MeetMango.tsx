@@ -22,7 +22,7 @@ export function MeetMango() {
             loading="lazy"
             width={768}
             height={1023}
-            className="h-auto max-h-[240px] w-auto max-w-full rounded-xl object-contain shadow-soft sm:max-h-[420px]"
+            className="h-auto max-h-[240px] w-auto max-w-full rounded-xl object-contain shadow-soft sm:max-h-[340px]"
           />
           <div aria-hidden="true" className="pointer-events-none absolute right-1 top-1/2 h-28 w-12">
             <Heart className="mango-heart mango-heart-purple absolute bottom-0 left-0 h-7 w-7 fill-current" />
