@@ -1,5 +1,7 @@
 export const en = {
   meetMango: "Meet Mango",
+  madeByDaniela: "Made by Daniela",
+  connectLinkedIn: "Connect on LinkedIn",
   mangoPhotoAlt: "Mango, a yellow lovebird with a red face",
   mangoStory: "This is Mango, my parrot and the inspiration for this game. Every day, Mango and I feed the little feathered friends who visit our backyard. It has become our favorite daily ritual. :) Now you can join us virtually and feed one bird a day.",
   howToPlay: "How to play",

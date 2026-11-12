@@ -37,6 +37,14 @@ export function MeetMango() {
         <DialogClose asChild>
           <Button className="h-11 rounded-full font-display">{t("close")}</Button>
         </DialogClose>
+        <p className="flex flex-wrap items-center justify-center gap-x-1 text-center text-xs text-foreground">
+          <span>{t("madeByDaniela")} ·</span>
+          <Button asChild variant="link" className="min-h-11 whitespace-normal px-1 py-2 text-xs text-foreground underline underline-offset-4">
+            <a href="https://www.linkedin.com/in/ikonomovad/" target="_blank" rel="noopener noreferrer">
+              {t("connectLinkedIn")}
+            </a>
+          </Button>
+        </p>
       </DialogContent>
     </Dialog>
   );
