@@ -32,7 +32,7 @@ export function PageShell({ children, streak, sound, onToggleSound, className }:
           <BookOpen className="h-5 w-5" aria-hidden />
           <span className="float-tip">{t("book")}</span>
         </Link>
-        <button type="button" aria-label={soundLabel} aria-pressed={sound} onClick={onToggleSound} className="float-btn group">
+        <button type="button" aria-label={soundLabel} aria-pressed={sound} onClick={onToggleSound} className="float-btn group cursor-pointer">
           {sound ? <Volume2 className="h-5 w-5" aria-hidden /> : <VolumeX className="h-5 w-5" aria-hidden />}
           <span className="float-tip">{soundLabel}</span>
         </button>
