@@ -6,3 +6,7 @@
 # Mobile viewport layout
 - [x] Use dynamic viewport heights with legacy fallbacks and safe-area spacing.
 - [x] Verify phone viewport resizing, feeding, and bird book container scrolling.
+
+# Mango app icons
+- [x] Add matching SVG favicon, full-bleed PNG icons, and home-screen manifest; preserve the original favicon under a new name.
+- [x] Verify icon artwork and head links without changing gameplay or tests.

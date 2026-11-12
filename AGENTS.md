@@ -41,3 +41,4 @@ use the editor.
 - Every screen renders inside `src/components/layout/PageShell.tsx` (fixed streak pill + floating book/sound controls); theme tokens live only in `src/styles.css` — one place to retheme.
 - Shared viewport utilities use the dynamic-height token with a legacy fallback; PageShell owns content scrolling and safe-area offsets so browser toolbars cannot create document overflow.
 - Gameplay reads current time through getNow in game.ts; optional developer UI and setup actions stay in src/debug and reload after mutations so normal game loading remains authoritative.
+- Home-screen support is manifest-only, with head links in the root route and static icons derived from the existing Mango SVG; no service worker or offline caching is introduced.
