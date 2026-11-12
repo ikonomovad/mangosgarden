@@ -83,7 +83,7 @@ export const MANGO_TEXT: Record<string, import("@/i18n/languages").Localized<str
   },
   "Hello, stranger! Your feathers look very huggable.": {
     en: "Hello, stranger! Your feathers look very huggable.",
-    mk: "Здраво, нов пријателе! Пердувите ти изгледаат баш за гушкање.",
+    mk: "Здраво, нов пријателе! Колку ти се меки пердувчињата.",
   },
   "Fresh face, fresh snacks! Excellent timing.": {
     en: "Fresh face, fresh snacks! Excellent timing.",
