@@ -1,6 +1,6 @@
 import mangoPhoto from "@/assets/mango-photo.jpg.asset.json";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 /** Welcome-only introduction; no game state or persistence. */
@@ -34,9 +34,6 @@ export function MeetMango() {
             <li>{t("mangoStepThree")}</li>
           </ol>
         </section>
-        <DialogClose asChild>
-          <Button className="h-11 rounded-full font-display">{t("close")}</Button>
-        </DialogClose>
         <p className="flex flex-wrap items-center justify-center gap-x-1 text-center text-xs text-foreground">
           <span>{t("madeByDaniela")} ·</span>
           <Button asChild variant="link" className="min-h-11 whitespace-normal px-1 py-2 text-xs text-foreground underline underline-offset-4">
