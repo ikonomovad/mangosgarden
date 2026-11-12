@@ -1,4 +1,10 @@
+<p align="center">
+  <img src="public/favicon.svg" alt="Mango's Garden logo: Mango the lovebird on a sage green rounded square" width="96" height="96">
+</p>
+
 # Mango's Garden
+
+**Play it live: <https://mangosgarden.lovable.app/>**
 
 A tiny daily bird-feeding game for phones. Once a day the player puts out one of four snacks. A wild bird visits, Mango the parrot reacts, and the bird goes into the **Bird book**. After that the garden is closed until local midnight. Come back every day to grow a streak and fill the book with all 12 birds.
 
