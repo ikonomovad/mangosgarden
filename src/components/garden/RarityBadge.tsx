@@ -37,8 +37,6 @@ const EMBLEM: Record<Rarity, string> = {
 
 export function RarityBadge({ rarity, delayed = false }: { rarity: Rarity; delayed?: boolean }) {
   const { t } = useLanguage();
-  const clip = useId().replace(/:/g, "");
-  const gem = GEMS[rarity];
   const label = t(LABEL[rarity]);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -62,7 +60,30 @@ export function RarityBadge({ rarity, delayed = false }: { rarity: Rarity; delay
       onBlur={() => setOpen(false)}
       className={`rarity-badge inline-grid h-11 w-11 shrink-0 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-ring ${delayed ? "rarity-delayed" : ""}`}
     >
-      <span className="relative inline-block h-9 w-9">
+      <RarityGem rarity={rarity} />
+    </button>
+      </PopoverAnchor>
+      <PopoverContent
+        side="top"
+        sideOffset={4}
+        collisionPadding={8}
+        role="tooltip"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => { if ((e.target as Element)?.closest?.(`[data-rarity]`) ) e.preventDefault(); }}
+        className="w-auto rounded-full border-0 bg-card px-3 py-1 font-display text-xs text-card-foreground shadow-soft"
+      >
+        {label}
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+export function RarityGem({ rarity, className = "" }: { rarity: Rarity; className?: string }) {
+  const clip = useId().replace(/:/g, "");
+  const gem = GEMS[rarity];
+  return (
+      <span className={`relative inline-block h-9 w-9 ${className}`}>
         <svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true" className="rarity-gem overflow-visible">
           <defs><clipPath id={clip}><path d={gem.shape} /></clipPath></defs>
           <g clipPath={`url(#${clip})`}>
@@ -81,20 +102,5 @@ export function RarityBadge({ rarity, delayed = false }: { rarity: Rarity; delay
           </>
         )}
       </span>
-    </button>
-      </PopoverAnchor>
-      <PopoverContent
-        side="top"
-        sideOffset={4}
-        collisionPadding={8}
-        role="tooltip"
-        onOpenAutoFocus={(e) => e.preventDefault()}
-        onCloseAutoFocus={(e) => e.preventDefault()}
-        onPointerDownOutside={(e) => { if ((e.target as Element)?.closest?.(`[data-rarity]`) ) e.preventDefault(); }}
-        className="w-auto rounded-full border-0 bg-card px-3 py-1 font-display text-xs text-card-foreground shadow-soft"
-      >
-        {label}
-      </PopoverContent>
-    </Popover>
   );
 }

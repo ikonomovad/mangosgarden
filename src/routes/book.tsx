@@ -9,11 +9,11 @@ import { FOOD_TEXT, getFood, type FoodId } from "@/data/foods";
 import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
 import { liveStreak, todayKey } from "@/lib/game";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { RarityBadge } from "@/components/garden/RarityBadge";
+import { RarityBadge, RarityGem } from "@/components/garden/RarityBadge";
 import { PageShell } from "@/components/layout/PageShell";
 import { favoritesKnown } from "@/lib/personality";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, MessageCircle } from "lucide-react";
+import { ArrowLeft, ExternalLink, Lock, MessageCircle } from "lucide-react";
 import { birdChatUrl, birdSearchUrl } from "@/lib/bird-links";
 
 export const Route = createFileRoute("/book")({
@@ -66,12 +66,15 @@ function Book() {
 
   return (
     <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
-      <Link to="/" className="self-start font-display text-secondary-foreground">{t("back")}</Link>
+      <Link to="/" className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border-2 border-border bg-card px-4 font-display text-sm text-card-foreground shadow-soft transition-transform hover:-translate-y-0.5 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"><ArrowLeft aria-hidden="true" className="size-4" />{t("back")}</Link>
       <h1 className="text-center font-display text-4xl text-foreground">{t("book")}</h1>
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{t("of", { count: collected, total: BIRDS.length })}</p>
           <p className="text-xs text-muted-foreground">{t("collected")}</p>
+          <div role="progressbar" aria-label={t("collectionProgress")} aria-valuemin={0} aria-valuemax={BIRDS.length} aria-valuenow={collected} className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-primary transition-[width] duration-700" style={{ width: `${(collected / BIRDS.length) * 100}%` }} />
+          </div>
         </div>
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{number(total)}</p>
@@ -104,6 +107,7 @@ function Book() {
               onClick={() => setOpen(b)}
               className="card-pop relative flex flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft transition-transform hover:-translate-y-1 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"
             >
+              <span aria-hidden className="absolute left-2 top-2"><RarityGem rarity={b.rarity} className="scale-75" /></span>
               {e.unseenInBook && (
                 <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 font-display text-[10px] text-primary-foreground">{t("new")}</span>
               )}
@@ -132,10 +136,18 @@ function Book() {
               <Row label={t("firstSeen")}>{date(openEntry.firstSeen)}</Row>
               <Row label={t("visits")}>{t(openEntry.visits === 1 ? "visitedOne" : "visited", { count: openEntry.visits })}</Row>
               {(openEntry.seenFoods ?? []).length > 0 && (
-                <Row label={t("seenEating")}>{openEntry.seenFoods?.map((id, index) => <span key={id}>{index > 0 && ", "}<FoodIcon id={id} size={16} /> {text(FOOD_TEXT[id])}</span>)}</Row>
+                <Row label={t("seenEating")}><Chips>{openEntry.seenFoods?.map((id) => <FoodChip key={id} id={id} label={text(FOOD_TEXT[id])} />)}</Chips></Row>
               )}
-              {favoritesKnown(openEntry.visits) && (
-                <Row label={t("favorites")}>{favorites(open).map((f, index) => <span key={f.id}>{index > 0 && ", "}<FoodIcon id={f.id} size={16} /> {text(FOOD_TEXT[f.id])}</span>)}</Row>
+              {favoritesKnown(openEntry.visits) ? (
+                <Row label={t("favorites")}><Chips>{favorites(open).map((f) => <FoodChip key={f.id} id={f.id} label={text(FOOD_TEXT[f.id])} />)}</Chips></Row>
+              ) : (
+                <Row label={t("favorites")}>
+                  <span className="flex items-center gap-2 text-muted-foreground">
+                    <Lock aria-hidden="true" className="size-4 shrink-0" />
+                    {3 - openEntry.visits === 1 ? t("favoritesHintOne") : t("favoritesHint", { count: 3 - openEntry.visits })}
+                    <span className="ml-auto font-display text-xs">{openEntry.visits}/3</span>
+                  </span>
+                </Row>
               )}
             </dl>
             <div className="flex flex-wrap justify-center gap-2">
@@ -163,5 +175,17 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
       <dt className="font-display text-xs text-secondary-foreground">{label}</dt>
       <dd className="text-foreground">{children}</dd>
     </div>
+  );
+}
+
+function Chips({ children }: { children: ReactNode }) {
+  return <span className="mt-1 flex flex-wrap gap-1.5">{children}</span>;
+}
+
+function FoodChip({ id, label }: { id: FoodId; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card py-1 pl-1.5 pr-3 text-xs text-card-foreground">
+      <FoodIcon id={id} size={20} />{label}
+    </span>
   );
 }
