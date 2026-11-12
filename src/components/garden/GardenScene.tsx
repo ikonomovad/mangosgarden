@@ -7,7 +7,7 @@ import { GardenDecor } from "./GardenDecor";
 interface GardenSceneProps {
   mood?: Mood | "neutral";
   line?: string;
-  feederFood?: string;
+  feederFood?: ReactNode;
   visitor?: ReactNode;
   /** Fill the whole screen behind the page content. */
   full?: boolean;

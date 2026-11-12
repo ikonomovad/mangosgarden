@@ -3,6 +3,7 @@ import { useLanguage, usePageMetadata } from "@/i18n/LanguageProvider";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { BirdSvg } from "@/components/garden/BirdSvg";
+import { FoodIcon } from "@/components/FoodIcon";
 import { BIRD_TEXT, BIRDS, LOVES, type Bird } from "@/data/birds";
 import { FOOD_TEXT, getFood, type FoodId } from "@/data/foods";
 import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
@@ -124,10 +125,10 @@ function Book() {
               <Row label={t("firstSeen")}>{date(openEntry.firstSeen)}</Row>
               <Row label={t("visits")}>{t(openEntry.visits === 1 ? "visitedOne" : "visited", { count: openEntry.visits })}</Row>
               {(openEntry.seenFoods ?? []).length > 0 && (
-                <Row label={t("seenEating")}>{openEntry.seenFoods?.map((id) => { const f = getFood(id); return `${f.emoji} ${text(FOOD_TEXT[f.id])}`; }).join(", ")}</Row>
+                <Row label={t("seenEating")}>{openEntry.seenFoods?.map((id, index) => <span key={id}>{index > 0 && ", "}<FoodIcon id={id} size={16} /> {text(FOOD_TEXT[id])}</span>)}</Row>
               )}
               {favoritesKnown(openEntry.visits) && (
-                <Row label={t("favorites")}>{favorites(open).map((f) => `${f.emoji} ${text(FOOD_TEXT[f.id])}`).join(", ")}</Row>
+                <Row label={t("favorites")}>{favorites(open).map((f, index) => <span key={f.id}>{index > 0 && ", "}<FoodIcon id={f.id} size={16} /> {text(FOOD_TEXT[f.id])}</span>)}</Row>
               )}
             </dl>
           </DialogContent>

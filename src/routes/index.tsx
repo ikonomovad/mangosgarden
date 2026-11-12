@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BirdCard } from "@/components/garden/BirdCard";
 import { BirdSvg } from "@/components/garden/BirdSvg";
+import { FoodIcon } from "@/components/FoodIcon";
 import { FoodPicker } from "@/components/garden/FoodPicker";
 import { GardenScene } from "@/components/garden/GardenScene";
 import { Mango } from "@/components/garden/Mango";
@@ -12,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageShell } from "@/components/layout/PageShell";
 import { BIRD_TEXT, LOVES, getAffinity, getBird, type Bird } from "@/data/birds";
-import { getFood, type FoodId } from "@/data/foods";
+import type { FoodId } from "@/data/foods";
 import { MANGO_TEXT, GREETINGS, MILESTONE_LINES, type Milestone, type Mood } from "@/data/mango-lines";
 import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, todayKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
@@ -190,7 +191,7 @@ function Index() {
                 full
                 mood={mood}
                 line={mangoLine(line)}
-                feederFood={getFood(food).emoji}
+                feederFood={<FoodIcon id={food} size={24} />}
                 visitor={
                   <div className="bird-drop" onAnimationEnd={() => setTimeout(() => setScreen("card"), 1400)}>
                     <BirdSvg look={visitor.look} title={text(BIRD_TEXT[visitor.id] ?? { en: visitor }).name} className="h-24 w-24" />

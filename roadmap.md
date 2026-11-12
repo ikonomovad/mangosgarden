@@ -20,3 +20,7 @@
 - [x] Replace the requested foods and birds, translations, affinities, and collar marking.
 - [x] Verify retired IDs are ignored safely, update content tests and README tables.
 - [x] Run tests and the 5,000-player simulation; verify feeding and book on mobile.
+
+# Storybook food icons
+- [x] Add all ten SVG icons and replace emoji displays without changing content or gameplay.
+- [x] Run icon coverage and existing tests; verify pantry, feeder, and book displays.
