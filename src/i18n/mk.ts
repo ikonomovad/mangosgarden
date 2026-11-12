@@ -2,6 +2,7 @@ import type { en } from "./en";
 
 export const mk: Record<keyof typeof en, string> = {
   meetMango: "Запознај го Манго",
+  mangoPrivacy: "Без профили и следење. Твојот напредок се зачувува само на твојот уред.",
   madeByDaniela: "Направено од Даниела",
   connectLinkedIn: "Поврзи се на LinkedIn",
   mangoPhotoAlt: "Манго, жолт папагал со црвено лице",

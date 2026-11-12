@@ -1,5 +1,6 @@
 export const en = {
   meetMango: "Meet Mango",
+  mangoPrivacy: "No accounts, no tracking. Your progress is saved only on your device.",
   madeByDaniela: "Made by Daniela",
   connectLinkedIn: "Connect on LinkedIn",
   mangoPhotoAlt: "Mango, a yellow lovebird with a red face",

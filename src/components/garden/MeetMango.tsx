@@ -42,6 +42,7 @@ export function MeetMango() {
             <li>{t("mangoStepThree")}</li>
           </ol>
         </section>
+        <p className="text-center text-[11px] leading-relaxed text-muted-foreground">{t("mangoPrivacy")}</p>
         <p className="flex flex-wrap items-center justify-center gap-x-1 text-center text-xs text-foreground">
           <span>{t("madeByDaniela")} ·</span>
           <Button asChild variant="link" className="min-h-11 whitespace-normal px-1 py-2 text-xs text-foreground underline underline-offset-4">
