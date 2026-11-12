@@ -67,7 +67,7 @@ export const GREETINGS: string[] = [
 export const MANGO_TEXT: Record<string, import("@/i18n/languages").Localized<string>> = {
   "A VIP! Very Important Plumage!": {
     en: "A VIP! Very Important Plumage!",
-    mk: "Важен гостин! Со многу важни пердуви!",
+    mk: "Важен гостин! Какви пердуви!",
   },
   "Oh my feathers! I'll get the fancy twig!": {
     en: "Oh my feathers! I'll get the fancy twig!",
