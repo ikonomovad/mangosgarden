@@ -17,27 +17,42 @@ More detail: [docs/how-it-works.md](docs/how-it-works.md) · [docs/storage.md](d
 src/
   data/                 Game content. Edit these to tune the game.
     birds.ts            The 12 birds, rarity weights, food affinity values and how each bird looks
-    foods.ts            The 10 foods (id, name, emoji)
+    foods.ts            The 10 foods (id, name, emoji fallback)
     mango-lines.ts      Everything Mango says: greetings, moods, visit reactions, milestones
+  i18n/                 Languages: en.ts and mk.ts (every UI string), languages.ts (the
+                        registry plus t()/localized()/initialLanguage()), LanguageProvider.tsx
   lib/                  Pure logic plus storage. No React in here.
     game.ts             Daily food offer, date keys, streak math, midnight countdown
     visitor.ts          Visitor scoring and the seeded weighted pick
     personality.ts      Which reaction group to use, non-repeating variants, milestones, food-hint threshold
     random.ts           Seeded random number generator and shuffle (deterministic)
     storage.ts          Every localStorage read/write, with safe fallbacks
-    sounds.ts           Web Audio chirp and squawk (no audio files)
+    sounds.ts           Web Audio chirp, squawk and pat chirp (no audio files)
+    pat.ts              Once-a-day "Pet Mango" claim, on its own storage key
+    bird-links.ts       "Find out more" / "Ask ChatGPT" URLs for a bird, in the chosen language
     *.test.ts           Unit tests next to the code they cover
-  components/garden/    UI pieces
-    BirdSvg.tsx         Draws any bird from its data "look" fields
-    Mango.tsx           Mango the parrot
-    GardenScene.tsx     Garden background, feeder, Mango and speech bubble
-    FoodPicker.tsx      The 4 food buttons
-    BirdCard.tsx        The card shown after a visit
-    SpeechBubble.tsx    Mango's speech bubble
+  components/
+    FoodIcon.tsx        One flat SVG per food id (the FOOD_ICONS registry)
+    layout/PageShell.tsx  Shared frame: streak pill + floating book/sound/language controls
+    garden/             UI pieces
+      BirdSvg.tsx       Draws any bird from its data "look" fields
+      Mango.tsx         Mango the parrot
+      GardenScene.tsx   Garden background, feeder, Mango and speech bubble
+      GardenDecor.tsx   Wildflowers, fig branch, apple tree, butterflies (behind all UI)
+      FoodPicker.tsx    The 4 food buttons
+      BirdCard.tsx      The card shown after a visit
+      SpeechBubble.tsx  Mango's speech bubble
+      RarityBadge.tsx   Rarity gem with a translated tooltip
+      MeetMango.tsx     Welcome dialog: Mango's photo, story, how to play, credit
+      PatMango.tsx      Once-a-day "Pet Mango" button, hearts and bounce
+    ui/                 shadcn primitives (dialog, button, popover, tooltip)
+  debug/                Hidden developer test panel (see below)
   routes/
-    index.tsx           The game: welcome → garden → choose food → landing → bird card
+    index.tsx           The game: welcome → garden → pantry dialog → landing → bird card
     book.tsx            The Bird book page
     __root.tsx          Page shell and metadata
+public/
+  favicon.svg, apple-touch-icon.png, icon-192.png, icon-512.png, manifest.webmanifest
 ```
 
 ## Birds and foods
@@ -59,7 +74,7 @@ The book contains **12 birds: 9 common, 1 uncommon, 2 rare**. Unlisted food affi
 | hoopoe | Hoopoe / Пупунец | rare | mealworms, water | apple |
 | waxwing | Waxwing / Свилокрилка | rare | berries, apple, orange | — |
 
-| Food ID | English | Macedonian | Emoji |
+| Food ID | English | Macedonian | Fallback emoji |
 |---|---|---|---|
 | sunflower | Sunflower seeds | Сончогледови семки | 🌻 |
 | millet | Millet | Просо | 🟡 |
@@ -71,6 +86,8 @@ The book contains **12 birds: 9 common, 1 uncommon, 2 rare**. Unlisted food affi
 | mealworms | Mealworms | Брашнени црви | 🐛 |
 | walnut | Walnuts | Ореви | 🌰 |
 | water | Fresh water bath | Капење во свежа вода | 💧 |
+
+**Artwork:** every food is drawn by `src/components/FoodIcon.tsx` (one flat SVG per id, using the theme tokens). The emoji column is only the fallback used when a food has no artwork.
 
 Retained birds and foods keep their IDs. Retired bird IDs are ignored in the book and totals; retired foods are dropped from recorded discoveries and invalid daily offers are regenerated. A saved visit with a retired food is discarded from daily history so it cannot leave an invisible feeding lock. Other saved progress, weights, and pity rules remain unchanged.
 
@@ -87,6 +104,14 @@ Retained birds and foods keep their IDs. Retired bird IDs are ignored in the boo
 | Players unfinished after a year | 0 of 5,000 |
 
 Visit percentages are rounded independently.
+
+## What's on screen
+
+- **Welcome:** the title, **Start**, and a **Meet Mango** dialog with Mango's photo, the story behind the game, a 3-step "How to play", a note that nothing is tracked, and Daniela's credit.
+- **Garden:** the scene fills the whole visible screen, with wildflowers, a fig branch, a distant apple tree and drifting butterflies behind everything. **Put out a snack** opens the *Today's pantry* dialog with the 4 foods; **Pet Mango** is a once-a-day pat that bounces Mango, floats hearts and chirps, then hides itself until tomorrow.
+- **Bird card:** the visitor, its rarity gem, fun fact, "Find out more" / "Ask ChatGPT" links, Mango's reaction, any milestone ribbon, and the next-visit countdown.
+- **Bird book:** "X of 12 collected" with a progress bar, total visits and best streak. Collected birds show a rarity gem and open a dialog (bird in a rarity-coloured ring, fact, first seen, visit count, "Seen eating" and "Favorite foods" as food chips, plus the two learning links). Locked birds sit behind a soft blur, are not tappable and have no links. Favorite foods unlock after 3 visits; until then the dialog shows a lock, "Visit N more times to discover" and an `n/3` counter.
+- **Always available:** the streak pill, and the floating book / sound / language controls (all 44px, with hover or tap tooltips).
 
 ## Languages
 
@@ -105,6 +130,7 @@ npm install        # or: bun install
 npm run dev        # starts the app at http://localhost:8080
 npm test           # runs all unit tests once (Vitest)
 npm run test:watch # re-runs tests when files change
+npm run simulate   # 5,000 seeded players x 365 days, to check rarity tuning
 ```
 
 ## Dates and saved data
@@ -122,6 +148,7 @@ Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application 
 - **Simulate "yesterday's visit":** in `mangos-garden:days`, rename today's key (for example `2026-11-11`) to yesterday's date, then reload. Food choice unlocks and the yesterday rules apply (fresh foods, freshness penalty, "yesterday" reaction).
 - **Test streaks:** edit `mangos-garden:streak`, for example `{"current":2,"best":2,"lastVisit":"<yesterday>"}`, then feed today to reach the 3-day milestone.
 - **Test food hints:** set a bird's `visits` to `2` in `mangos-garden:collection`; the next visit reveals its favorite foods.
+- **Test Pet Mango:** the button hides after one pat. **Reset today** in the developer panel clears it, or delete `mangos-garden:pat`.
 - **Start fresh:** delete all `mangos-garden:*` keys. Milestones only show once, so clear `mangos-garden:personality` to see them again.
 
 ## Known limitations
@@ -130,6 +157,7 @@ Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application 
 - Everything is saved in this browser only: no accounts, no cross-device sync. Clearing site data erases progress.
 - The daily offer and visitor are seeded by date, so two players picking the same food on the same day (with the same history) get the same bird.
 - Sounds need a tap first (browser rule) and are silent on devices without Web Audio.
+- No `sitemap.xml` yet: it has to list the game's real web address, so add it after publishing and reference it from `robots.txt`.
 
 ## Hidden developer test panel
 

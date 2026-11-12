@@ -9,6 +9,8 @@ All keys start with `mangos-garden:`. Every loader is wrapped in try/catch and v
 | `mangos-garden:streak` | `{current:0,best:0}` | forever |
 | `mangos-garden:personality` | `{shown:[],previous:{}}` | forever (not reset) |
 | `mangos-garden:sound` | off | forever |
+| `mangos-garden:language` | device language, else `en` | forever |
+| `mangos-garden:pat` | none | one date: today's pat |
 
 ## `mangos-garden:days`
 ```json
@@ -53,6 +55,15 @@ The string `"on"` or `"off"`. Anything else counts as off.
 ## `mangos-garden:pity`
 
 A plain number: visits since the last newly discovered rare bird (drives the pity boost). Missing or invalid means 0. Each day record stores `pityBefore` so "reset today" can restore it.
+
+## `mangos-garden:language`
+The selected language id (`"en"` or `"mk"`). `initialLanguage()` in `src/i18n/languages.ts` picks the device language when it is supported, otherwise English; a saved choice always wins. It changes presentation only — never saved game data, stable bird/food ids, scoring or stored reaction strings.
+
+## `mangos-garden:pat`
+The date key of the day the player last patted Mango, for example `"2026-11-12"`. A value equal to today means today's pat is used up; anything else (or nothing) means the **Pet Mango** button is available. `src/lib/pat.ts` owns this key and it is not part of the game save, so "reset today" clears it and the button comes back.
+
+## Debug keys (`mangos-garden-debug:`)
+The developer test panel keeps its own keys, separate from game data: `mangos-garden-debug:clock-offset` (localStorage, a millisecond offset added to the shared `getNow()` clock) and `mangos-garden-debug:enabled` (sessionStorage only, so the panel dies with the tab). Deleting the game's `mangos-garden:*` keys leaves these alone.
 
 ## `mangos-garden:version`
 
