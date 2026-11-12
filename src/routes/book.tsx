@@ -105,7 +105,7 @@ function Book() {
               key={b.id}
               type="button"
               onClick={() => setOpen(b)}
-              className="card-pop relative flex flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft transition-transform hover:-translate-y-1 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"
+              className="card-pop relative flex cursor-pointer flex-col items-center rounded-card bg-paper p-3 text-center shadow-soft transition-transform hover:-translate-y-1 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"
             >
               <span aria-hidden className="absolute left-2 top-2"><RarityGem rarity={b.rarity} className="scale-75" /></span>
               {e.unseenInBook && (
