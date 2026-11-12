@@ -34,6 +34,8 @@ const favorites = (b: Bird) =>
   (Object.entries(b.affinity) as [FoodId, number][]).filter(([, v]) => v >= LOVES).map(([f]) => getFood(f));
 
 
+const RING = { common: "var(--rarity-common)", uncommon: "var(--rarity-uncommon)", rare: "var(--rare)" } as const;
+
 let snapshot: Collection | null = null;
 
 function Book() {
@@ -123,7 +125,7 @@ function Book() {
         {open && openEntry && (
           <DialogContent className="viewport-dialog max-w-sm overflow-y-auto rounded-card border-0 bg-card text-card-foreground shadow-soft">
             <DialogHeader className="items-center text-center">
-              <div className="h-36 w-36 rounded-full bg-garden-soft p-4">
+              <div className={`h-36 w-36 rounded-full bg-garden-soft p-4 ${open.rarity === "rare" ? "rare-glow" : ""}`} style={{ boxShadow: `0 0 0 3px var(--card), 0 0 0 6px ${RING[open.rarity]}, 0 0 0 9px var(--card), 0 0 0 10px ${RING[open.rarity]}, 0 0 22px 8px color-mix(in oklab, ${RING[open.rarity]} ${open.rarity === "rare" ? 55 : 30}%, transparent)` }}>
                 <BirdSvg look={open.look} className="h-full w-full" />
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2">
