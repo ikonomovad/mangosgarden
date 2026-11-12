@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { t as translate } from "@/i18n/languages";
 import { useLanguage, usePageMetadata } from "@/i18n/LanguageProvider";
 import { createFileRoute } from "@tanstack/react-router";
@@ -179,6 +180,11 @@ function Index() {
             </Button>
             <MeetMango />
           </div>
+          <section aria-labelledby="about-game" className="max-w-sm rounded-[var(--radius)] bg-card/80 px-4 py-3 text-sm text-muted-foreground shadow-soft">
+            <h2 id="about-game" className="font-display text-base text-foreground">{t("aboutGameTitle")}</h2>
+            <p className="mt-1">{t("aboutGameText")}</p>
+            <Link to="/book" className="mt-1 inline-flex min-h-11 items-center font-medium text-foreground underline underline-offset-4">{t("aboutGameLink")}</Link>
+          </section>
         </section>
       )}
 
