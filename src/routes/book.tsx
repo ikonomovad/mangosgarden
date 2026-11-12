@@ -24,6 +24,8 @@ export const Route = createFileRoute("/book")({
       { name: "description", content: translate("bookDescription") },
       { property: "og:title", content: translate("bookOgTitle") },
       { property: "og:description", content: translate("bookOgDescription") },
+      { property: "og:image", content: "https://mangosgarden.lovable.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://mangosgarden.lovable.app/og-image.jpg" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

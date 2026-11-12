@@ -29,7 +29,9 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: translate("indexTitle") },
       { name: "description", content: translate("indexDescription") },
-      { property: "og:title", content: translate("appName") },
+      { property: "og:title", content: translate("indexTitle") },
+      { property: "og:image", content: "https://mangosgarden.lovable.app/og-image.jpg" },
+      { name: "twitter:image", content: "https://mangosgarden.lovable.app/og-image.jpg" },
       { property: "og:description", content: translate("indexOgDescription") },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
