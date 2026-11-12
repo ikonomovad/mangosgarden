@@ -159,7 +159,7 @@ export const MANGO_TEXT: Record<string, import("@/i18n/languages").Localized<str
   },
   "Hmph. They ate the good bits. I was saving those.": {
     en: "Hmph. They ate the good bits. I was saving those.",
-    mk: "Хмф. Ги изедоа најубавите парчиња. Ги чував за себе.",
+    mk: "Уф. Ги изедоа најубавите парчиња. Ги чував за себе.",
   },
   "Fine. FINE. They can stay. Five minutes.": {
     en: "Fine. FINE. They can stay. Five minutes.",
@@ -175,7 +175,7 @@ export const MANGO_TEXT: Record<string, import("@/i18n/languages").Localized<str
   },
   "Eeeek! Quick, someone draw this moment!": {
     en: "Eeeek! Quick, someone draw this moment!",
-    mk: "Иии! Брзо, некој нека го нацрта овој момент!",
+    mk: "Иии! Брзо, некој нека го овековечи овој момент!",
   },
   "I am not screaming. You're screaming. SQUAWK!": {
     en: "I am not screaming. You're screaming. SQUAWK!",
