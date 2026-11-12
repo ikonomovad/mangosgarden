@@ -2,6 +2,7 @@ import mangoPhoto from "@/assets/mango-photo.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useLanguage } from "@/i18n/LanguageProvider";
+import { Heart } from "lucide-react";
 
 /** Welcome-only introduction; no game state or persistence. */
 export function MeetMango() {
@@ -14,14 +15,21 @@ export function MeetMango() {
         </Button>
       </DialogTrigger>
       <DialogContent className="viewport-dialog w-[calc(100%-2rem)] max-w-[var(--page-max)] overflow-y-auto overscroll-contain rounded-card border-0 bg-card p-5 text-card-foreground shadow-soft motion-reduce:animate-none">
-        <img
-          src={mangoPhoto.url}
-          alt={t("mangoPhotoAlt")}
-          loading="lazy"
-          width={768}
-          height={1023}
-          className="mt-5 aspect-[4/3] w-full rounded-xl object-cover object-[center_40%] shadow-soft"
-        />
+        <div className="relative mt-5 flex justify-center">
+          <img
+            src={mangoPhoto.url}
+            alt={t("mangoPhotoAlt")}
+            loading="lazy"
+            width={768}
+            height={1023}
+            className="h-auto max-h-[420px] w-auto max-w-full rounded-xl object-contain shadow-soft"
+          />
+          <div aria-hidden="true" className="pointer-events-none absolute right-1 top-1/2 h-28 w-12">
+            <Heart className="mango-heart mango-heart-purple absolute bottom-0 left-0 h-7 w-7 fill-current" />
+            <Heart className="mango-heart mango-heart-red absolute bottom-0 right-0 h-6 w-6 fill-current" />
+            <Heart className="mango-heart mango-heart-pink absolute bottom-0 left-2 h-8 w-8 fill-current" />
+          </div>
+        </div>
         <DialogHeader className="text-left">
           <DialogTitle className="font-display text-2xl leading-tight text-foreground">{t("meetMango")}</DialogTitle>
           <DialogDescription className="text-sm leading-relaxed text-foreground">{t("mangoStory")}</DialogDescription>

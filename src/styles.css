@@ -152,6 +152,9 @@
   --daisy: oklch(0.98 0.01 90);
   --grape: oklch(0.45 0.12 310);
   --leaf: oklch(0.6 0.12 140);
+  --mango-heart-purple: var(--lavender);
+  --mango-heart-red: var(--poppy);
+  --mango-heart-pink: oklch(0.75 0.15 355);
   --shadow-soft: 0 10px 24px -12px oklch(0.3 0.06 80 / 0.4);
   --radius-card: 20px;
   --page-max: 480px;
@@ -302,7 +305,20 @@
 .rarity-delayed .gem-streak { animation-delay: 1.1s; }
 .rarity-delayed .gem-streak-repeat { animation-delay: 1.1s, 5.1s; }
 .gem-sparkle { animation: gem-twinkle 2.4s ease-in-out infinite; }
+@keyframes mango-heart-rise {
+  0% { opacity: 0; transform: translateY(0) scale(0.6) rotate(-12deg); }
+  18% { opacity: 1; }
+  70% { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-100px) scale(1.1) rotate(12deg); }
+}
+.mango-heart { opacity: 0; animation: mango-heart-rise 2.4s ease-out both; }
+.mango-heart-purple { color: var(--mango-heart-purple); animation-delay: 0.2s; }
+.mango-heart-red { color: var(--mango-heart-red); animation-delay: 0.6s; }
+.mango-heart-pink { color: var(--mango-heart-pink); animation-delay: 1s; }
 @media (prefers-reduced-motion: reduce) {
+  .mango-heart { animation: none !important; opacity: 0.85; }
+  .mango-heart-purple { transform: translateY(-72px); }
+  .mango-heart-red { transform: translateY(-36px); }
   .gem-streak, .gem-streak-repeat, .gem-sparkle { animation: none !important; }
   .gem-streak { opacity: 0; }
 }
