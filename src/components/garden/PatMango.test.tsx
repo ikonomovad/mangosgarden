@@ -9,7 +9,11 @@ afterEach(() => { cleanup(); localStorage.clear(); });
 async function mount(today: string, onPat = vi.fn()) {
   const r = render(<LanguageProvider><PatButton today={today} onPat={onPat} /></LanguageProvider>);
   await act(async () => {});
-  return { ...r, onPat, button: () => r.container.querySelector<HTMLButtonElement>("button[aria-label=\"Pat Mango\"]")! };
+  return { ...r, onPat, button: () => {
+    const element = r.container.querySelector<HTMLButtonElement>('button[aria-label="Pet Mango"]');
+    if (!element) throw new Error("Pet Mango button is missing");
+    return element;
+  } };
 }
 
 describe("PatButton", () => {

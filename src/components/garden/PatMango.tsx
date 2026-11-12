@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { claimPat, patAvailable } from "@/lib/pat";
 
@@ -17,6 +18,9 @@ export function PatButton({ today, onPat }: { today: string; onPat: () => void }
     onPat();
   };
   return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
     <Button
       variant="ghost"
       size="icon"
@@ -25,10 +29,16 @@ export function PatButton({ today, onPat }: { today: string; onPat: () => void }
       tabIndex={available ? 0 : -1}
       disabled={!available}
       onClick={click}
-      className={`float-btn h-11 w-11 rounded-full p-0 ${available ? "" : "invisible"}`}
+      className={`float-btn h-11 w-11 rounded-full p-0 [&_svg]:size-8 ${available ? "" : "invisible"}`}
     >
       <PatHand />
     </Button>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="bg-card text-foreground shadow-soft">
+          {t("patMango")}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
