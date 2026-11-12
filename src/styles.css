@@ -79,6 +79,9 @@
   --color-paper: var(--paper);
   --color-garden-soft: var(--garden-soft);
   --color-rare: var(--rare);
+  --color-rarity-common: var(--rarity-common);
+  --color-rarity-uncommon: var(--rarity-uncommon);
+  --color-rarity-foreground: var(--rarity-foreground);
   --color-poppy: var(--poppy);
   --color-lavender: var(--lavender);
   --color-daisy: var(--daisy);
@@ -140,6 +143,9 @@
   --paper: var(--card);
   --garden-soft: oklch(0.92 0.06 135);
   --rare: oklch(0.78 0.15 80);
+  --rarity-common: var(--background);
+  --rarity-uncommon: var(--chart-5);
+  --rarity-foreground: oklch(0.25 0.035 60);
   --rare-foreground: oklch(0.35 0.07 60);
   --poppy: oklch(0.62 0.2 28);
   --lavender: oklch(0.68 0.12 300);

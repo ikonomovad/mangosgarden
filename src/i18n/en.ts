@@ -1,4 +1,8 @@
 export const en = {
+  rarityCommon: "Common", rarityUncommon: "Uncommon", rarityRare: "Rare",
+  findOutMore: "Find out more", askChatGPT: "Ask ChatGPT",
+  birdSearchQuery: "{name} bird",
+  birdChatPrompt: "Tell me more about the {name}. Include interesting facts, its habits, and what it eats.",
   appName: "Mango's Garden", welcomeTitle: "Who's coming for breakfast?", welcomeText: "Put out one snack a day and see which wild bird drops by.", start: "Start", snack: "Put out a snack", pantry: "Today's pantry", pantryText: "Pick one to put on the feeder.", arrival: "Someone's here…", resting: "The feeder is resting until tomorrow", countdown: "Time until next visitor", hours: "h", minutes: "m", seconds: "s",
   book: "Bird book", back: "← Back to the garden", collected: "collected", of: "{count} of {total}", totalVisits: "total visits", bestStreak: "best streak", new: "New!", newBird: "New bird!", undiscovered: "Undiscovered bird", firstSeen: "First seen", visits: "Visits", visited: "Visited {count} times", visitedOne: "Visited {count} time", seenEating: "Seen eating:", favorites: "Favorite foods:", common: "Common", uncommon: "Uncommon", rare: "Rare ✨",
   controls: "Game controls", mute: "Mute sounds", enableSound: "Enable sounds", streak: "{count} day streak", language: "Change language", mango: "Mango the lovebird", close: "Close", home: "Go home", notFound: "Page not found", notFoundText: "The page you're looking for doesn't exist or has been moved.", errorTitle: "This page didn't load", errorText: "Something went wrong on our end. You can try refreshing or head back home.", retry: "Try again",

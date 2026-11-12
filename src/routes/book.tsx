@@ -11,6 +11,9 @@ import { liveStreak, todayKey } from "@/lib/game";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { PageShell } from "@/components/layout/PageShell";
 import { favoritesKnown } from "@/lib/personality";
+import { Button } from "@/components/ui/button";
+import { ExternalLink, MessageCircle } from "lucide-react";
+import { birdChatUrl, birdSearchUrl } from "@/lib/bird-links";
 
 export const Route = createFileRoute("/book")({
   head: () => ({
@@ -34,7 +37,7 @@ let snapshot: Collection | null = null;
 
 function Book() {
   usePageMetadata("book");
-  const { t, text, number, date } = useLanguage();
+  const { t, text, number, date, language } = useLanguage();
   const birdText = (bird: Bird) => text(BIRD_TEXT[bird.id] ?? { en: bird });
   const [book, setBook] = useState<Collection>({});
   const [best, setBest] = useState(0);
@@ -118,7 +121,12 @@ function Book() {
               <div className="h-36 w-36 rounded-full bg-garden-soft p-4">
                 <BirdSvg look={open.look} className="h-full w-full" />
               </div>
-              <DialogTitle className="font-display text-2xl text-foreground">{birdText(open).name}</DialogTitle>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <DialogTitle className="font-display text-2xl text-foreground">{birdText(open).name}</DialogTitle>
+                <span className={`rounded-full px-3 py-1 font-display text-xs text-rarity-foreground ${open.rarity === "rare" ? "bg-rare" : open.rarity === "uncommon" ? "bg-rarity-uncommon" : "bg-rarity-common"}`}>
+                  {t(open.rarity === "rare" ? "rarityRare" : open.rarity === "uncommon" ? "rarityUncommon" : "rarityCommon")}
+                </span>
+              </div>
               <DialogDescription className="text-muted-foreground">{birdText(open).fact}</DialogDescription>
             </DialogHeader>
             <dl className="space-y-2 text-sm">
@@ -131,6 +139,18 @@ function Book() {
                 <Row label={t("favorites")}>{favorites(open).map((f, index) => <span key={f.id}>{index > 0 && ", "}<FoodIcon id={f.id} size={16} /> {text(FOOD_TEXT[f.id])}</span>)}</Row>
               )}
             </dl>
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button asChild variant="secondary" size="sm">
+                <a href={birdSearchUrl(birdText(open).name, language)} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink aria-hidden="true" />{t("findOutMore")}
+                </a>
+              </Button>
+              <Button asChild variant="secondary" size="sm">
+                <a href={birdChatUrl(birdText(open).name, language)} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle aria-hidden="true" />{t("askChatGPT")}
+                </a>
+              </Button>
+            </div>
           </DialogContent>
         )}
       </Dialog>

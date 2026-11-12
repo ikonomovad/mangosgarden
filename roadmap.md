@@ -24,3 +24,7 @@
 # Storybook food icons
 - [x] Add all ten SVG icons and replace emoji displays without changing content or gameplay.
 - [x] Run icon coverage and existing tests; verify pantry, feeder, and book displays.
+
+# Bird detail learning links
+- [x] Add translated rarity pills, link labels/templates, and tested URL helpers.
+- [x] Verify collected dialogs and locked cards in English/Macedonian on desktop/mobile.

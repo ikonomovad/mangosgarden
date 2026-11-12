@@ -1,6 +1,10 @@
 import type { en } from "./en";
 
 export const mk: Record<keyof typeof en, string> = {
+  rarityCommon: "Честа", rarityUncommon: "Помалку честа", rarityRare: "Ретка",
+  findOutMore: "Дознај повеќе", askChatGPT: "Прашај го ChatGPT",
+  birdSearchQuery: "{name} птица",
+  birdChatPrompt: "Кажи ми повеќе за птицата {name}. Вклучи интересни факти, нејзините навики и што јаде.",
   appName: "Градината на Манго",
   welcomeTitle: "Кој ни доаѓа на појадок?",
   welcomeText: "Остави по една ужинка секој ден и откриј која дива птица ќе нè посети.",
