@@ -47,4 +47,4 @@ use the editor.
 - Food artwork lives in the single FoodIcon registry, using global theme tokens; food displays reuse it and fall back to the data emoji only when artwork is missing.
 - Bird detail external URLs are built by pure helpers in src/lib/bird-links.ts using translated templates and the selected language — keeps encoding testable without changing gameplay.
 - The welcome-only Mango introduction is isolated in MeetMango with a CDN photo pointer and translated copy, keeping it independent of gameplay and floating controls.
-- Once-a-day pat lives in src/lib/pat.ts under its own storage key, never touching game data; debug reset today clears it.
+- Once-a-day pat lives in src/lib/pat.ts under its own storage key, never touching game data; PatButton owns availability (hidden but space-kept once used) and debug reset today clears it.

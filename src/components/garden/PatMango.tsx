@@ -1,4 +1,36 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { claimPat, patAvailable } from "@/lib/pat";
+
+/** Round pat button; hidden (space kept) once today's pat is used. Double taps count once. */
+export function PatButton({ today, onPat }: { today: string; onPat: () => void }) {
+  const { t } = useLanguage();
+  const [available, setAvailable] = useState(false);
+  const busy = useRef(false);
+  useEffect(() => { busy.current = false; setAvailable(!!today && patAvailable(today)); }, [today]);
+  const click = () => {
+    if (busy.current || !available) return;
+    busy.current = true;
+    if (!claimPat(today)) { setAvailable(false); return; }
+    setAvailable(false);
+    onPat();
+  };
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      aria-label={t("patMango")}
+      aria-hidden={!available}
+      tabIndex={available ? 0 : -1}
+      disabled={!available}
+      onClick={click}
+      className={`float-btn h-11 w-11 rounded-full p-0 ${available ? "" : "invisible"}`}
+    >
+      <PatHand />
+    </Button>
+  );
+}
 
 export function PatHand() {
   return (

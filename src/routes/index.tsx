@@ -21,8 +21,7 @@ import { pickRandom } from "@/lib/random";
 import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, saveDay, saveSound, saveStreak } from "@/lib/storage";
 import { pendingMilestones, reactionFor } from "@/lib/personality";
 import { playArrival, playPat } from "@/lib/sounds";
-import { claimPat, patAvailable } from "@/lib/pat";
-import { PatHand, PatHearts } from "@/components/garden/PatMango";
+import { PatButton, PatHearts } from "@/components/garden/PatMango";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,19 +63,13 @@ function Index() {
   const [learned, setLearned] = useState(false);
   const [sound, setSound] = useState(false);
   const [pantryOpen, setPantryOpen] = useState(false);
-  const [canPat, setCanPat] = useState(false);
-  const [patAnim, setPatAnim] = useState<{ kind: "pat" | "tilt"; n: number } | null>(null);
+  const [patAnim, setPatAnim] = useState<number | null>(null);
   const [patted, setPatted] = useState(false);
 
   const pat = () => {
-    if (claimPat(todayKey())) {
-      setCanPat(false);
-      setPatted(true);
-      if (sound) playPat();
-      setPatAnim((a) => ({ kind: "pat", n: (a?.n ?? 0) + 1 }));
-    } else {
-      setPatAnim((a) => ({ kind: "tilt", n: (a?.n ?? 0) + 1 }));
-    }
+    setPatted(true);
+    if (sound) playPat();
+    setPatAnim((n) => (n ?? 0) + 1);
   };
 
   const loadToday = () => {
@@ -89,7 +82,6 @@ function Index() {
     setGreeting(pickRandom(GREETINGS, Math.random));
     setStreak(liveStreak(loadStreak(), key));
     setSound(loadSound());
-    setCanPat(patAvailable(key));
     setPatted(false);
     setPatAnim(null);
     setMilestones([]);
@@ -192,13 +184,11 @@ function Index() {
           <GardenScene
             full
             line={patted ? t("patLine") : mangoLine(greeting)}
-            mangoAnim={patAnim ? `${patAnim.kind === "pat" ? "mango-pat" : "mango-tilt"} pat-${patAnim.n}` : undefined}
-            mangoOverlay={patAnim?.kind === "pat" ? <PatHearts key={patAnim.n} /> : null}
+            mangoAnim={patAnim ? `mango-pat pat-${patAnim}` : undefined}
+            mangoOverlay={patAnim ? <PatHearts key={patAnim} /> : null}
           />
           <div className="relative z-10 flex justify-end">
-            <Button variant="ghost" size="icon" aria-label={t("patMango")} onClick={pat} className={`float-btn h-11 w-11 rounded-full p-0 ${canPat ? "pat-pulse" : "opacity-50"}`}>
-              <PatHand />
-            </Button>
+            <PatButton today={today} onPat={pat} />
           </div>
           <Button size="lg" className="relative z-10 rounded-full font-display text-lg shadow-soft" onClick={() => setPantryOpen(true)}>
             {t("snack")}
