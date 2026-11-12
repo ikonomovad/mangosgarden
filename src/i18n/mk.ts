@@ -39,6 +39,7 @@ export const mk: Record<keyof typeof en, string> = {
   minutes: "м",
   seconds: "с",
   book: "Книга на птици",
+  bookHeading: "Колекција птици од Градината на Манго",
   back: "Назад во градината",
   favoritesHint: "Уште {count} посети за да откриеш",
   favoritesHintOne: "Уште 1 посета за да откриеш",

@@ -72,7 +72,7 @@ function Book() {
   return (
     <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
       <Link to="/" className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border-2 border-border bg-card px-4 font-display text-sm text-card-foreground shadow-soft transition-transform hover:-translate-y-0.5 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"><ArrowLeft aria-hidden="true" className="size-4" />{t("back")}</Link>
-      <h1 className="text-center font-display text-4xl text-foreground">{t("book")}</h1>
+      <h1 className="text-center font-display text-4xl text-foreground">{t("bookHeading")}</h1>
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{t("of", { count: collected, total: BIRDS.length })}</p>
