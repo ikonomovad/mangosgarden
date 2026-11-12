@@ -1,4 +1,5 @@
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
+import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import type { Bird } from "@/data/birds";
 
@@ -38,8 +39,29 @@ export function RarityBadge({ rarity, delayed = false }: { rarity: Rarity; delay
   const { t } = useLanguage();
   const clip = useId().replace(/:/g, "");
   const gem = GEMS[rarity];
+  const label = t(LABEL[rarity]);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => setOpen(false), 3000);
+    return () => clearTimeout(timer);
+  }, [open]);
+  const keyboardFocus = (el: Element) => { try { return el.matches(":focus-visible"); } catch { return false; } };
   return (
-    <span data-rarity={rarity} className={`rarity-badge inline-flex shrink-0 items-center gap-1 ${delayed ? "rarity-delayed" : ""}`}>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverAnchor asChild>
+    <button
+      type="button"
+      data-rarity={rarity}
+      aria-label={label}
+      aria-expanded={open}
+      onClick={() => setOpen((v) => !v)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setOpen(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setOpen(false)}
+      onFocus={(e) => keyboardFocus(e.currentTarget) && setOpen(true)}
+      onBlur={() => setOpen(false)}
+      className={`rarity-badge inline-grid h-11 w-11 shrink-0 place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-ring ${delayed ? "rarity-delayed" : ""}`}
+    >
       <span className="relative inline-block h-9 w-9">
         <svg viewBox="0 0 36 36" width="36" height="36" aria-hidden="true" className="rarity-gem overflow-visible">
           <defs><clipPath id={clip}><path d={gem.shape} /></clipPath></defs>
@@ -59,7 +81,20 @@ export function RarityBadge({ rarity, delayed = false }: { rarity: Rarity; delay
           </>
         )}
       </span>
-      <span className="font-display text-xs text-muted-foreground">{t(LABEL[rarity])}</span>
-    </span>
+    </button>
+      </PopoverAnchor>
+      <PopoverContent
+        side="top"
+        sideOffset={4}
+        collisionPadding={8}
+        role="tooltip"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => { if ((e.target as Element)?.closest?.(`[data-rarity]`) ) e.preventDefault(); }}
+        className="w-auto rounded-full border-0 bg-card px-3 py-1 font-display text-xs text-card-foreground shadow-soft"
+      >
+        {label}
+      </PopoverContent>
+    </Popover>
   );
 }
