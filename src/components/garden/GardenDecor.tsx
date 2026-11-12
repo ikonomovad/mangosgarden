@@ -34,7 +34,7 @@ export function FigBranch({ className }: { className?: string }) {
     <svg viewBox="0 0 200 130" className={className} aria-hidden>
       <path d="M0 10 C50 18 90 30 130 52 C150 62 165 78 175 92" fill="none" stroke="var(--wood)" strokeWidth="6" strokeLinecap="round" />
       {[leaf(40, 18, 200, 1), leaf(85, 32, 160, 2), leaf(130, 52, 210, 3), leaf(172, 92, 170, 4)]}
-      {([[64, 36], [148, 74]] as const).map(([x, y]) => (
+      {([[64, 25], [148, 64]] as const).map(([x, y]) => (
         <g key={x}>
           <path d={`M${x} ${y} v6`} stroke="var(--wood)" strokeWidth="2" />
           <path d={`M${x} ${y + 5} C${x - 9} ${y + 8} ${x - 8} ${y + 22} ${x} ${y + 22} C${x + 8} ${y + 22} ${x + 9} ${y + 8} ${x} ${y + 5}Z`} fill="var(--grape)" />
