@@ -17,6 +17,7 @@ import { ArrowLeft, ExternalLink, Lock, MessageCircle } from "lucide-react";
 import { birdChatUrl, birdSearchUrl } from "@/lib/bird-links";
 
 export const Route = createFileRoute("/book")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: translate("bookTitle") },

@@ -163,7 +163,7 @@ Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application 
 - Everything is saved in this browser only: no accounts, no cross-device sync. Clearing site data erases progress.
 - The daily offer and visitor are seeded by date, so two players picking the same food on the same day (with the same history) get the same bird.
 - Sounds need a tap first (browser rule) and are silent on devices without Web Audio.
-- No `sitemap.xml` yet: it has to list the game's real web address, so add it after publishing and reference it from `robots.txt`.
+- `public/sitemap.xml` is generated from the router: pages opt in with `staticData: { sitemap: true }` in their own route file, and `robots.txt` points crawlers at `https://mangosgarden.lovable.app/sitemap.xml`.
 
 ## Hidden developer test panel
 

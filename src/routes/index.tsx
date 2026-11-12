@@ -24,6 +24,7 @@ import { playArrival, playPat } from "@/lib/sounds";
 import { PatButton, PatHearts } from "@/components/garden/PatMango";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: translate("indexTitle") },
