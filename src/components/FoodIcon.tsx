@@ -4,9 +4,9 @@ import { FOODS } from "@/data/foods";
 // Shared flat artwork; all palette values come from the garden's theme tokens.
 export const FOOD_ICONS: Record<string, ReactNode> = {
   sunflower: <>
-    <path d="M9 34 Q4 20 13 12 Q24 17 21 31 Q18 40 9 34Z" fill="var(--wood)" />
-    <path d="M21 35 Q20 19 30 15 Q40 24 32 36 Q28 42 21 35Z" fill="var(--wood)" />
-    <path d="M32 35 Q32 23 41 23 Q48 35 38 40Z" fill="var(--wood)" />
+    <path d="M9 34 Q4 20 13 12 Q24 17 21 31 Q18 40 9 34Z" fill="var(--sunflower-seed)" />
+    <path d="M21 35 Q20 19 30 15 Q40 24 32 36 Q28 42 21 35Z" fill="var(--sunflower-seed)" />
+    <path d="M32 35 Q32 23 41 23 Q48 35 38 40Z" fill="var(--sunflower-seed)" />
     <path d="M13 17 Q17 25 13 33 M29 20 Q30 28 26 35 M40 28 L37 35" stroke="var(--card)" />
   </>,
   millet: <g fill="var(--sun)">
@@ -28,9 +28,10 @@ export const FOOD_ICONS: Record<string, ReactNode> = {
     <path d="M24 9 Q20 17 25 23 Q20 30 24 40 M16 15 Q10 21 15 29 M32 15 Q38 22 32 31" fill="none" />
   </>,
   apple: <>
-    <path d="M5 16 Q17 5 28 15 L18 34 Q7 31 5 16Z M21 21 Q32 11 43 21 L34 41 Q23 38 21 21Z" fill="var(--poppy)" />
-    <path d="M8 16 Q17 9 24 16 L17 30 Q10 27 8 16Z M24 22 Q32 15 39 22 L33 37 Q26 34 24 22Z" fill="var(--card)" />
-    <path d="M16 20 Q12 23 17 25 Q20 23 16 20Z M32 26 Q28 29 33 31 Q36 29 32 26Z" fill="var(--foreground)" stroke="none" />
+    <path d="M24 15 Q22 9 25 4" stroke="var(--wood)" strokeWidth="2.5" />
+    <path d="M25 11 Q28 3 38 6 Q34 15 25 11Z" fill="var(--leaf)" />
+    <path d="M24 16 C12 8 4 17 7 29 C9 40 16 45 24 41 C32 45 39 40 41 29 C44 17 36 8 24 16Z" fill="var(--poppy)" />
+    <path d="M14 20 Q10 24 13 30" stroke="var(--card)" strokeWidth="2.5" />
   </>,
   berries: <>
     <path d="M23 15 Q23 3 40 6 Q37 18 23 15Z" fill="var(--leaf)" />
@@ -53,10 +54,8 @@ export const FOOD_ICONS: Record<string, ReactNode> = {
     </g>
   </>,
   water: <>
-    <path d="M21 31 H27 V41 H34 V44 H14 V41 H21Z" fill="var(--wood-light)" />
-    <path d="M5 22 H43 Q39 35 24 35 Q9 35 5 22Z" fill="var(--card)" />
-    <ellipse cx="24" cy="22" rx="19" ry="4" fill="var(--chart-5)" />
-    <path d="M24 3 C22 7 18 10 18 14 A6 6 0 0 0 30 14 C30 10 26 7 24 3Z" fill="var(--chart-5)" />
+    <path d="M24 4 C20 13 10 21 10 29 A14 14 0 0 0 38 29 C38 21 28 13 24 4Z" fill="var(--chart-5)" />
+    <path d="M17 27 Q14 34 21 36" stroke="var(--card)" strokeWidth="2.5" />
   </>,
 };
 
