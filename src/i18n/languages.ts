@@ -14,7 +14,7 @@ export function languageConfig(language: Language) {
 }
 export function t(key: TranslationKey, params: Record<string, string | number> = {}, language: Language = "en"): string {
   const config = languageConfig(language);
-  const message = config.messages[key] ?? en[key];
+  const message: string = config.messages[key] ?? en[key] ?? key;
   return message.replace(/\{(\w+)\}/g, (match, name: string) => {
     const value = params[name];
     return value === undefined ? match : typeof value === "number" ? new Intl.NumberFormat(config.locale).format(value) : value;
