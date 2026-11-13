@@ -34,7 +34,7 @@ const isObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v =
 // ---------- version + migration ----------
 export const VERSION_KEY = "mangos-garden:version";
 /** Bump when the saved shape changes and add a step in `migrate`. Never wipe data. */
-export const STORAGE_VERSION = 1;
+export const STORAGE_VERSION = 2;
 
 const BIRD_IDS = BIRDS.map((b) => b.id);
 const isBirdId = (v: unknown): v is string => typeof v === "string" && BIRD_IDS.includes(v);
@@ -68,6 +68,10 @@ export function migrate() {
       }
       write(BOOK_KEY, JSON.stringify(next));
     }
+  }
+  if (from < 2) {
+    // v1 → v2: add the completed-books record with safe defaults.
+    if (!isObject(readJSON(BOOKS_KEY))) write(BOOKS_KEY, JSON.stringify({ completed: 0 }));
   }
   write(VERSION_KEY, String(STORAGE_VERSION));
 }
@@ -268,4 +272,36 @@ export function loadDaysSinceRare(): number {
 }
 export function saveDaysSinceRare(n: number) {
   write(PITY_KEY, String(n));
+}
+
+// ---------- completed books: kept forever, separate from the collection ----------
+export const BOOKS_KEY = "mangos-garden:books";
+export interface Books { completed: number; firstCompleted?: string }
+export function loadBooks(): Books {
+  const raw = readJSON(BOOKS_KEY);
+  if (!isObject(raw)) return { completed: 0 };
+  const n = Number(raw["completed"]);
+  const completed = Number.isSafeInteger(n) && n >= 0 ? n : 0;
+  return completed && isDateKey(raw["firstCompleted"]) ? { completed, firstCompleted: raw["firstCompleted"] } : { completed };
+}
+
+const COLLECTION_MILESTONES: Milestone[] = ["first-bird", "collection-half", "collection-all"];
+/** Starts a fresh bird book once all birds are collected. Streak, today's lock, pat, sound and language stay. */
+export function startNewBook(today: string): Books | null {
+  const collection = loadCollection();
+  if (!BIRDS.every((b) => collection[b.id])) return null;
+  const books = loadBooks();
+  const next: Books = { completed: books.completed + 1, firstCompleted: books.firstCompleted ?? today };
+  write(BOOKS_KEY, JSON.stringify(next));
+  saveCollection({});
+  saveDaysSinceRare(0);
+  const memory = loadPersonality();
+  memory.shown = memory.shown.filter((id) => !COLLECTION_MILESTONES.includes(id));
+  write(PERSONALITY_KEY, JSON.stringify(memory));
+  const all = loadHistory();
+  if (all[today]) {
+    delete all[today].collectionBefore;
+    write(KEY, JSON.stringify(all));
+  }
+  return next;
 }

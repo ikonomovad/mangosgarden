@@ -4,7 +4,7 @@ import { clearPat } from "@/lib/pat";
 import { loadCollection, loadDaysSinceRare, loadHistory, loadStreak, resetDay, saveDaysSinceRare, saveStreak } from "@/lib/storage";
 
 export const DEBUG_SESSION_KEY = "mangos-garden-debug:enabled";
-const GAME_KEYS = ["days", "collection", "streak", "pity", "personality", "sound", "version", "pat"];
+const GAME_KEYS = ["days", "collection", "streak", "pity", "personality", "sound", "version", "pat", "books"];
 
 export function debugEnabled() {
   if (!ENABLE_DEBUG_PANEL) return false;
@@ -72,4 +72,9 @@ export function clearGameData() {
     for (const key of GAME_KEYS) localStorage.removeItem(`mangos-garden:${key}`);
     return true;
   } catch { return false; }
+}
+export function completeBook() {
+  const book = loadCollection();
+  for (const b of BIRDS) book[b.id] ??= { firstSeen: todayKey(), visits: 1, seenFoods: [], unseenInBook: true };
+  try { localStorage.setItem("mangos-garden:collection", JSON.stringify(book)); return true; } catch { return false; }
 }

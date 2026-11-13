@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BIRDS } from "@/data/birds";
 import { ENABLE_DEBUG_PANEL, liveStreak } from "@/lib/game";
-import { changeClock, clearGameData, debugEnabled, readDebugState, resetToday, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
+import { changeClock, clearGameData, completeBook, debugEnabled, readDebugState, resetToday, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
 
 export function DeveloperPanel({ onApply = () => window.location.reload() }: { onApply?: () => void }) {
   const { t, text, number, locale } = useLanguage();
@@ -70,6 +70,7 @@ export function DeveloperPanel({ onApply = () => window.location.reload() }: { o
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" className="min-h-11" onClick={() => apply(resetToday)}><RotateCcw /> {t("reset")}</Button>
+            <Button variant="secondary" className="min-h-11" onClick={() => apply(completeBook)}>{t("completeBook")}</Button>
             <Button variant="destructive" className="min-h-11" onClick={() => { if (window.confirm(t("clearConfirm"))) apply(clearGameData); }}>{t("clear")}</Button>
           </div>
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}

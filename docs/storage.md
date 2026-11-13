@@ -11,6 +11,7 @@ All keys start with `mangos-garden:`. Every loader is wrapped in try/catch and v
 | `mangos-garden:sound` | off | forever |
 | `mangos-garden:language` | device language, else `en` | forever |
 | `mangos-garden:pat` | none | one date: today's pat |
+| `mangos-garden:books` | `{completed:0}` | forever |
 
 ## `mangos-garden:days`
 ```json
@@ -67,4 +68,10 @@ The developer test panel keeps its own keys, separate from game data: `mangos-ga
 
 ## `mangos-garden:version`
 
-A plain number: the saved-data format version (currently `1`). Missing means `0` (saves from before versioning); `migrate()` upgrades them in place without losing progress.
+A plain number: the saved-data format version (currently `2`; v2 adds `books`). Missing means `0` (saves from before versioning); `migrate()` upgrades them in place without losing progress.
+
+## `mangos-garden:books`
+```json
+{ "completed": 1, "firstCompleted": "2026-11-13" }
+```
+Completed bird books; the current book is `completed + 1`. Missing or corrupted data falls back to `{completed:0}`. "Start a new book" (Bird Book, only when every bird is collected) empties the collection, sets pity to 0, removes the `first-bird`/`collection-half`/`collection-all` milestones, clears today's `collectionBefore` and adds 1 here. Streak, today's visit, pat, sound and language stay.

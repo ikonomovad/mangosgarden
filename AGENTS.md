@@ -48,3 +48,4 @@ use the editor.
 - Bird detail external URLs are built by pure helpers in src/lib/bird-links.ts using translated templates and the selected language — keeps encoding testable without changing gameplay.
 - The welcome-only Mango introduction is isolated in MeetMango with a CDN photo pointer and translated copy, keeping it independent of gameplay and floating controls.
 - Once-a-day pat lives in src/lib/pat.ts under its own storage key, never touching game data; PatButton owns availability (hidden but space-kept once used) and debug reset today clears it.
+- Completed-book count lives under its own storage key; startNewBook in storage.ts resets only collection, pity and collection milestones so streak and daily state are never touched.

@@ -6,7 +6,8 @@ import { BirdSvg } from "@/components/garden/BirdSvg";
 import { FoodIcon } from "@/components/FoodIcon";
 import { BIRD_TEXT, BIRDS, LOVES, type Bird } from "@/data/birds";
 import { FOOD_TEXT, getFood, type FoodId } from "@/data/foods";
-import { loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
+import { BookBadge, BookComplete, BooksCompleted } from "@/components/garden/BookComplete";
+import { loadBooks, startNewBook, loadCollection, loadSound, loadStreak, markBookSeen, saveSound, type Collection } from "@/lib/storage";
 import { liveStreak, todayKey } from "@/lib/game";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { RarityBadge, RarityGem } from "@/components/garden/RarityBadge";
@@ -50,6 +51,7 @@ function Book() {
   const [open, setOpen] = useState<Bird | null>(null);
   const [streak, setStreak] = useState(0);
   const [sound, setSound] = useState(false);
+  const [books, setBooks] = useState(0);
   useEffect(() => {
     // Snapshot before clearing "New!" flags; survives dev double-mounting.
     if (!snapshot) {
@@ -60,6 +62,7 @@ function Book() {
     setBest(loadStreak().best);
     setStreak(liveStreak(loadStreak(), todayKey()));
     setSound(loadSound());
+    setBooks(loadBooks().completed);
     return () => {
       setTimeout(() => (snapshot = null), 0);
     };
@@ -77,6 +80,7 @@ function Book() {
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{t("of", { count: collected, total: BIRDS.length })}</p>
           <p className="text-xs text-muted-foreground">{t("collected")}</p>
+          <BookBadge completed={books} />
           <div role="progressbar" aria-label={t("collectionProgress")} aria-valuemin={0} aria-valuemax={BIRDS.length} aria-valuenow={collected} className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
             <div className="h-full rounded-full bg-primary transition-[width] duration-700" style={{ width: `${(collected / BIRDS.length) * 100}%` }} />
           </div>
@@ -90,6 +94,11 @@ function Book() {
           <p className="text-xs text-muted-foreground">{t("bestStreak")}</p>
         </div>
       </div>
+      <BooksCompleted completed={books} />
+      <BookComplete collected={collected} completed={books} onConfirm={() => {
+        const next = startNewBook(todayKey());
+        if (next) { snapshot = {}; setBook({}); setBooks(next.completed); }
+      }} />
       <div className="grid grid-cols-2 gap-3">
         {BIRDS.map((b) => {
           const e = book[b.id];

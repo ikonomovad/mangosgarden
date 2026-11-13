@@ -154,7 +154,7 @@ npm run simulate   # 5,000 seeded players x 365 days, to check rarity tuning
 ## Dates and saved data
 
 - **Today:** every "today" (food seed, bird seed, daily lock, streak, countdown, freshness) comes from `todayKey()` in `src/lib/game.ts`: the device's local calendar date as `YYYY-MM-DD`, never UTC. Yesterday/two days ago use `daysBefore()`, which steps calendar days, so daylight-saving changes cannot break streaks or freshness. A last visit dated in the future (clock moved back) keeps the streak instead of resetting it.
-- **Saved-data version:** `mangos-garden:version` (currently `1`). `migrate()` in `src/lib/storage.ts` runs on load and upgrades old saves step by step (v0 → v1 turns any saved bird/food names into stable ids); it never wipes progress. When you change the saved shape, bump `STORAGE_VERSION` and add a step.
+- **Saved-data version:** `mangos-garden:version` (currently `2`). `migrate()` in `src/lib/storage.ts` runs on load and upgrades old saves step by step (v0 → v1 turns any saved bird/food names into stable ids; v1 → v2 adds `mangos-garden:books`); it never wipes progress. When you change the saved shape, bump `STORAGE_VERSION` and add a step.
 - **Robustness:** all localStorage access is wrapped; blocked, full or corrupted storage falls back to safe defaults and unknown birds/foods are dropped.
 - **Tests:** run in the fixed time zone `Europe/Skopje` (set in `vitest.config.ts`); see `src/lib/dates.test.ts`.
 
@@ -166,6 +166,7 @@ Days are local `YYYY-MM-DD` strings. Open the browser dev tools → Application 
 - **Simulate "yesterday's visit":** in `mangos-garden:days`, rename today's key (for example `2026-11-11`) to yesterday's date, then reload. Food choice unlocks and the yesterday rules apply (fresh foods, freshness penalty, "yesterday" reaction).
 - **Test streaks:** edit `mangos-garden:streak`, for example `{"current":2,"best":2,"lastVisit":"<yesterday>"}`, then feed today to reach the 3-day milestone.
 - **Test food hints:** set a bird's `visits` to `2` in `mangos-garden:collection`; the next visit reveals its favorite foods.
+- **Start a new book:** once every bird is collected, the Bird Book shows a "Book complete" panel. Confirming empties the collection, resets pity and the three collection milestones, and adds 1 to `mangos-garden:books` (completed count + first completion date); streak, best streak, today's visit, pat, sound and language stay. The book shows a "Book N" badge and, after the first one, "Books completed: N". Test it with **Complete the book** in the developer panel.
 - **Test Pet Mango:** the button hides after one pat. **Reset today** in the developer panel clears it, or delete `mangos-garden:pat`.
 - **Start fresh:** delete all `mangos-garden:*` keys. Milestones only show once, so clear `mangos-garden:personality` to see them again.
 
