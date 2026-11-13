@@ -1,11 +1,16 @@
 /** Decorative, non-interactive garden details: wildflowers, a grapevine, butterflies. */
 
-type FlowerColor = "poppy" | "lavender" | "daisy";
+import type { Season } from "@/lib/season";
+
+type FlowerColor = "poppy" | "lavender" | "daisy" | "blossom" | "marigold" | "snowdrop";
 
 const PETAL: Record<FlowerColor, string> = {
   poppy: "var(--poppy)",
   lavender: "var(--lavender)",
   daisy: "var(--daisy)",
+  blossom: "var(--blossom)",
+  marigold: "var(--autumn-orange)",
+  snowdrop: "var(--daisy)",
 };
 
 export function Flower({ color, className }: { color: FlowerColor; className?: string }) {
@@ -16,7 +21,7 @@ export function Flower({ color, className }: { color: FlowerColor; className?: s
       {[0, 72, 144, 216, 288].map((a) => (
         <ellipse key={a} cx="20" cy="12" rx="6" ry="9" fill={PETAL[color]} transform={`rotate(${a} 20 20)`} />
       ))}
-      <circle cx="20" cy="20" r="5" fill={color === "poppy" ? "var(--foreground)" : "var(--sun)"} />
+      <circle cx="20" cy="20" r="5" fill={color === "poppy" || color === "marigold" ? "var(--foreground)" : "var(--sun)"} />
     </svg>
   );
 }
@@ -44,14 +49,23 @@ export function FigBranch({ className }: { className?: string }) {
   );
 }
 
-export function AppleTree({ className }: { className?: string }) {
+export function AppleTree({ className, season = "summer" }: { className?: string; season?: Season }) {
+  const dots = { spring: "var(--blossom)", summer: "var(--poppy)", autumn: "var(--poppy)", winter: "" }[season];
   return (
     <svg viewBox="0 0 80 100" className={className} aria-hidden>
       <rect x="35" y="55" width="10" height="45" rx="3" fill="var(--wood)" />
-      <circle cx="40" cy="38" r="34" fill="var(--leaf)" />
-      {([[24, 26], [50, 18], [58, 42], [32, 50], [44, 34], [20, 44]] as const).map(([x, y]) => (
-        <circle key={`${x}-${y}`} cx={x} cy={y} r="4" fill="var(--poppy)" />
+      {season === "winter" ? (
+        <g stroke="var(--wood)" strokeWidth="4" strokeLinecap="round" fill="none">
+          <path d="M40 58 L24 30 M40 58 L56 26 M40 58 V18 M30 42 L16 36 M52 40 L64 34" />
+          <path d="M20 31 h8 M52 27 h8 M36 18 h8" stroke="var(--snow)" strokeWidth="3" />
+        </g>
+      ) : (
+        <circle cx="40" cy="38" r="34" fill="var(--leaf)" />
+      )}
+      {dots && ([[24, 26], [50, 18], [58, 42], [32, 50], [44, 34], [20, 44]] as const).map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={season === "spring" ? 5 : 4} fill={dots} />
       ))}
+      {season === "autumn" && <><circle cx="18" cy="96" r="4" fill="var(--poppy)" /><circle cx="62" cy="97" r="4" fill="var(--poppy)" /></>}
     </svg>
   );
 }
@@ -70,6 +84,40 @@ export function Butterfly({ className }: { className?: string }) {
   );
 }
 
+export function FallingLeaf({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" className={className} aria-hidden>
+      <path d="M10 1 C17 5 17 14 10 19 C3 14 3 5 10 1Z" fill="var(--autumn-orange)" />
+      <path d="M10 3 V18" stroke="var(--wood)" strokeWidth="1" />
+    </svg>
+  );
+}
+
+export function Snowflake({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 10 10" className={className} aria-hidden>
+      <circle cx="5" cy="5" r="4" fill="var(--snow)" />
+    </svg>
+  );
+}
+
+const SEASON_COLORS: Record<Season, FlowerColor[]> = {
+  spring: ["blossom", "daisy", "lavender"],
+  summer: ["poppy", "daisy", "lavender"],
+  autumn: ["marigold", "poppy", "marigold"],
+  winter: ["snowdrop", "snowdrop", "snowdrop"],
+};
+const BASE_ORDER: FlowerColor[] = ["poppy", "daisy", "lavender"];
+
+const PARTICLES = [
+  { left: "8%", delay: "0s", dur: "11s", mobile: true },
+  { left: "22%", delay: "-4s", dur: "13s", mobile: true },
+  { left: "38%", delay: "-8s", dur: "10s", mobile: false },
+  { left: "55%", delay: "-2s", dur: "14s", mobile: true },
+  { left: "70%", delay: "-6s", dur: "12s", mobile: false },
+  { left: "86%", delay: "-9s", dur: "11s", mobile: true },
+];
+
 const FLOWERS: { color: FlowerColor; pos: string; size: string; mobile: boolean }[] = [
   { color: "poppy", pos: "left-[4%] bottom-20", size: "h-12 w-8", mobile: true },
   { color: "daisy", pos: "left-[14%] bottom-8", size: "h-9 w-6", mobile: true },
@@ -84,16 +132,27 @@ const FLOWERS: { color: FlowerColor; pos: string; size: string; mobile: boolean 
 ];
 
 /** All decorations; sits behind scene content and never captures taps. */
-export function GardenDecor() {
+export function GardenDecor({ season = "summer" }: { season?: Season }) {
+  const palette = SEASON_COLORS[season];
+  const particle = season === "autumn" ? "leaf" : season === "winter" ? "snow" : null;
   return (
     <div className="pointer-events-none absolute inset-0" aria-hidden>
       <FigBranch className="absolute left-0 top-16 hidden w-40 sm:block md:w-56" />
-      <AppleTree className="absolute bottom-48 right-[10%] hidden h-24 w-20 md:block" />
+      <AppleTree season={season} className="absolute bottom-48 right-[10%] hidden h-24 w-20 md:block" />
       {FLOWERS.map((f, i) => (
-        <Flower key={i} color={f.color} className={`absolute ${f.pos} ${f.size} ${f.mobile ? "" : "hidden sm:block"}`} />
+        <Flower key={i} color={palette[BASE_ORDER.indexOf(f.color)]!} className={`absolute ${f.pos} ${f.size} ${f.mobile ? "" : "hidden sm:block"}`} />
       ))}
-      <Butterfly className="butterfly-float absolute left-[18%] top-[38%] h-6 w-7" />
-      <Butterfly className="butterfly-float absolute right-[16%] top-[55%] hidden h-5 w-6 [animation-delay:-3s] sm:block" />
+      {!particle && (
+        <>
+          <Butterfly className="butterfly-float absolute left-[18%] top-[38%] h-6 w-7" />
+          <Butterfly className="butterfly-float absolute right-[16%] top-[55%] hidden h-5 w-6 [animation-delay:-3s] sm:block" />
+        </>
+      )}
+      {particle && PARTICLES.map((p, i) => (
+        <div key={i} className={`season-fall absolute -top-6 ${p.mobile ? "" : "hidden sm:block"}`} style={{ left: p.left, animationDelay: p.delay, animationDuration: p.dur }}>
+          {particle === "leaf" ? <FallingLeaf className="h-4 w-4" /> : <Snowflake className="h-2 w-2" />}
+        </div>
+      ))}
     </div>
   );
 }
