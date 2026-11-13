@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BIRDS } from "@/data/birds";
 import { ENABLE_DEBUG_PANEL, liveStreak } from "@/lib/game";
-import { changeClock, setDebugSeason, readDebugSeason, clearGameData, completeBook, debugEnabled, readDebugState, resetToday, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
+import { changeClock, setDebugCat, readDebugCat, setDebugSeason, readDebugSeason, clearGameData, completeBook, debugEnabled, readDebugState, resetToday, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
 
 export function DeveloperPanel({ onApply = () => window.location.reload() }: { onApply?: () => void }) {
   const { t, text, number, locale } = useLanguage();
@@ -82,6 +82,7 @@ export function DeveloperPanel({ onApply = () => window.location.reload() }: { o
                 </Button>
               ))}
             </div>
+            <Button variant="secondary" className="min-h-11" onClick={() => apply(() => setDebugCat(!readDebugCat()))}>{t(readDebugCat() ? "debugCatHide" : "debugCat")}</Button>
           </fieldset>
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>}

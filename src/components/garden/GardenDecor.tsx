@@ -101,6 +101,23 @@ export function Snowflake({ className }: { className?: string }) {
   );
 }
 
+/** Small cat sitting in the grass, tail curled; visits once a week. */
+export function GardenCat({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 60 56" className={className} aria-hidden>
+      <path d="M46 50 C58 48 58 34 50 32" fill="none" stroke="var(--cat)" strokeWidth="5" strokeLinecap="round" className="cat-tail" />
+      <ellipse cx="30" cy="40" rx="17" ry="14" fill="var(--cat)" />
+      <ellipse cx="30" cy="44" rx="8" ry="8" fill="var(--cat-belly)" />
+      <circle cx="30" cy="20" r="12" fill="var(--cat)" />
+      <path d="M19 15 L20 3 L28 10Z M41 15 L40 3 L32 10Z" fill="var(--cat)" />
+      <path d="M21 12 L21.5 6 L25.5 10Z M39 12 L38.5 6 L34.5 10Z" fill="var(--blossom)" />
+      <g className="cat-eyes"><ellipse cx="25" cy="20" rx="1.6" ry="2.2" fill="var(--foreground)" /><ellipse cx="35" cy="20" rx="1.6" ry="2.2" fill="var(--foreground)" /></g>
+      <path d="M28.5 24 h3 l-1.5 1.6Z" fill="var(--blossom)" />
+      <ellipse cx="23" cy="53" rx="5" ry="3" fill="var(--cat)" /><ellipse cx="37" cy="53" rx="5" ry="3" fill="var(--cat)" />
+    </svg>
+  );
+}
+
 const SEASON_COLORS: Record<Season, FlowerColor[]> = {
   spring: ["blossom", "daisy", "lavender"],
   summer: ["poppy", "daisy", "lavender"],
@@ -132,7 +149,7 @@ const FLOWERS: { color: FlowerColor; pos: string; size: string; mobile: boolean 
 ];
 
 /** All decorations; sits behind scene content and never captures taps. */
-export function GardenDecor({ season = "summer" }: { season?: Season }) {
+export function GardenDecor({ season = "summer", cat = false }: { season?: Season; cat?: boolean }) {
   const palette = SEASON_COLORS[season];
   const particle = season === "autumn" ? "leaf" : season === "winter" ? "snow" : null;
   return (
@@ -142,6 +159,7 @@ export function GardenDecor({ season = "summer" }: { season?: Season }) {
       {FLOWERS.map((f, i) => (
         <Flower key={i} color={palette[BASE_ORDER.indexOf(f.color)]!} className={`absolute ${f.pos} ${f.size} ${f.mobile ? "" : "hidden sm:block"}`} />
       ))}
+      {cat && <GardenCat className="absolute bottom-24 left-[24%] h-12 w-12 sm:left-auto sm:bottom-32 sm:right-[22%] sm:h-14 sm:w-14" />}
       {!particle && (
         <>
           <Butterfly className="butterfly-float absolute left-[18%] top-[38%] h-6 w-7" />

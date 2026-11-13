@@ -2,6 +2,7 @@ import { BIRDS } from "@/data/birds";
 import { DEBUG_CLOCK_KEY, ENABLE_DEBUG_PANEL, daysBefore, getDailyOffer, getNow, todayKey } from "@/lib/game";
 import { clearPat } from "@/lib/pat";
 import { DEBUG_SEASON_KEY } from "@/lib/season";
+import { DEBUG_CAT_KEY } from "@/lib/cat";
 import { loadCollection, loadDaysSinceRare, loadHistory, loadStreak, resetDay, saveDaysSinceRare, saveStreak } from "@/lib/storage";
 
 export const DEBUG_SESSION_KEY = "mangos-garden-debug:enabled";
@@ -91,4 +92,10 @@ export function setDebugSeason(season: DebugSeason) {
     else localStorage.setItem(DEBUG_SEASON_KEY, season);
     return true;
   } catch { return false; }
+}
+
+export function readDebugCat() { try { return localStorage.getItem(DEBUG_CAT_KEY) === "1"; } catch { return false; } }
+export function setDebugCat(show: boolean) {
+  if (!ENABLE_DEBUG_PANEL) return false;
+  try { if (show) localStorage.setItem(DEBUG_CAT_KEY, "1"); else localStorage.removeItem(DEBUG_CAT_KEY); return true; } catch { return false; }
 }

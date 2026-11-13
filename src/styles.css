@@ -249,6 +249,11 @@
 @utility sparkle { animation: twinkle 1.4s ease-in-out infinite; }
 
 /* Seasonal garden: only the scene's own tokens change; summer is the default palette. */
+:root { --cat: oklch(0.72 0.12 60); --cat-belly: oklch(0.95 0.03 85); }
+@keyframes cat-tail-sway { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-12deg); } }
+@keyframes cat-blink { 0%,94%,100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+.cat-tail { transform-box: fill-box; transform-origin: 0% 100%; animation: cat-tail-sway 3s ease-in-out infinite; }
+.cat-eyes { transform-box: fill-box; transform-origin: center; animation: cat-blink 5s infinite; }
 :root { --blossom: oklch(0.86 0.08 350); --autumn-orange: oklch(0.7 0.16 55); --snow: oklch(0.98 0.01 230); }
 [data-season="spring"] { --grass: oklch(0.84 0.12 130); --grass-deep: oklch(0.75 0.13 135); --leaf: oklch(0.68 0.14 135); }
 [data-season="autumn"] { --sky: oklch(0.9 0.05 70); --sky-warm: oklch(0.93 0.06 60); --grass: oklch(0.76 0.1 95); --grass-deep: oklch(0.66 0.1 80); --leaf: oklch(0.66 0.15 55); }
@@ -258,6 +263,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .season-fall { animation: none !important; display: none; }
+  .cat-tail, .cat-eyes { animation: none !important; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
   .butterfly-float, .butterfly-wings { animation: none !important; }
 }

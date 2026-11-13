@@ -50,3 +50,4 @@ use the editor.
 - Once-a-day pat lives in src/lib/pat.ts under its own storage key, never touching game data; PatButton owns availability (hidden but space-kept once used) and debug reset today clears it.
 - Completed-book count lives under its own storage key; startNewBook in storage.ts resets only collection, pity and collection milestones so streak and daily state are never touched.
 - Garden scene season comes from the local month via pure src/lib/season.ts; seasons only override scene color tokens via data-season and swap decor — layout, perch, feeder and buttons never move.
+- Weekly cat visit is a pure seeded rule in src/lib/cat.ts (one day per Monday–Sunday week), decoration only — it never affects gameplay.

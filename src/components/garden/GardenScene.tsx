@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { ENABLE_DEBUG_PANEL, getNow } from "@/lib/game";
+import { catVisible } from "@/lib/cat";
 import { currentSeason, type Season } from "@/lib/season";
 import type { Mood } from "@/data/mango-lines";
 import { Mango } from "./Mango";
@@ -23,7 +24,11 @@ interface GardenSceneProps {
 export function GardenScene({ mood = "neutral", line, feederFood, visitor, full = false, mangoAnim, mangoOverlay }: GardenSceneProps) {
   // Season is read after hydration so server and browser markup match.
   const [season, setSeason] = useState<Season>("summer");
-  useEffect(() => setSeason(currentSeason(getNow(), ENABLE_DEBUG_PANEL)), []);
+  const [cat, setCat] = useState(false);
+  useEffect(() => {
+    setSeason(currentSeason(getNow(), ENABLE_DEBUG_PANEL));
+    setCat(catVisible(getNow(), ENABLE_DEBUG_PANEL));
+  }, []);
   return (
     <div data-season={season} className={full ? "garden-sky viewport-height fixed inset-x-0 top-0 z-0 overflow-hidden" : "garden-sky relative h-80 w-full overflow-hidden rounded-card shadow-soft"}>
       <div className={`absolute h-12 w-12 rounded-full bg-sun ${full ? "left-1/4 top-28" : "left-6 top-6"}`} />
@@ -31,7 +36,7 @@ export function GardenScene({ mood = "neutral", line, feederFood, visitor, full 
       <div className="absolute right-4 top-10 h-8 w-24 rounded-full bg-cloud" />
       <div className={`absolute inset-x-0 bottom-0 rounded-t-[50%] bg-grass ${full ? "h-56" : "h-20"}`} />
       <div className={`absolute inset-x-0 bottom-0 bg-grass-deep ${full ? "h-44" : "h-10"}`} />
-      {full && <GardenDecor season={season} />}
+      {full && <GardenDecor season={season} cat={cat} />}
 
       <div className={full ? "absolute bottom-36 left-1/2 h-80 w-full max-w-[var(--page-max)] -translate-x-1/2" : "absolute inset-0"}>
 
