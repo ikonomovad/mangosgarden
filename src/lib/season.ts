@@ -8,3 +8,19 @@ export function seasonFor(date: Date): Season {
   if (m >= 8 && m <= 10) return "autumn";
   return "winter";
 }
+
+// BEGIN removable developer season preview
+export const DEBUG_SEASON_KEY = "mangos-garden-debug:season";
+const SEASONS: Season[] = ["spring", "summer", "autumn", "winter"];
+
+/** Season for the garden; the developer panel can pin one for previewing. */
+export function currentSeason(now: Date, debug: boolean): Season {
+  if (debug) {
+    try {
+      const pinned = localStorage.getItem(DEBUG_SEASON_KEY) as Season | null;
+      if (pinned && SEASONS.includes(pinned)) return pinned;
+    } catch { /* blocked */ }
+  }
+  return seasonFor(now);
+}
+// END removable developer season preview

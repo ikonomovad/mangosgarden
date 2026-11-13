@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BIRDS } from "@/data/birds";
 import { ENABLE_DEBUG_PANEL, liveStreak } from "@/lib/game";
-import { changeClock, clearGameData, completeBook, debugEnabled, readDebugState, resetToday, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
+import { changeClock, setDebugSeason, readDebugSeason, clearGameData, completeBook, debugEnabled, readDebugState, resetToday, setDebugPity, setDebugStreak, setDebugVisits } from "./actions";
 
 export function DeveloperPanel({ onApply = () => window.location.reload() }: { onApply?: () => void }) {
   const { t, text, number, locale } = useLanguage();
@@ -73,6 +73,16 @@ export function DeveloperPanel({ onApply = () => window.location.reload() }: { o
             <Button variant="secondary" className="min-h-11" onClick={() => apply(completeBook)}>{t("completeBook")}</Button>
             <Button variant="destructive" className="min-h-11" onClick={() => { if (window.confirm(t("clearConfirm"))) apply(clearGameData); }}>{t("clear")}</Button>
           </div>
+          <fieldset className="space-y-2">
+            <legend className="font-semibold">{t("debugSeason")}</legend>
+            <div className="flex flex-wrap gap-2">
+              {(["auto", "spring", "summer", "autumn", "winter"] as const).map((s) => (
+                <Button key={s} variant={readDebugSeason() === s ? "default" : "secondary"} className="min-h-11" aria-pressed={readDebugSeason() === s} onClick={() => apply(() => setDebugSeason(s))}>
+                  {t(`season${s[0]!.toUpperCase()}${s.slice(1)}` as "seasonAuto")}
+                </Button>
+              ))}
+            </div>
+          </fieldset>
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         </div>}
       </div>

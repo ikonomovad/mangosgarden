@@ -9,3 +9,17 @@ describe("seasonFor", () => {
   it("December–February is winter", () => { expect([11, 0, 1].map((m) => seasonFor(d(m)))).toEqual(["winter", "winter", "winter"]); });
   it("uses the local day at the boundary", () => { expect(seasonFor(new Date(2026, 8, 1, 0, 5))).toBe("autumn"); });
 });
+
+import { currentSeason, DEBUG_SEASON_KEY } from "./season";
+describe("currentSeason", () => {
+  it("ignores a pinned season when the developer panel is off", () => {
+    localStorage.setItem(DEBUG_SEASON_KEY, "winter");
+    expect(currentSeason(new Date(2026, 6, 1), false)).toBe("summer");
+    localStorage.removeItem(DEBUG_SEASON_KEY);
+  });
+  it("uses a pinned season when the developer panel is on", () => {
+    localStorage.setItem(DEBUG_SEASON_KEY, "winter");
+    expect(currentSeason(new Date(2026, 6, 1), true)).toBe("winter");
+    localStorage.removeItem(DEBUG_SEASON_KEY);
+  });
+});

@@ -116,4 +116,5 @@ export const mk: Record<keyof typeof en, string> = {
   bookNumber: "Книга {n}",
   booksCompleted: "Завршени книги: {n}",
   completeBook: "Пополни ја книгата",
+  debugSeason: "Годишно време во градината", seasonAuto: "Автоматски", seasonSpring: "Пролет", seasonSummer: "Лето", seasonAutumn: "Есен", seasonWinter: "Зима",
 };

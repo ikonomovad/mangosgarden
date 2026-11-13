@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { getNow } from "@/lib/game";
-import { seasonFor, type Season } from "@/lib/season";
+import { ENABLE_DEBUG_PANEL, getNow } from "@/lib/game";
+import { currentSeason, type Season } from "@/lib/season";
 import type { Mood } from "@/data/mango-lines";
 import { Mango } from "./Mango";
 import { SpeechBubble } from "./SpeechBubble";
@@ -23,7 +23,7 @@ interface GardenSceneProps {
 export function GardenScene({ mood = "neutral", line, feederFood, visitor, full = false, mangoAnim, mangoOverlay }: GardenSceneProps) {
   // Season is read after hydration so server and browser markup match.
   const [season, setSeason] = useState<Season>("summer");
-  useEffect(() => setSeason(seasonFor(getNow())), []);
+  useEffect(() => setSeason(currentSeason(getNow(), ENABLE_DEBUG_PANEL)), []);
   return (
     <div data-season={season} className={full ? "garden-sky viewport-height fixed inset-x-0 top-0 z-0 overflow-hidden" : "garden-sky relative h-80 w-full overflow-hidden rounded-card shadow-soft"}>
       <div className={`absolute h-12 w-12 rounded-full bg-sun ${full ? "left-1/4 top-28" : "left-6 top-6"}`} />

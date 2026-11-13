@@ -1,6 +1,7 @@
 import { BIRDS } from "@/data/birds";
 import { DEBUG_CLOCK_KEY, ENABLE_DEBUG_PANEL, daysBefore, getDailyOffer, getNow, todayKey } from "@/lib/game";
 import { clearPat } from "@/lib/pat";
+import { DEBUG_SEASON_KEY } from "@/lib/season";
 import { loadCollection, loadDaysSinceRare, loadHistory, loadStreak, resetDay, saveDaysSinceRare, saveStreak } from "@/lib/storage";
 
 export const DEBUG_SESSION_KEY = "mangos-garden-debug:enabled";
@@ -77,4 +78,17 @@ export function completeBook() {
   const book = loadCollection();
   for (const b of BIRDS) book[b.id] ??= { firstSeen: todayKey(), visits: 1, seenFoods: [], unseenInBook: true };
   try { localStorage.setItem("mangos-garden:collection", JSON.stringify(book)); return true; } catch { return false; }
+}
+
+export type DebugSeason = "auto" | "spring" | "summer" | "autumn" | "winter";
+export function readDebugSeason(): DebugSeason {
+  try { return (localStorage.getItem(DEBUG_SEASON_KEY) as DebugSeason | null) ?? "auto"; } catch { return "auto"; }
+}
+export function setDebugSeason(season: DebugSeason) {
+  if (!ENABLE_DEBUG_PANEL) return false;
+  try {
+    if (season === "auto") localStorage.removeItem(DEBUG_SEASON_KEY);
+    else localStorage.setItem(DEBUG_SEASON_KEY, season);
+    return true;
+  } catch { return false; }
 }
