@@ -64,7 +64,7 @@ The selected language id (`"en"` or `"mk"`). `initialLanguage()` in `src/i18n/la
 The date key of the day the player last patted Mango, for example `"2026-11-12"`. A value equal to today means today's pat is used up; anything else (or nothing) means the **Pet Mango** button is available. `src/lib/pat.ts` owns this key and it is not part of the game save, so "reset today" clears it and the button comes back.
 
 ## Debug keys (`mangos-garden-debug:`)
-The developer test panel keeps its own keys, separate from game data: `mangos-garden-debug:clock-offset` (localStorage, a millisecond offset added to the shared `getNow()` clock) and `mangos-garden-debug:enabled` (sessionStorage only, so the panel dies with the tab). Deleting the game's `mangos-garden:*` keys leaves these alone.
+The developer test panel keeps its own keys, separate from game data: `mangos-garden-debug:clock-offset` (localStorage, a millisecond offset added to the shared `getNow()` clock), `mangos-garden-debug:season` (a pinned season for previewing) and `mangos-garden-debug:cat` (forces the cat to show today), plus `mangos-garden-debug:enabled` (sessionStorage only, so the panel dies with the tab). The season and cat pins are ignored while `ENABLE_DEBUG_PANEL` is off, so players always see the real month and the week's real cat day. Deleting the game's `mangos-garden:*` keys leaves these alone.
 
 ## `mangos-garden:version`
 

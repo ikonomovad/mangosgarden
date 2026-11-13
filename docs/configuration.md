@@ -18,6 +18,8 @@
 | Collection milestones | 1, half (floor(N/2)), all N birds | `pendingMilestones`, `src/lib/personality.ts` | When collection celebrations appear |
 | Food hint threshold | 3 visits | `favoritesKnown`, `src/lib/personality.ts` | Visits needed to reveal favorite foods; the dialog's lock hint counts down to this number |
 | Pet Mango | once per local day | `claimPat`, `src/lib/pat.ts` | The pat hides until tomorrow; its own key keeps it out of game data |
+| Season months | spring Mar–May, summer Jun–Aug, autumn Sep–Nov, winter Dec–Feb | `seasonFor`, `src/lib/season.ts` | Which colours and decoration the garden shows; never moves the perch, feeder or buttons |
+| Cat visits | exactly one day per Monday–Sunday week | `catDayIndex` / `isCatDay`, `src/lib/cat.ts` | How often the black cat sits in the garden; the seed is the week's Monday, so nothing is stored |
 | Sound timing and pitch | chirp 1 s after tap | `playArrival`, `src/lib/sounds.ts` | When and how the chirp/squawk sound |
 | Pat sound | one short chirp | `playPat`, `src/lib/sounds.ts` | The noise a pat makes |
 | Language default | device language, else English | `initialLanguage`, `src/i18n/languages.ts` | Which language a first visit opens in |
