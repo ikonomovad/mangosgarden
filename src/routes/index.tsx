@@ -171,7 +171,7 @@ function Index() {
           <div>
             <p className="font-display text-sm uppercase tracking-widest text-secondary-foreground">{t("appName")}</p>
             <h1 className="mt-2 font-display text-4xl leading-tight text-foreground">{t("welcomeTitle")}</h1>
-            <p className="mt-3 text-muted-foreground">{t("welcomeText")}</p>
+            <p className="mt-3 text-foreground">{t("welcomeText")}</p>
           </div>
           <div className="flex flex-col items-center">
             <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>

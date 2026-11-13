@@ -6,6 +6,11 @@
  *   src/routes/__root.tsx and name the family in a --font-* token in @theme inline below.
  */
 @import "tailwindcss" source(none);
+@import "@fontsource/fredoka/500.css";
+@import "@fontsource/fredoka/600.css";
+@import "@fontsource/nunito/400.css";
+@import "@fontsource/nunito/600.css";
+@import "@fontsource/nunito/700.css";
 @source "../src";
 @import "tw-animate-css";
 
@@ -338,4 +343,10 @@
   .mango-pat { animation: none; }
   .pat-heart { animation: pat-fade 1.2s ease-out both; }
   .pat-heart-extra { display: none; }
+}
+
+/* Reduced motion: no hover lifts, press scaling or progress-bar slide either. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+  [class*="hover:-translate-y"]:hover, [class*="active:scale"]:active { translate: none !important; scale: none !important; }
 }
