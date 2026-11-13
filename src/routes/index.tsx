@@ -167,7 +167,12 @@ function Index() {
     <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
       {screen === "welcome" && (
         <section className="card-pop flex flex-1 flex-col items-center justify-center gap-[var(--gap)] text-center">
-          <Mango className="mango-idle h-40 w-40" />
+          <div className="relative">
+            <Mango className="mango-idle h-40 w-40" />
+            <div className="absolute bottom-[58%] left-[62%]">
+              <MeetMango />
+            </div>
+          </div>
           <div>
             <p className="font-display text-sm uppercase tracking-widest text-secondary-foreground">{t("appName")}</p>
             <h1 className="mt-2 font-display text-4xl leading-tight text-foreground">{t("welcomeTitle")}</h1>
@@ -177,7 +182,6 @@ function Index() {
             <Button size="lg" className="rounded-full px-10 font-display text-lg shadow-soft" onClick={() => setScreen("garden")}>
               {t("start")}
             </Button>
-            <MeetMango />
           </div>
         </section>
       )}

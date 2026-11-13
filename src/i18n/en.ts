@@ -1,5 +1,6 @@
 export const en = {
   meetMango: "Meet Mango",
+  meetMangoBubble: "Hi! Want to meet me?",
   patMango: "Pet Mango",
   patLine: "Hehe, that tickles! See you tomorrow for more pats.",
   mangoPrivacy: "No accounts, no tracking. Your progress is saved only on your device.",

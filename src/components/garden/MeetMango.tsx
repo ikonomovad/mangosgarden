@@ -11,9 +11,14 @@ export function MeetMango() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="link" className="h-11 text-sm text-foreground underline underline-offset-4">
-          {t("meetMango")}
-        </Button>
+        <button
+          type="button"
+          aria-label={t("meetMango")}
+          className="relative min-h-11 w-[8.5rem] rounded-2xl border-2 border-border bg-card px-3 py-2 text-left font-display text-sm leading-snug text-card-foreground shadow-soft transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+        >
+          {t("meetMangoBubble")}
+          <span aria-hidden="true" className="absolute -left-2 bottom-3 h-4 w-4 rotate-45 border-b-2 border-l-2 border-border bg-card" />
+        </button>
       </DialogTrigger>
       <DialogContent className="viewport-dialog w-[calc(100%-2rem)] max-w-[var(--page-max)] overflow-y-auto overscroll-contain rounded-card border-0 bg-card p-5 text-card-foreground shadow-soft motion-reduce:animate-none">
         <div className="relative mt-5 flex justify-center">
