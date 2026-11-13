@@ -101,19 +101,28 @@ export function Snowflake({ className }: { className?: string }) {
   );
 }
 
-/** Small cat sitting in the grass, tail curled; visits once a week. */
+/** Small black cat sitting in side profile, tail curled round its paws; visits once a week. */
 export function GardenCat({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 60 56" className={className} aria-hidden>
-      <path d="M46 50 C58 48 58 34 50 32" fill="none" stroke="var(--cat)" strokeWidth="5" strokeLinecap="round" className="cat-tail" />
-      <ellipse cx="30" cy="40" rx="17" ry="14" fill="var(--cat)" />
-      <ellipse cx="30" cy="44" rx="8" ry="8" fill="var(--cat-belly)" />
-      <circle cx="30" cy="20" r="12" fill="var(--cat)" />
-      <path d="M19 15 L20 3 L28 10Z M41 15 L40 3 L32 10Z" fill="var(--cat)" />
-      <path d="M21 12 L21.5 6 L25.5 10Z M39 12 L38.5 6 L34.5 10Z" fill="var(--blossom)" />
-      <g className="cat-eyes"><ellipse cx="25" cy="20" rx="1.6" ry="2.2" fill="var(--foreground)" /><ellipse cx="35" cy="20" rx="1.6" ry="2.2" fill="var(--foreground)" /></g>
-      <path d="M28.5 24 h3 l-1.5 1.6Z" fill="var(--blossom)" />
-      <ellipse cx="23" cy="53" rx="5" ry="3" fill="var(--cat)" /><ellipse cx="37" cy="53" rx="5" ry="3" fill="var(--cat)" />
+    <svg viewBox="0 0 64 60" className={className} aria-hidden>
+      {/* tail sweeps behind and curls around the front paws */}
+      <path d="M44 54 C58 54 60 40 54 30" fill="none" stroke="var(--cat)" strokeWidth="4.5" strokeLinecap="round" className="cat-tail" />
+      {/* haunch and chest */}
+      <path d="M22 56 C18 44 20 30 28 24 C34 20 42 24 46 34 C50 44 48 54 44 56 Z" fill="var(--cat)" />
+      {/* front leg */}
+      <path d="M22 34 C20 42 20 50 21 56 L27 56 C27 48 27 40 28 34 Z" fill="var(--cat)" />
+      <ellipse cx="22.5" cy="56.5" rx="4" ry="2" fill="var(--cat)" />
+      {/* head, facing left */}
+      <circle cx="22" cy="20" r="10" fill="var(--cat)" />
+      <path d="M13 22 C9 22 8 25 11 26 C13 27 16 26 17 25 Z" fill="var(--cat)" />
+      <path d="M17 12 L18 1 L25 10 Z M25 11 L31 3 L31 14 Z" fill="var(--cat)" />
+      <path d="M19 10 L19.5 5 L23 9.5 Z" fill="var(--cat-ear)" />
+      <g className="cat-eyes">
+        <ellipse cx="17" cy="19" rx="2.4" ry="2.8" fill="var(--cat-eye)" />
+        <ellipse cx="16.6" cy="19" rx="0.8" ry="2.2" fill="var(--foreground)" />
+      </g>
+      <circle cx="10.5" cy="23.5" r="0.9" fill="var(--cat-ear)" />
+      <path d="M11 25 L3 24 M11 26 L4 27.5" stroke="var(--cat-whisker)" strokeWidth="0.6" strokeLinecap="round" />
     </svg>
   );
 }
