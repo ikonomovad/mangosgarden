@@ -32,7 +32,7 @@ export function MeetMango() {
           </div>
         </div>
         <DialogHeader className="text-left">
-          <DialogTitle className="font-display text-2xl leading-tight text-foreground">{t("meetMango")}</DialogTitle>
+          <DialogTitle className="sr-only">{t("meetMango")}</DialogTitle>
           <DialogDescription className="text-sm leading-relaxed text-foreground">{t("mangoStory")}</DialogDescription>
         </DialogHeader>
         <section className="space-y-2 text-left">
