@@ -9,8 +9,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 export function BookBadge({ completed }: { completed: number }) {
   const { t } = useLanguage();
   return (
-    <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-rare/25 px-2 py-0.5 font-display text-[11px] text-card-foreground">
-      <Award aria-hidden="true" className="size-3.5" />{t("bookNumber", { n: completed + 1 })}
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-rare/30 px-3 py-1 font-display text-sm text-card-foreground">
+      <Award aria-hidden="true" className="size-4" />{t("bookNumber", { n: completed + 1 })}
     </span>
   );
 }
@@ -45,5 +45,5 @@ export function BookComplete({ collected, completed, onConfirm }: { collected: n
 export function BooksCompleted({ completed }: { completed: number }) {
   const { t } = useLanguage();
   if (completed < 1) return null;
-  return <p className="-mt-2 text-center font-display text-sm text-foreground">{t("booksCompleted", { n: completed })}</p>;
+  return <p className="font-display text-sm text-foreground">{t("booksCompleted", { n: completed })}</p>;
 }

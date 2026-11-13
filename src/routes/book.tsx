@@ -76,11 +76,14 @@ function Book() {
     <PageShell streak={streak} sound={sound} onToggleSound={() => { saveSound(!sound); setSound(!sound); }}>
       <Link to="/" className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border-2 border-border bg-card px-4 font-display text-sm text-card-foreground shadow-soft transition-transform hover:-translate-y-0.5 active:scale-95 focus-visible:outline-2 focus-visible:outline-ring"><ArrowLeft aria-hidden="true" className="size-4" />{t("back")}</Link>
       <h1 className="text-center font-display text-4xl text-foreground">{t("bookHeading")}</h1>
+      <div className="-mt-2 flex flex-wrap items-center justify-center gap-2">
+        <BookBadge completed={books} />
+        <BooksCompleted completed={books} />
+      </div>
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-card bg-card p-3 text-center shadow-soft">
           <p className="font-display text-2xl text-card-foreground">{t("of", { count: collected, total: BIRDS.length })}</p>
           <p className="text-xs text-muted-foreground">{t("collected")}</p>
-          <BookBadge completed={books} />
           <div role="progressbar" aria-label={t("collectionProgress")} aria-valuemin={0} aria-valuemax={BIRDS.length} aria-valuenow={collected} className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
             <div className="h-full rounded-full bg-primary transition-[width] duration-700" style={{ width: `${(collected / BIRDS.length) * 100}%` }} />
           </div>
@@ -94,7 +97,6 @@ function Book() {
           <p className="text-xs text-muted-foreground">{t("bestStreak")}</p>
         </div>
       </div>
-      <BooksCompleted completed={books} />
       <BookComplete collected={collected} completed={books} onConfirm={() => {
         const next = startNewBook(todayKey());
         if (next) { snapshot = {}; setBook({}); setBooks(next.completed); }
