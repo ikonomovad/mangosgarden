@@ -57,6 +57,37 @@ export const FOOD_ICONS: Record<string, ReactNode> = {
     <path d="M24 4 C20 13 10 21 10 29 A14 14 0 0 0 38 29 C38 21 28 13 24 4Z" fill="var(--chart-5)" />
     <path d="M17 27 Q14 34 21 36" stroke="var(--card)" strokeWidth="2.5" />
   </>,
+  figs: <>
+    <path d="M14 10 Q15 5 18 4" stroke="var(--wood)" strokeWidth="2.5" />
+    <path d="M14 10 C8 16 4 26 5 32 C6 40 22 40 23 32 C24 26 20 16 14 10Z" fill="var(--grape)" />
+    <path d="M30 14 C26 20 24 28 25 34 C26 42 44 42 45 34 C46 28 40 20 37 14Z" fill="var(--grape)" />
+    <path d="M32 19 C29 24 28 29 29 33 C30 38 40 38 41 33 C42 29 39 23 36 19Z" fill="var(--fig-flesh)" stroke="none" />
+    <g fill="var(--sun)" stroke="none">
+      <circle cx="33" cy="27" r="1.2" /><circle cx="37" cy="30" r="1.2" /><circle cx="33" cy="33" r="1.2" /><circle cx="36" cy="24" r="1.2" />
+    </g>
+  </>,
+  corn: <>
+    <path d="M24 6 C16 10 14 24 16 36 L32 36 C34 24 32 10 24 6Z" fill="var(--sun)" />
+    <path d="M20 14 H28 M18 21 H30 M18 28 H30 M24 9 V35" stroke="var(--wood-light)" />
+    <path d="M24 44 C12 40 8 28 10 18 C14 26 18 34 24 38Z" fill="var(--leaf)" />
+    <path d="M24 44 C36 40 40 28 38 18 C34 26 30 34 24 38Z" fill="var(--leaf)" />
+  </>,
+  pumpkin: <g fill="var(--pumpkin-seed)">
+    <path d="M6 34 Q6 24 15 22 Q20 30 14 38 Q8 40 6 34Z" />
+    <path d="M18 40 Q14 30 22 26 Q30 30 28 40 Q23 46 18 40Z" />
+    <path d="M30 34 Q32 24 41 22 Q44 32 36 38 Q31 40 30 34Z" />
+    <path d="M17 22 Q19 12 27 8 Q32 16 26 24 Q20 27 17 22Z" />
+  </g>,
+  rosehip: <>
+    <path d="M6 12 Q22 14 40 8 M20 13 L18 8" stroke="var(--wood)" strokeWidth="2.5" />
+    <path d="M30 11 Q38 2 45 6 Q40 15 30 11Z" fill="var(--leaf)" />
+    <g fill="var(--rosehip)">
+      <ellipse cx="12" cy="26" rx="5.5" ry="8" />
+      <ellipse cx="24" cy="31" rx="5.5" ry="8" />
+      <ellipse cx="36" cy="25" rx="5.5" ry="8" />
+    </g>
+    <path d="M12 13 V18 M24 14 V23 M36 10 V17" />
+  </>,
 };
 
 export function FoodIcon({ id, size = 40 }: { id: string; size?: number }) {

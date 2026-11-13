@@ -32,8 +32,9 @@ export const MILESTONE_LINES = {
   "streak-7": "A whole week! I'll wear my best feather to celebrate.",
   "streak-14": "Two weeks together! My happy dance needs a bigger branch.",
   "streak-30": "Thirty days! That's a whole month of little hellos.",
-  "collection-6": "Six feathered friends! Half a book, a whole lot of joy.",
-  "collection-12": "All twelve friends! Our bird book is bursting with beaks!",
+  // {count} is filled from the bird data when shown.
+  "collection-half": "{count} feathered friends! Half a book, a whole lot of joy.",
+  "collection-all": "All {count} friends! Our bird book is bursting with beaks!",
 } as const;
 
 export type Milestone = keyof typeof MILESTONE_LINES;
@@ -133,13 +134,13 @@ export const MANGO_TEXT: Record<string, import("@/i18n/languages").Localized<str
     en: "Thirty days! That's a whole month of little hellos.",
     mk: "Триесет дена! Цел месец мали поздрави.",
   },
-  "Six feathered friends! Half a book, a whole lot of joy.": {
-    en: "Six feathered friends! Half a book, a whole lot of joy.",
-    mk: "Шест пердувести пријатели! Половина книга, а толку многу радост.",
+  "{count} feathered friends! Half a book, a whole lot of joy.": {
+    en: "{count} feathered friends! Half a book, a whole lot of joy.",
+    mk: "{count} пердувести пријатели! Половина книга, а толку многу радост.",
   },
-  "All twelve friends! Our bird book is bursting with beaks!": {
-    en: "All twelve friends! Our bird book is bursting with beaks!",
-    mk: "Сите дванаесет пријатели! Книгата ни е полна со клунчиња!",
+  "All {count} friends! Our bird book is bursting with beaks!": {
+    en: "All {count} friends! Our bird book is bursting with beaks!",
+    mk: "Сите {count} пријатели! Книгата ни е полна со клунчиња!",
   },
   "Mango learned something!": {
     en: "Mango learned something!",

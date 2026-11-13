@@ -1,7 +1,8 @@
-// Edit freely: the 10 foods the garden can offer.
+// Edit freely: the 14 foods the garden can offer.
 export type FoodId =
   | "sunflower" | "millet" | "peanuts" | "wheat" | "apple"
-  | "berries" | "orange" | "mealworms" | "walnut" | "water";
+  | "berries" | "orange" | "mealworms" | "walnut" | "water"
+  | "figs" | "corn" | "pumpkin" | "rosehip";
 
 export interface Food {
   id: FoodId;
@@ -20,6 +21,10 @@ export const FOODS: Food[] = [
   { id: "mealworms", name: "Mealworms", emoji: "🐛" },
   { id: "walnut", name: "Walnuts", emoji: "🌰" },
   { id: "water", name: "Fresh water bath", emoji: "💧" },
+  { id: "figs", name: "Figs", emoji: "🟣" },
+  { id: "corn", name: "Corn", emoji: "🌽" },
+  { id: "pumpkin", name: "Pumpkin seeds", emoji: "🎃" },
+  { id: "rosehip", name: "Rosehips", emoji: "🔴" },
 ];
 
 export const FOOD_IDS: FoodId[] = FOODS.map((f) => f.id);
@@ -35,6 +40,10 @@ const FOODS_MK = {
   "orange": "Половина портокал",
   "mealworms": "Брашнени црви",
   "walnut": "Ореви",
-  "water": "Капење во свежа вода"
+  "water": "Капење во свежа вода",
+  "figs": "Смокви",
+  "corn": "Пченка",
+  "pumpkin": "Семки од тиква",
+  "rosehip": "Шипинки"
 };
 export const FOOD_TEXT: Record<FoodId, import("@/i18n/languages").Localized<string>> = Object.fromEntries(FOODS.map((food) => [food.id, { en: food.name, mk: FOODS_MK[food.id] }])) as Record<FoodId, import("@/i18n/languages").Localized<string>>;

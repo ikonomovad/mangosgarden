@@ -13,7 +13,7 @@
 2. `id` must be unique; `marking` must be one of the `Marking` types (or add a new one and draw it in `BirdSvg.tsx`).
 3. Add the same `id` to `BIRDS_MK` in that file with a Macedonian `name` and `fact`. Missing translations fall back to English, but the coverage test in `src/i18n/i18n.test.ts` expects both.
 4. The rarity gem is chosen from the `rarity` field automatically — no new artwork needed.
-5. The book and the "12 birds" milestone count birds by number: update the `collection-12` milestone in `personality.ts` and `mango-lines.ts`, the bird-count test in `game.test.ts`, and the "12 birds" wording in `src/i18n/en.ts` and `mk.ts`.
+5. Counters, the halfway and all-birds milestones and page descriptions read the bird count from the data automatically; only update the count tests in `game.test.ts` and `content.test.ts`.
 
 ## A new food
 1. Add the id to the `FoodId` type and an entry to `FOODS` in `src/data/foods.ts`:

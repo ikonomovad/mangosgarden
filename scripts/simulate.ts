@@ -43,6 +43,6 @@ const pct = (xs: number[], q: number, missing: number) => {
 };
 const total = PLAYERS * DAYS;
 console.log(`Weights: common ${RARITY_WEIGHT.common}, uncommon ${RARITY_WEIGHT.uncommon}, rare ${RARITY_WEIGHT.rare}; pity ${pityOn ? "on" : "off"}`);
-console.log(`Days to collect all 12 — median: ${pct(complete, 0.5, neverComplete)}, 90th percentile: ${pct(complete, 0.9, neverComplete)} (${neverComplete} players never finished)`);
+console.log(`Days to collect all ${BIRDS.length} — median: ${pct(complete, 0.5, neverComplete)}, 90th percentile: ${pct(complete, 0.9, neverComplete)} (${neverComplete} players never finished)`);
 console.log(`Days until first rare bird — median: ${pct(firstRare, 0.5, neverRare)}`);
 for (const r of ["common", "uncommon", "rare"] as Rarity[]) console.log(`${r}: ${((share[r] / total) * 100).toFixed(1)}% of visits`);

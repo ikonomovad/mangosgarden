@@ -19,7 +19,7 @@ import { MANGO_TEXT, GREETINGS, MILESTONE_LINES, type Milestone, type Mood } fro
 import { daysBefore, getDailyOffer, liveStreak, msUntilMidnight, nextDaysSinceRare, nextStreak, pickVisitor, todayKey } from "@/lib/game";
 import { pickRandom } from "@/lib/random";
 import { claimMilestones, loadCollection, loadDaysSinceRare, saveDaysSinceRare, loadHistory, loadPersonality, loadSound, loadStreak, nextReactionLine, recordVisit, saveDay, saveSound, saveStreak } from "@/lib/storage";
-import { pendingMilestones, reactionFor } from "@/lib/personality";
+import { milestoneCount, pendingMilestones, reactionFor } from "@/lib/personality";
 import { playArrival, playPat } from "@/lib/sounds";
 import { PatButton, PatHearts } from "@/components/garden/PatMango";
 
@@ -243,7 +243,7 @@ function Index() {
               />
               {milestones.length > 0 && (
                 <div role="status" className="card-pop space-y-1 rounded-card bg-rare px-4 py-3 text-center font-display text-sm text-rare-foreground shadow-soft">
-                  {milestones.map((id) => <p key={id}>🎉 {mangoLine(MILESTONE_LINES[id])}</p>)}
+                  {milestones.map((id) => <p key={id}>🎉 {mangoLine(MILESTONE_LINES[id]).replace("{count}", String(milestoneCount(id) ?? ""))}</p>)}
                 </div>
               )}
               <div className="flex flex-col items-center gap-3 rounded-card bg-card p-4 text-center shadow-soft">

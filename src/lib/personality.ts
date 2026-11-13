@@ -1,5 +1,5 @@
 // Pure reaction and milestone rules; wording lives in data/mango-lines.ts.
-import type { Bird } from "@/data/birds";
+import { BIRDS, type Bird } from "@/data/birds";
 import { VISIT_LINES, type Milestone, type Reaction } from "@/data/mango-lines";
 
 export function reactionFor(bird: Bird, isNew: boolean, yesterday?: string): Reaction {
@@ -14,17 +14,25 @@ export function selectReaction(reaction: Reaction, previous?: number, random: ()
   return candidates[Math.floor(random() * candidates.length)] ?? 0;
 }
 
-export function pendingMilestones(collected: number, streak: number, shown: readonly Milestone[]): Milestone[] {
+export function pendingMilestones(collected: number, streak: number, shown: readonly Milestone[], total: number = BIRDS.length): Milestone[] {
   const reached: Milestone[] = [];
   if (collected >= 1) reached.push("first-bird");
   for (const days of [3, 7, 14, 30] as const) {
     if (streak >= days) reached.push(`streak-${days}`);
   }
-  if (collected >= 6) reached.push("collection-6");
-  if (collected >= 12) reached.push("collection-12");
+  if (collected >= halfwayCount(total)) reached.push("collection-half");
+  if (collected >= total) reached.push("collection-all");
   return reached.filter((id) => !shown.includes(id));
 }
 
 export function favoritesKnown(visits: number): boolean {
   return visits >= 3;
+}
+export const halfwayCount = (total: number = BIRDS.length) => Math.floor(total / 2);
+
+/** The number a collection milestone line shows in its {count} placeholder. */
+export function milestoneCount(id: Milestone, total: number = BIRDS.length): number | undefined {
+  if (id === "collection-half") return halfwayCount(total);
+  if (id === "collection-all") return total;
+  return undefined;
 }

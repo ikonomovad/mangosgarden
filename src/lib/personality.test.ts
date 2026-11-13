@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BIRDS } from "@/data/birds";
-import { favoritesKnown, pendingMilestones, reactionFor, selectReaction } from "./personality";
+import { favoritesKnown, pendingMilestones, reactionFor, selectReaction, milestoneCount } from "./personality";
 
 function bird(id: string) {
   const result = BIRDS.find((b) => b.id === id);
@@ -46,13 +46,19 @@ describe("one-time milestones", () => {
       expect(pendingMilestones(1, days, [`streak-${days}`])).not.toContain(`streak-${days}`);
     });
   }
-  for (const count of [6, 12] as const) {
-    it(`unlocks the ${count}-bird milestone at ${count} birds only once`, () => {
-      expect(pendingMilestones(count - 1, 1, [])).not.toContain(`collection-${count}`);
-      expect(pendingMilestones(count, 1, [])).toContain(`collection-${count}`);
-      expect(pendingMilestones(count, 1, [`collection-${count}`])).not.toContain(`collection-${count}`);
+  for (const [id, count] of [["collection-half", 10], ["collection-all", 20]] as const) {
+    it(`unlocks ${id} at ${count} of 20 birds only once`, () => {
+      expect(pendingMilestones(count - 1, 1, [])).not.toContain(id);
+      expect(pendingMilestones(count, 1, [])).toContain(id);
+      expect(pendingMilestones(count, 1, [id])).not.toContain(id);
     });
   }
+  it("derives the halfway and full-book milestones from the bird count", () => {
+    expect(pendingMilestones(7, 1, [], 15)).toContain("collection-half");
+    expect(pendingMilestones(6, 1, [], 15)).not.toContain("collection-half");
+    expect(milestoneCount("collection-half", 15)).toBe(7);
+    expect(milestoneCount("collection-all", 15)).toBe(15);
+  });
 });
 
 it("reveals favorite foods only from the third visit onward", () => {

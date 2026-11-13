@@ -53,7 +53,7 @@ it("stores non-repeating reaction choices across reads and resets", () => {
 });
 
 it("persists every milestone once, independently of daily history", () => {
-  const ids = ["first-bird", "streak-3", "streak-7", "streak-14", "streak-30", "collection-6", "collection-12"] as const;
+  const ids = ["first-bird", "streak-3", "streak-7", "streak-14", "streak-30", "collection-half", "collection-all"] as const;
   expect(claimMilestones([...ids])).toEqual(ids);
   saveDay("2026-12-01", { offer: ["apple"] });
   expect(claimMilestones([...ids])).toEqual([]);

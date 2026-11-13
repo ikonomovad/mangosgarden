@@ -1,3 +1,4 @@
+import { BIRDS } from "@/data/birds";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { LANGUAGE_KEY, initialLanguage, languageConfig, languages, localized, t, type Language, type Localized, type TranslationKey } from "./languages";
 
@@ -35,9 +36,9 @@ export function usePageMetadata(page: "index" | "book") {
   useEffect(() => {
     document.title = t(page === "index" ? "indexTitle" : "bookTitle");
     const values = {
-      description: t(page === "index" ? "indexDescription" : "bookDescription"),
+      description: t(page === "index" ? "indexDescription" : "bookDescription", { total: BIRDS.length }),
       "og:title": t(page === "index" ? "appName" : "bookOgTitle"),
-      "og:description": t(page === "index" ? "indexOgDescription" : "bookOgDescription"),
+      "og:description": t(page === "index" ? "indexOgDescription" : "bookOgDescription", { total: BIRDS.length }),
     };
     for (const [key, value] of Object.entries(values)) {
       document.querySelectorAll(`meta[name="${key}"], meta[property="${key}"]`).forEach((tag) => tag.setAttribute("content", value));

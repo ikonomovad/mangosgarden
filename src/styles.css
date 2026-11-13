@@ -148,6 +148,9 @@
   --rarity-foreground: oklch(0.25 0.035 60);
   --rare-foreground: oklch(0.35 0.07 60);
   --poppy: oklch(0.62 0.2 28);
+  --fig-flesh: oklch(0.66 0.17 12);
+  --pumpkin-seed: oklch(0.86 0.08 135);
+  --rosehip: oklch(0.64 0.19 40);
   --lavender: oklch(0.68 0.12 300);
   --daisy: oklch(0.98 0.01 90);
   --grape: oklch(0.45 0.12 310);

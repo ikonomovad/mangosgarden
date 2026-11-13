@@ -6,7 +6,7 @@
 
 **Play it live: <https://mangosgarden.lovable.app/>**
 
-A tiny daily bird-feeding game for phones. Once a day the player puts out one of four snacks. A wild bird visits, Mango the parrot reacts, and the bird goes into the **Bird book**. After that the garden is closed until local midnight. Come back every day to grow a streak and fill the book with all 12 birds.
+A tiny daily bird-feeding game for phones. Once a day the player puts out one of four snacks. A wild bird visits, Mango the parrot reacts, and the bird goes into the **Bird book**. After that the garden is closed until local midnight. Come back every day to grow a streak and fill the book with all 20 birds.
 
 Rarity tuning (see `npm run simulate`):
 
@@ -22,8 +22,8 @@ More detail: [docs/how-it-works.md](docs/how-it-works.md) · [docs/storage.md](d
 ```text
 src/
   data/                 Game content. Edit these to tune the game.
-    birds.ts            The 12 birds, rarity weights, food affinity values and how each bird looks
-    foods.ts            The 10 foods (id, name, emoji fallback)
+    birds.ts            The 20 birds, rarity weights, food affinity values and how each bird looks
+    foods.ts            The 14 foods (id, name, emoji fallback)
     mango-lines.ts      Everything Mango says: greetings, moods, visit reactions, milestones
   i18n/                 Languages: en.ts and mk.ts (every UI string), languages.ts (the
                         registry plus t()/localized()/initialLanguage()), LanguageProvider.tsx
@@ -63,22 +63,30 @@ public/
 
 ## Birds and foods
 
-The book contains **12 birds: 9 common, 1 uncommon, 2 rare**. Unlisted food affinities remain **0.2**; loved foods score **3** and liked foods **1**.
+The book contains **20 birds: 14 common, 3 uncommon, 3 rare**. Unlisted food affinities remain **0.2**; loved foods score **3** and liked foods **1**.
 
 | Bird ID | English / Macedonian | Rarity | Loves | Likes |
 |---|---|---|---|---|
 | robin | European Robin / Црвеногушка | common | mealworms | berries, water, apple |
-| bluetit | Blue Tit / Сина сипка | common | peanuts, sunflower | mealworms |
-| greattit | Great Tit / Голема сипка | common | sunflower | peanuts, walnut |
-| blackbird | Blackbird / Кос | common | apple, mealworms | berries, water |
-| goldfinch | Goldfinch / Штиглец | common | sunflower | millet |
-| sparrow | House Sparrow / Домашно врапче | common | millet, water | wheat, sunflower |
-| dove | Collared Dove / Гугутка | common | wheat, millet | sunflower, water |
-| magpie | Magpie / Страчка | common | walnut | peanuts, mealworms |
-| jackdaw | Jackdaw / Чавка | common | wheat | walnut, apple |
-| woodpecker | Great Spotted Woodpecker / Голем клукајдрвец | uncommon | walnut, peanuts | sunflower, mealworms |
-| hoopoe | Hoopoe / Пупунец | rare | mealworms, water | apple |
-| waxwing | Waxwing / Свилокрилка | rare | berries, apple, orange | — |
+| bluetit | Blue Tit / Сина сипка | common | peanuts, sunflower | mealworms, pumpkin |
+| greattit | Great Tit / Голема сипка | common | sunflower | peanuts, walnut, pumpkin |
+| blackbird | Blackbird / Кос | common | apple, mealworms | figs, berries, water |
+| goldfinch | Goldfinch / Билбилче | common | sunflower | millet |
+| sparrow | House Sparrow / Домашно врапче | common | millet, water | wheat, sunflower, corn |
+| dove | Collared Dove / Гугутка | common | wheat, millet, corn | sunflower, water |
+| magpie | Magpie / Страчка | common | walnut | peanuts, mealworms, corn |
+| jackdaw | Jackdaw / Чавка | common | wheat, corn | walnut, apple |
+| starling | Starling / Сколовранец | common | mealworms, figs | apple, water, berries |
+| chaffinch | Chaffinch / Зеба | common | sunflower | wheat, millet, pumpkin |
+| greenfinch | Greenfinch / Зеленушка | common | sunflower | peanuts, millet, pumpkin |
+| treesparrow | Tree Sparrow / Полско врапче | common | millet, wheat | sunflower, water, corn |
+| songthrush | Song Thrush / Дрозд пејач | common | figs, apple | mealworms, berries, rosehip |
+| woodpecker | Great Spotted Woodpecker / Голем клукајдрвец | uncommon | walnut, peanuts, pumpkin | sunflower, mealworms |
+| jay | Eurasian Jay / Сојка | uncommon | walnut, peanuts, corn | figs, apple |
+| greenwoodpecker | Green Woodpecker / Зелен клукајдрвец | uncommon | mealworms, apple | walnut |
+| hoopoe | Hoopoe / Пупунец | rare | mealworms, water, figs, apple | — |
+| waxwing | Waxwing / Свилокрилка | rare | berries, apple, orange, rosehip | figs |
+| bullfinch | Eurasian Bullfinch / Зимовка | rare | rosehip, berries, sunflower, pumpkin | — |
 
 | Food ID | English | Macedonian | Fallback emoji |
 |---|---|---|---|
@@ -92,6 +100,10 @@ The book contains **12 birds: 9 common, 1 uncommon, 2 rare**. Unlisted food affi
 | mealworms | Mealworms | Брашнени црви | 🐛 |
 | walnut | Walnuts | Ореви | 🌰 |
 | water | Fresh water bath | Капење во свежа вода | 💧 |
+| figs | Figs | Смокви | 🟣 |
+| corn | Corn | Пченка | 🌽 |
+| pumpkin | Pumpkin seeds | Семки од тиква | 🎃 |
+| rosehip | Rosehips | Шипинки | 🔴 |
 
 **Artwork:** every food is drawn by `src/components/FoodIcon.tsx` (one flat SVG per id, using the theme tokens). The emoji column is only the fallback used when a food has no artwork.
 
@@ -103,11 +115,11 @@ Retained birds and foods keep their IDs. Retired bird IDs are ignored in the boo
 
 | Metric | Result |
 |---|---|
-| Median days to complete the book | 45 |
-| 90th-percentile days to complete | 91 |
-| Median days to first rare bird | 16 |
-| Common / uncommon / rare visit share | 90.0% / 7.4% / 2.7% |
-| Players unfinished after a year | 0 of 5,000 |
+| Median days to complete the book | 75 |
+| 90th-percentile days to complete | 127 |
+| Median days to first rare bird | 18 |
+| Common / uncommon / rare visit share | 83.7% / 13.3% / 2.9% |
+| Players unfinished after a year | 2 of 5,000 |
 
 Visit percentages are rounded independently.
 
@@ -116,7 +128,7 @@ Visit percentages are rounded independently.
 - **Welcome:** the title, **Start**, and a **Meet Mango** dialog with Mango's photo, the story behind the game, a 3-step "How to play", a note that nothing is tracked, and Daniela's credit.
 - **Garden:** the scene fills the whole visible screen, with wildflowers, a fig branch, a distant apple tree and drifting butterflies behind everything. **Put out a snack** opens the *Today's pantry* dialog with the 4 foods; **Pet Mango** is a once-a-day pat that bounces Mango, floats hearts and chirps, then hides itself until tomorrow.
 - **Bird card:** the visitor, its rarity gem, fun fact, "Find out more" / "Ask ChatGPT" links, Mango's reaction, any milestone ribbon, and the next-visit countdown.
-- **Bird book:** "X of 12 collected" with a progress bar, total visits and best streak. Collected birds show a rarity gem and open a dialog (bird in a rarity-coloured ring, fact, first seen, visit count, "Seen eating" and "Favorite foods" as food chips, plus the two learning links). Locked birds sit behind a soft blur, are not tappable and have no links. Favorite foods unlock after 3 visits; until then the dialog shows a lock, "Visit N more times to discover" and an `n/3` counter.
+- **Bird book:** "X of N collected" (N = number of birds) with a progress bar, total visits and best streak. Collected birds show a rarity gem and open a dialog (bird in a rarity-coloured ring, fact, first seen, visit count, "Seen eating" and "Favorite foods" as food chips, plus the two learning links). Locked birds sit behind a soft blur, are not tappable and have no links. Favorite foods unlock after 3 visits; until then the dialog shows a lock, "Visit N more times to discover" and an `n/3` counter.
 - **Always available:** the streak pill, and the floating book / sound / language controls (all 44px, with hover or tap tooltips).
 
 ## Languages

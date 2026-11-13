@@ -12,7 +12,7 @@
 - **Pet Mango** (`src/lib/pat.ts` + `src/components/garden/PatMango.tsx`) is once per local day: the first tap bounces Mango, floats hearts, plays a chirp and shows a tickle line. The button then hides itself but keeps its space, so nothing shifts, and it does not come back until tomorrow. It has its own storage key and never touches game data.
 
 ## Daily food offer (`getDailyOffer` in `src/lib/game.ts`)
-- Picks `OFFER_SIZE` (4) of the 10 foods.
+- Picks `OFFER_SIZE` (4) of the 14 foods.
 - Seeded by `offer:<date>`, so the same date always gives the same 4.
 - First takes `MIN_NEW_FOODS` (2) foods that were **not** in yesterday's offer, then fills the rest from all other foods, then shuffles.
 - The offer is saved into today's day record, so it never changes during the day.
@@ -45,7 +45,7 @@ Then one bird is chosen by weighted random, seeded by `visit:<date>:<food>` — 
 ## Bird book, visits and food hints
 - `recordVisit` saves `firstSeen` (first date), `visits` (count) and `seenFoods` (foods that attracted it).
 - New birds are flagged `unseenInBook` until the book is opened.
-- The header shows "X of 12 collected" with a progress bar, total visits and best streak.
+- The header shows "X of N collected" (N = number of birds) with a progress bar, total visits and best streak.
 - Collected cards show the bird, its name and a small rarity gem, and open a dialog. Locked cards show the real bird and its name behind a soft blur, are not tappable and carry no links.
 - The dialog shows the bird inside a double ring in its rarity colour, the name with its rarity tooltip, the fun fact, first seen, visit count, and "Seen eating" / "Favorite foods" as food chips.
 - Favorite foods are revealed once a bird has visited 3 times (`favoritesKnown`). Until then the row shows a lock, "Visit N more times to discover" and an `n/3` counter. On the revealing visit Mango says "Mango learned something!".
@@ -60,7 +60,7 @@ One flat SVG gem per rarity — round sage green with a leaf, hexagon warm blue 
 ## Mango's reactions and milestones (`src/lib/personality.ts`)
 - Reaction group, in priority order: **rare** bird → **yesterday** (same bird as yesterday) → **new** → **repeat**.
 - Each group has 3 lines. The last variant used per group is remembered so the same line never appears twice in a row.
-- Milestones: first bird, 3/7/14/30-day streaks, 6 and 12 birds collected. Each is shown once, ever, and remembered in `mangos-garden:personality` (reset does not clear it).
+- Milestones: first bird, 3/7/14/30-day streaks, halfway (floor(N/2)) and all N birds collected. Each is shown once, ever, and remembered in `mangos-garden:personality` (reset does not clear it).
 
 ## Sounds (`src/lib/sounds.ts`)
 - Made with the Web Audio API — no files or libraries.

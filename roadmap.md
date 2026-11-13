@@ -32,3 +32,7 @@
 # Meet Mango introduction
 - [x] Add the welcome-only link, uploaded photo, and bilingual scrollable dialog.
 - [x] Add the requested opening test and verify dismissal and mobile layout in both languages.
+
+# 20 birds and 14 foods
+- [x] Add 8 birds, 4 foods with icons, new affinities, data-driven counts and milestones.
+- [x] Update tests, docs and run simulation.

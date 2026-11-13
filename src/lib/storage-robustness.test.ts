@@ -29,7 +29,7 @@ describe("storage fallbacks", () => {
   it("drops invalid bird book entries but keeps valid ones", () => {
     localStorage.setItem("mangos-garden:collection", JSON.stringify({
       robin: { firstSeen: "2026-11-01", visits: 2, seenFoods: ["apple", "pizza"] },
-      jay: { firstSeen: 5, visits: 1 },
+      nuthatch: { firstSeen: 5, visits: 1 },
       wren: { firstSeen: "2026-11-01", visits: 0 },
     }));
     expect(loadCollection()).toEqual({ robin: { firstSeen: "2026-11-01", visits: 2, seenFoods: ["apple"] } });
@@ -53,14 +53,14 @@ describe("retired content IDs", () => {
   it("ignores removed birds and foods while preserving valid discoveries and counts", () => {
     const entry = { firstSeen: "2026-11-01", visits: 3, seenFoods: ["apple", "nyjer", "fatball", "water"] };
     localStorage.setItem("mangos-garden:collection", JSON.stringify({
-      robin: entry, chaffinch: entry, starling: entry, greenfinch: entry, jay: entry,
+      robin: entry, kingfisher: entry, siskin: entry, wren: entry, nuthatch: entry,
     }));
     expect(loadCollection()).toEqual({ robin: { ...entry, seenFoods: ["apple", "water"] } });
     expect(Object.keys(loadCollection())).toHaveLength(1);
   });
   it("drops retired daily visitors and invalid offers", () => {
     localStorage.setItem("mangos-garden:days", JSON.stringify({
-      "2026-11-11": { visitor: "jay", food: "apple", offer: ["nyjer", "apple", "millet", "water"] },
+      "2026-11-11": { visitor: "nuthatch", food: "apple", offer: ["nyjer", "apple", "millet", "water"] },
     }));
     expect(loadHistory()["2026-11-11"]).toEqual({ food: "apple" });
   });

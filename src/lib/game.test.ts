@@ -23,11 +23,11 @@ describe("daily offer", () => {
 });
 
 describe("visitor", () => {
-  it("has 12 birds: 9 common, 1 uncommon, 2 rare", () => {
-    expect(BIRDS).toHaveLength(12);
-    expect(BIRDS.filter((b) => b.rarity === "common")).toHaveLength(9);
-    expect(BIRDS.filter((b) => b.rarity === "uncommon")).toHaveLength(1);
-    expect(BIRDS.filter((b) => b.rarity === "rare")).toHaveLength(2);
+  it("has 20 birds: 14 common, 3 uncommon, 3 rare", () => {
+    expect(BIRDS).toHaveLength(20);
+    expect(BIRDS.filter((b) => b.rarity === "common")).toHaveLength(14);
+    expect(BIRDS.filter((b) => b.rarity === "uncommon")).toHaveLength(3);
+    expect(BIRDS.filter((b) => b.rarity === "rare")).toHaveLength(3);
   });
   it("freshness is 0.2 yesterday, 0.6 two days ago, else 1", () => {
     const r = { yesterday: "robin", twoDaysAgo: "woodpecker" };

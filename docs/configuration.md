@@ -15,7 +15,7 @@
 | Foods new vs yesterday | 2 | `MIN_NEW_FOODS`, `src/lib/game.ts` | Minimum change in the offer from day to day |
 | History days kept | today + 2 | `saveDay`, `src/lib/storage.ts` | Must cover the freshness rule (2 days back) |
 | Streak milestones | 3, 7, 14, 30 days | `pendingMilestones`, `src/lib/personality.ts` (+ lines in `MILESTONE_LINES`) | When streak celebrations appear |
-| Collection milestones | 1, 6, 12 birds | `pendingMilestones`, `src/lib/personality.ts` | When collection celebrations appear |
+| Collection milestones | 1, half (floor(N/2)), all N birds | `pendingMilestones`, `src/lib/personality.ts` | When collection celebrations appear |
 | Food hint threshold | 3 visits | `favoritesKnown`, `src/lib/personality.ts` | Visits needed to reveal favorite foods; the dialog's lock hint counts down to this number |
 | Pet Mango | once per local day | `claimPat`, `src/lib/pat.ts` | The pat hides until tomorrow; its own key keeps it out of game data |
 | Sound timing and pitch | chirp 1 s after tap | `playArrival`, `src/lib/sounds.ts` | When and how the chirp/squawk sound |
@@ -24,4 +24,4 @@
 | Page width | 480px | `--page-max`, `src/styles.css` | How wide the game column gets on desktop |
 | Gem light sweep | 0.9s, rare repeats every 4s | `gem-sweep`, `src/styles.css` | How the rarity badge shimmers |
 
-After changing a value, run `npm run simulate` (5,000 players x 365 days; current tuning gives a median of 45 days to finish the book, 16 days to the first rare bird and no unfinished players after a year), then `npm test`: some tests check the defaults on purpose and will tell you what moved.
+After changing a value, run `npm run simulate` (5,000 players x 365 days; current tuning gives a median of 75 days to finish the book, 18 days to the first rare bird and 2 unfinished players after a year), then `npm test`: some tests check the defaults on purpose and will tell you what moved.
