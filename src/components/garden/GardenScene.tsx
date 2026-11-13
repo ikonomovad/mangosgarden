@@ -20,6 +20,58 @@ interface GardenSceneProps {
   mangoOverlay?: ReactNode | undefined;
 }
 
+/** Small leafy side branch growing off the perch support. */
+function Twig({ className, flip = false }: { className?: string; flip?: boolean }) {
+  return (
+    <svg viewBox="0 0 44 28" className={className} aria-hidden style={flip ? { transform: "scaleX(-1)" } : undefined}>
+      <path d="M2 25 C14 21 26 14 41 4" fill="none" stroke="var(--wood)" strokeWidth="3" strokeLinecap="round" />
+      <ellipse cx="14" cy="17" rx="7" ry="4" fill="var(--leaf)" transform="rotate(-24 14 17)" />
+      <ellipse cx="26" cy="11" rx="7" ry="4" fill="var(--leaf)" transform="rotate(-30 26 11)" />
+      <ellipse cx="36" cy="5" rx="6" ry="3.5" fill="var(--leaf)" transform="rotate(-36 36 5)" />
+    </svg>
+  );
+}
+
+/** Grass and a soft mound drawn over the support's base so it reads as planted. */
+function GrassTuft({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 80 30" className={className} aria-hidden>
+      <path d="M0 30 C12 16 26 10 40 10 C54 10 68 16 80 30 Z" fill="var(--grass-deep)" />
+      <path d="M20 30 C18 20 22 12 26 6 C28 16 28 24 28 30 Z" fill="var(--grass-deep)" />
+      <path d="M28 30 C26 18 30 10 34 2 C36 12 36 22 36 30 Z" fill="var(--grass)" />
+      <path d="M40 30 C40 16 44 8 48 0 C49 12 48 22 48 30 Z" fill="var(--grass-deep)" />
+      <path d="M48 30 C48 18 52 12 56 6 C55 16 56 24 56 30 Z" fill="var(--grass)" />
+    </svg>
+  );
+}
+
+/** Gently curved wooden support under the perch so the branch is planted, not floating. */
+function PerchSupport({ full }: { full: boolean }) {
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none absolute right-[54px] top-[8.5rem] hidden w-14 sm:block ${full ? "-bottom-6" : "-bottom-3"}`}
+    >
+      <svg viewBox="0 0 40 200" preserveAspectRatio="none" className="h-full w-full" aria-hidden>
+        <path
+          d="M14 0 C11 34 19 58 16 92 C13 126 21 158 12 200 L28 200 C30 158 25 126 28 92 C31 58 25 34 26 0 Z"
+          fill="var(--wood)"
+        />
+        <path
+          d="M14 0 C11 34 19 58 16 92 C13 126 21 158 12 200 L16 200 C23 158 17 126 20 92 C23 58 15 34 18 0 Z"
+          fill="var(--wood-light)"
+          opacity="0.3"
+        />
+        <ellipse cx="24" cy="56" rx="3" ry="4.5" fill="var(--wood-light)" opacity="0.5" />
+        <ellipse cx="17" cy="122" rx="2.2" ry="3.5" fill="var(--wood-light)" opacity="0.4" />
+      </svg>
+      <Twig className="absolute -left-4 top-[6%] h-7 w-11" />
+      <Twig flip className="absolute -right-4 top-[58%] h-6 w-10" />
+      <GrassTuft className="absolute -bottom-6 left-1/2 h-14 w-28 -translate-x-1/2" />
+    </div>
+  );
+}
+
 /** Garden backdrop with a feeder, a branch, and Mango on his perch. */
 export function GardenScene({ mood = "neutral", line, feederFood, visitor, full = false, mangoAnim, mangoOverlay }: GardenSceneProps) {
   // Season is read after hydration so server and browser markup match.
@@ -39,6 +91,9 @@ export function GardenScene({ mood = "neutral", line, feederFood, visitor, full 
       {full && <GardenDecor season={season} cat={cat} />}
 
       <div className={full ? "absolute bottom-36 left-1/2 h-80 w-full max-w-[var(--page-max)] -translate-x-1/2" : "absolute inset-0"}>
+
+      {/* support under the perch, big screens only */}
+      <PerchSupport full={full} />
 
       {/* feeder */}
       <div className="absolute bottom-10 left-8 flex flex-col items-center">
