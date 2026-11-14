@@ -36,3 +36,7 @@
 # 20 birds and 14 foods
 - [x] Add 8 birds, 4 foods with icons, new affinities, data-driven counts and milestones.
 - [x] Update tests, docs and run simulation.
+
+# Large-screen perch support
+- [x] Finish the branch support and verify it reaches the grass on desktop while remaining hidden on phones.
+- [x] Run all 189 tests and confirm both screen sizes have no runtime errors or horizontal overflow.
