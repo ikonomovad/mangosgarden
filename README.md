@@ -230,3 +230,11 @@ To remove completely, delete exactly:
 4. In `AGENTS.md`, the rule beginning `Gameplay reads current time` and this README's **Hidden developer test panel** section; replace the reset-testing bullet above with your preferred testing procedure.
 
 No changes to storage or game algorithms need undoing. The old normal-screen reset link was removed as requested; the reset operation remains in `src/lib/storage.ts`.
+
+## Credits
+
+*Mango's Garden* was created by [Daniela Ikonomova](https://www.linkedin.com/in/ikonomovad/) as part of **SheBuilds: Learning Edition 2026**.
+
+<p align="center">
+  <img src="docs/images/shebuilds-showcase.png" alt="SheBuilds Learning Edition showcase featuring four screens from Mango's Garden" width="720">
+</p>
