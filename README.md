@@ -80,7 +80,7 @@ The book contains **20 birds: 14 common, 3 uncommon, 3 rare**. Unlisted food aff
 | magpie | Magpie / Страчка | common | walnut | peanuts, mealworms, corn |
 | jackdaw | Jackdaw / Чавка | common | wheat, corn | walnut, apple |
 | starling | Starling / Сколовранец | common | mealworms, figs | apple, water, berries |
-| chaffinch | Chaffinch / Зеба | common | sunflower | wheat, millet, pumpkin |
+| chaffinch | Chaffinch / Обична ѕвингалка | common | sunflower | wheat, millet, pumpkin |
 | greenfinch | Greenfinch / Зеленушка | common | sunflower | peanuts, millet, pumpkin |
 | treesparrow | Tree Sparrow / Полско врапче | common | millet, wheat | sunflower, water, corn |
 | songthrush | Song Thrush / Дрозд пејач | common | figs, apple | mealworms, berries, rosehip |
@@ -133,6 +133,16 @@ Visit percentages are rounded independently.
 - **Bird card:** the visitor, its rarity gem, fun fact, "Find out more" / "Ask ChatGPT" links, Mango's reaction, any milestone ribbon, and the next-visit countdown.
 - **Bird book:** "X of N collected" (N = number of birds) with a progress bar, total visits and best streak. Collected birds show a rarity gem and open a dialog (bird in a rarity-coloured ring, fact, first seen, visit count, "Seen eating" and "Favorite foods" as food chips, plus the two learning links). Locked birds sit behind a soft blur, are not tappable and have no links. Favorite foods unlock after 3 visits; until then the dialog shows a lock, "Visit N more times to discover" and an `n/3` counter.
 - **Always available:** the streak pill, and the floating book / sound / language controls (all 44px, with hover or tap tooltips).
+
+### Rarity badges
+
+These close-up screenshots show the actual gems used in the Bird book and visitor cards. The book grid uses a smaller version of the same gem; bird details and visitor cards show the full-size badge with a translated rarity label on hover, keyboard focus or tap.
+
+| Common / Честа | Uncommon / Помалку честа | Rare / Ретка |
+|:---:|:---:|:---:|
+| <img src="docs/images/rarity-common.png" alt="Common rarity badge: green round gem with a leaf" width="88" height="88"> | <img src="docs/images/rarity-uncommon.png" alt="Uncommon rarity badge: blue hexagonal gem with a feather" width="88" height="88"> | <img src="docs/images/rarity-rare.png" alt="Rare rarity badge: golden diamond gem with a star and sparkles" width="88" height="88"> |
+
+Each gem has a light-streak animation; rare gems also have repeating sparkles. Animations respect `prefers-reduced-motion`.
 
 ## Seasons and the weekly cat
 

@@ -40,3 +40,7 @@
 # Large-screen perch support
 - [x] Finish the branch support and verify it reaches the grass on desktop while remaining hidden on phones.
 - [x] Run all 189 tests and confirm both screen sizes have no runtime errors or horizontal overflow.
+
+# README rarity badge illustrations
+- [x] Capture the actual common, uncommon and rare gems from bird book dialogs and add them to the README.
+- [x] Sync the README's former Зеба entry with the current Macedonian name and verify the illustrations.
