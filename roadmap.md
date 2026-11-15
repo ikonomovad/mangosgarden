@@ -44,7 +44,3 @@
 # README rarity badge illustrations
 - [x] Capture the actual common, uncommon and rare gems from bird book dialogs and add them to the README.
 - [x] Sync the README's former Зеба entry with the current Macedonian name and verify the illustrations.
-
-# Close-up Mango favicon
-- [x] Enlarge the existing Mango artwork inside the green tile and preserve both previous icons.
-- [x] Add and verify a multi-resolution browser fallback without changing home-screen icons.
