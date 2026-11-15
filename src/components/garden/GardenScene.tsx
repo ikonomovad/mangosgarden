@@ -96,12 +96,13 @@ export function GardenScene({ mood = "neutral", line, feederFood, visitor, full 
       <PerchSupport full={full} />
 
       {/* feeder */}
-      <div className="absolute bottom-10 left-8 flex flex-col items-center">
+      <div className="absolute bottom-0 left-8 flex flex-col items-center">
         <div className="h-3 w-24 rounded-full bg-wood" />
         <div className="flex h-10 w-20 items-center justify-center rounded-b-xl bg-wood-light text-2xl">
           {feederFood}
         </div>
-        <div className="h-16 w-2 bg-wood" />
+        <div className="h-26 w-3 rounded-b-full bg-wood" />
+        <GrassTuft className="pointer-events-none absolute -bottom-2 left-1/2 h-6 w-16 -translate-x-1/2" />
       </div>
 
       {/* visitor lands on the feeder */}
