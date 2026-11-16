@@ -15,7 +15,7 @@ Rarity tuning (see `npm run simulate`):
 | Rarity weights | common 10, uncommon 6, rare 0.5 |
 | Pity boost | uncollected rare birds only: x(1 + 0.05 per day since the last new rare bird), capped at x3, reset only when a new rare bird is discovered; off once both rares are collected |
 
-More detail: [docs/how-it-works.md](docs/how-it-works.md) · [docs/storage.md](docs/storage.md) · [docs/configuration.md](docs/configuration.md) · [docs/extending.md](docs/extending.md)
+More detail: [docs/how-it-works.md](docs/how-it-works.md) · [docs/storage.md](docs/storage.md) · [docs/configuration.md](docs/configuration.md) · [docs/extending.md](docs/extending.md) · [how this was built](docs/prompts/README.md)
 
 ## Project structure
 
@@ -230,6 +230,28 @@ To remove completely, delete exactly:
 4. In `AGENTS.md`, the rule beginning `Gameplay reads current time` and this README's **Hidden developer test panel** section; replace the reset-testing bullet above with your preferred testing procedure.
 
 No changes to storage or game algorithms need undoing. The old normal-screen reset link was removed as requested; the reset operation remains in `src/lib/storage.ts`.
+
+## How this was built
+
+This game was built with Lovable. A selection of the key prompts, not the full history, is in [docs/prompts](docs/prompts/README.md):
+
+0. [Initial game](docs/prompts/0-initial.md)
+1. [Bird book](docs/prompts/1-bird-book.md)
+2. [Once-a-day lock and streak](docs/prompts/2-streak.md)
+3. [Mango reactions](docs/prompts/3-reactions.md)
+4. [Docs and tests](docs/prompts/4-tests.md)
+5. [Rare-bird tuning](docs/prompts/5-tuning.md)
+6. [Visual restyle](docs/prompts/6-redesign.md)
+7. [Bird book redesign](docs/prompts/7-redesign-bird-book.md)
+8. [Garden decorations](docs/prompts/8-decorations.md)
+9. [App icon](docs/prompts/9-app-icon.md)
+10. [English and Macedonian](docs/prompts/10-multilingual.md)
+11. [Swap birds and foods](docs/prompts/11-swap-bird-content.md)
+12. [Food SVG icons](docs/prompts/12-replace-food-emoji.md)
+13. [Rarity badge](docs/prompts/13-rarity-badge.md)
+14. [Pat Mango](docs/prompts/14-pat-bird.md)
+15. [20 birds and 14 foods](docs/prompts/15-new-birds.md)
+16. [Start a new book](docs/prompts/16-new-book.md)
 
 ## Credits
 
