@@ -260,3 +260,8 @@ This game was built with Lovable. A selection of the key prompts, not the full h
 <p align="center">
   <img src="docs/images/shebuilds-showcase.png" alt="SheBuilds Learning Edition showcase featuring four screens from Mango's Garden" width="720">
 </p>
+
+## License
+
+Copyright (c) 2026 Daniela Ikonomova. All rights reserved. See [LICENSE](LICENSE).
+
