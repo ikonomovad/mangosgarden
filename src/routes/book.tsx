@@ -127,10 +127,16 @@ function Book() {
               {e.unseenInBook && (
                 <span className="absolute right-2 top-2 rounded-full bg-primary px-2 py-0.5 font-display text-[10px] text-primary-foreground">{t("new")}</span>
               )}
-              <div className="h-20 w-20 rounded-full bg-garden-soft p-2">
+              <div className="relative h-20 w-20 rounded-full bg-garden-soft p-2">
                 <BirdSvg look={b.look} title={birdText(b).name} className="h-full w-full" />
+                {e.visits > 1 && (
+                  <span aria-hidden className="absolute -bottom-1 -right-1 flex h-6 min-w-6 items-center justify-center rounded-full border-2 border-paper bg-primary px-1 font-display text-[10px] leading-none text-primary-foreground shadow-soft">
+                    ×{number(e.visits)}
+                  </span>
+                )}
               </div>
               <p className="mt-2 font-display text-base leading-tight text-foreground">{birdText(b).name}</p>
+              {e.visits > 1 && <span className="sr-only">{t("visited", { count: e.visits })}</span>}
             </button>
           );
         })}
